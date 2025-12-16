@@ -1,0 +1,15 @@
+Geachte Beste <?php echo $debtor->name; ?>,<br />
+<br />
+Uit onze administratie is gebleken, dat deze factuur nog niet is voldaan. De factuur is als bijlage meegestuurd.<br />
+<br />
+De betalingstermijn is inmiddels verstreken. Wilt u ervoor zorgen dat het openstaande bedrag binnen 8 dagen op onze rekening is bijgeschreven. Indien de rekening inmiddels is voldaan, kunt u deze herinnering als ongeschreven beschouwen.<br />
+<br />
+Wij kijken uit naar de verdere samenwerking!<br />
+<br />
+Met ondernemende groet,<br />
+<br />
+Administratie<br />
+Spieker Kwekerijen<br />
+<br />
+M: info@spieker-kwekerijen.nl<br />
+T: 0544-482824<br />

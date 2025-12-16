@@ -1,0 +1,12 @@
+Beste <?php echo $debtor->name; ?>,<br />
+<br />
+Bedankt voor uw aanvraag, wij verwelkomen u graag in ons hotel.<br />
+Als bijlage treft u onze offerte aan.<br />
+<br />
+Mocht u nog vragen hebben of bijzondere wensen ten aanzien van het verblijf of het ontbijt, laat dit ons dan weten.<br />
+<br />
+<br />
+Met vriendelijke groet,<br />
+<br />
+DirkJan en Joyce<br />
+De Kastanjefabriek

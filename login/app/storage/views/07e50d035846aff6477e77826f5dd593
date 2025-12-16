@@ -1,0 +1,87 @@
+<div class="section">
+    <div class="company-data">
+      <ul>
+        <li><?php echo $toName; ?></li>
+        <li><?php echo $toAddress; ?></li>
+        <li><?php echo $toZipcode; ?>   <?php echo $toCity; ?></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Factuur</h2>
+
+  <div class="section">
+    
+    <table width="100%" style="margin:0 0 3em 0;">
+    	<tr>
+    		<td class="left">Factuurnummer: <?php echo $invoicenumber; ?></td>
+      	</tr>
+        <tr>
+    		<td class="left">Factuurdatum: <?php echo simple_date($date); ?></td>
+    	</tr>
+    </table>
+
+    <div class="payment-data">
+      <table>
+        <thead>
+          <tr>
+          	<th class="left">Datum</th>
+            <th class="left">Omschrijving</th>
+            <th class="center">Aantal</th>
+            <th class="right">Prijs</th>
+            <th class="right">Totaal</th>
+          </tr>
+        </thead>
+        <tbody>
+        	<?php foreach(Invoicerows::where('iid','=',$id)->get() as $ir): ?>
+            <?php if($ir->type == 9): ?>
+              <tr>
+                <td class="left" colspan="5" style="padding-top:8px;padding-bottom:8px;"><?php echo nl2br($ir->description); ?></td>
+              </tr>
+            <?php else: ?>
+              <tr>
+                <td class="left"><?php echo simple_date($ir->date); ?></td>
+                <td class="left"><?php echo $ir->description; ?></td>
+                <td class="center"><?php echo $ir->amount; ?></td>
+                <td class="right"><?php echo euro($ir->price); ?></td>
+                <td class="right"><?php echo euro($ir->amount * $ir->price); ?></td>
+              </tr>
+            <?php endif; ?>
+            <?php endforeach; ?>
+            <tr>
+              <td class="bottomleft" colspan="5"></td>
+            </tr>
+            <tr>
+              <td class="bottomleft" colspan="5"></td>
+            </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="bottomleft" colspan="3"></td>
+            <th class="right">Subtotaal</th>
+            <td class="right"><?php echo euro(Invoices::getTotal($id)); ?></td>
+          </tr>
+          <tr>
+            <td class="bottomleft" colspan="3"></td>
+            <th class="right">BTW 21%</th>
+            <td class="td_total_taxes right"><?php echo euro(Invoices::getTotal($id,true)); ?></td>
+          </tr>
+          <tr class="strong">
+            <td class="bottomleft" colspan="3"></td>
+            <th class="right">TOTAAL</th>
+            <td class="td_total right"><?php echo euro(Invoices::getTotal($id,false,true)); ?></td>
+          </tr>
+        </tfoot>
+      </table>
+    	<br />
+    </div>
+  </div>
+  
+  <?php if(!isset($print)): ?> 
+  <div class="section">
+    <div class="terms">
+      <div class="grey">BTW nr. NL 0838.59.135.B.01</div>
+      Betaling s.v.p. binnen 15 dagen na factuurdatum op rekeningnummer NL62 INGB 0006 4361 15 o.v.v. factuurnummer.
+    </div>
+  </div>
+  <?php endif; ?>

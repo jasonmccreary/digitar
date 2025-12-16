@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<div>
+			Beste <?php echo isset($debtor->contact) ? $debtor->contact : $debtor->name; ?>,<br />
+			<br />
+			Enkele tijd terug heeft u een factuur met factuurnummer <?php echo $invoice->invoicenumber; ?> ontvangen voor een van onze producten/diensten.<br />
+			We hebben echter nog geen betaling mogen ontvangen voor deze factuur.<br />
+			<br />
+			Graag willen we u hierbij herinneren om de betaling alsnog binnen 14 dagen te voldoen.<br />
+			<br />
+			<br />
+			Met vriendelijke groeten,<br />
+			<?php echo $myCompany->name; ?>
+
+		</div>
+	</body>
+</html>

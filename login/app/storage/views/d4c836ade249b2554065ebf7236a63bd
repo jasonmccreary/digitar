@@ -1,0 +1,53 @@
+<?php if(count(Alert::all()) > 0): ?>
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			Messenger.options = {
+			    extraClasses: 'messenger-fixed messenger-on-top',
+			    theme: 'flat'
+			}
+			
+			setTimeout(function() {
+				<?php foreach(Alert::get('error') as $alert): ?>
+
+					Messenger().post({
+					 	message: '<?php echo $alert; ?>',
+					 	type: 'error',
+					    showCloseButton: true
+					});
+
+				<?php endforeach; ?>
+
+				<?php foreach(Alert::get('success') as $alert): ?>
+
+					Messenger().post({
+					 	message: '<?php echo $alert; ?>',
+					 	type: 'success',
+					    showCloseButton: true
+					});
+
+				<?php endforeach; ?>
+
+				<?php foreach(Alert::get('warning') as $alert): ?>
+
+					Messenger().post({
+					 	message: '<?php echo $alert; ?>',
+					 	type: 'info',
+					    showCloseButton: true
+					});
+
+				<?php endforeach; ?>
+
+				<?php foreach(Alert::get('info') as $alert): ?>
+
+					Messenger().post({
+					 	message: '<?php echo $alert; ?>',
+					 	type: 'info',
+					    showCloseButton: true
+					});
+
+				<?php endforeach; ?>
+			},500);
+		});
+	</script>
+<?php endif; ?>

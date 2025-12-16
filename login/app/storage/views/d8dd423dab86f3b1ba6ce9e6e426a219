@@ -1,0 +1,53 @@
+<?php $__env->startSection('content'); ?>
+	
+	<table width="100%">
+		<tr>
+			<td>Naam</td>
+			<td><?php echo $user->name; ?> - <small><?php echo $subuser->name; ?></small></td>
+		</tr>
+		<tr>
+			<td>Adres</td>
+			<td>
+				<?php echo $user->address; ?><br /> 
+				<?php echo $user->zipcode; ?> <?php echo $user->city; ?>
+
+			</td>
+		</tr>
+		<tr>
+			<td>Telefoon</td>
+			<td><?php echo $user->tell; ?></td>
+		</tr>
+		<tr>
+			<td>E-mail</td>
+			<td><?php echo $user->email; ?></td>
+		</tr>
+		<tr>
+			<td>Laatste login</td>
+			<td><?php $date = new DateTime($user->lastlogin); echo $date->format("H:i:s") .' <small>(' . $date->format("j F Y") . ')</small>'; ?></td>
+		</tr>
+		<tr>
+			<td>Facturatie module</td>
+			<td><?php echo $user->billing ? 'Ja' : 'Nee'; ?></td>
+		</tr>
+		<tr>
+			<td>Gebruikte opslag</td>
+			<td><?php echo $dirsize; ?></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="padding: 10px;">
+				<a onclick="login('/loginas/<?php echo $subuser->id; ?>/<?php echo $subuser->password; ?>')" class="btn btn-xs btn-mini" title="Inloggen als <?php echo $subuser->name; ?>" tabindex="2"><i class="fa fa-mail-forward"></i> inloggen</a>
+			</td>
+		</tr>
+	</table>
+	<script language="Javascript">
+
+        function login(url){
+            window.opener.location.href=url;
+            self.close();
+        }
+
+    </script>
+		
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

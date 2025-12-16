@@ -1,0 +1,32 @@
+
+
+<?php $__env->startSection('content'); ?>
+
+	<table class="table table-hover table-condensed" id="cleartable" data-sort="3" data-sort-order="desc">
+      	<thead>
+        	<tr>
+	          	<th style="width:5%">Datum</th>
+				<th style="width:9%">Debiteur</th>
+				<th style="width:22%">Factuurnummer</th>
+				<th style="width:6%">Totaal</th>
+				<th style="width:6%">Status</th>
+				<th style="width:1%"></th>
+        	</tr>
+      	</thead>
+      	<tbody>
+
+	<?php foreach($invoices as $invoice): ?>
+		<tr>
+	        <td class="v-align-middle"><?php echo simple_date($invoice->date); ?></td>
+			<td class="v-align-middle"><?php echo Debtors::getName($invoice->did); ?></td>
+			<td class="v-align-middle"><span class="muted"><?php echo $invoice->invoicenumber; ?></span></td>
+			<td><span class="muted"><?php echo euro(Invoices::getTotal($invoice->id)); ?></span></td>
+			<td><?php echo Invoices::showStatus($invoice->id); ?></td>
+			<td><a href="/billing/pdf/view/<?php echo $invoice->id; ?>" onclick="window.open('/billing/pdf/view/<?php echo $invoice->id; ?>', 'Factuur bekijken', 'width=820,height=850,scrollbars=yes,toolbar=no,location=no'); return false" class="btn btn-white btn-xs btn-mini" title="Factuur bekijken"><i class="fa fa-search"></i></a></td>
+    	</tr>
+	<?php endforeach; ?>
+		</tbody>
+	</table>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

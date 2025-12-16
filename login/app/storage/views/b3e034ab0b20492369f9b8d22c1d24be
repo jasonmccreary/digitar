@@ -1,0 +1,59 @@
+
+
+<?php $__env->startSection('content'); ?>
+	
+		<table class="table table-condensed" id="cleartable">
+		<thead>
+			<tr>
+				<th style="width:5%">Factuurnr.</th>
+				<th style="width:10%">Debiteur</th>
+				<th style="width:7%">Bedrag excl. BTW</th>
+				<th style="width:7%">Bedrag incl. BTW</th>
+				<th style="width:5%">Factuurdatum</th>
+				<th style="width:5%">Status</th>
+				<th style="width:4%"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($invoices as $i): ?>
+				<tr>
+					<td><?php echo $i->invoicenumber; ?></td>
+					<td><?php echo Debtors::getName($i->did); ?></td>
+					<td><?php echo euro(Invoices::getTotal($i->id)); ?></td>
+					<td><?php echo euro(Invoices::getTotal($i->id,false,true)); ?></td>
+					<td><?php echo nice_date($i->date); ?></td>
+					<td><?php echo Invoices::showStatus($i->id); ?></td>
+					<td>
+						<div class="btn-group"> 
+							<a class="btn btn-white btn-mini dropdown-toggle" data-toggle="dropdown" href="#"> Acties <span class="caret"></span> </a>
+							<ul class="dropdown-menu">
+								<li><a href="/billing/pdf/view/<?php echo $i->id; ?>" onclick="window.open('/billing/pdf/view/<?php echo $i->id; ?>', 'Factuur bekijken', 'width=820,height=850,scrollbars=yes,toolbar=no,location=no'); return false"><i class="fa fa-search"></i> Bekijken</a></li>
+								<li><a href="/billing/pdf/download/<?php echo $i->id; ?>"><i class="fa fa-download"></i> Downloaden</a></li>
+
+								<?php if($i->status != 10): ?>
+									<li class="divider"></li>
+									<li><a href="/billing/invoice/send/<?php echo $i->id; ?>" class="green"><i class="fa fa-envelope"></i> Versturen</a></li>
+
+									<?php if($i->status == (1||5)): ?>
+									<li><a href="/billing/invoice/paid/<?php echo $i->id; ?>" class="green"><i class="fa fa-check"></i> Betaling ontvangen</a></li>
+										<?php if($i->status == 5): ?>
+										<li><a href="/billing/invoice/send/<?php echo $i->id; ?>" class="red"><i class="fa fa-exclamation-triangle"></i> Herinnering versturen</a></li>
+										<?php endif; ?>
+									<?php endif; ?>
+									
+									<li class="divider"></li>
+									<li><a href="/billing/invoice/edit/<?php echo $i->id; ?>"><i class="fa fa-pencil"></i> Bewerken</a></li>
+									<li><a href="/billing/invoice/delete/<?php echo $i->id; ?>" class="red"><i class="fa fa-trash-o"></i> Verwijderen</a></li>
+								<?php endif; ?>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+
+<?php $__env->stopSection(); ?>
+
+
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

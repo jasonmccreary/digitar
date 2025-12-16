@@ -1,0 +1,317 @@
+
+
+<?php $__env->startSection('content'); ?>
+
+<h1 style="font-weight:900;color:#111;">Hoe maak ik zo optimaal mogelijk gebruik van Digitar?</h1>
+	
+	<br />
+	<ol>
+		<li>Plaats uw document in Digitar via upload, e-mail of de scanner</li>
+		<li>Geef het document de juiste titel en (factuur)nummer ( bijv. "123inkt 5668579" )</li>
+		<li>Geef het document de juiste datum ( bijv. factuurdatum, dagtekening, enz. )</li>
+		<li>Plaats het document in de juiste map</li>
+	</ol>
+
+</div>
+<div class="grid-body" style="margin-top:50px;">
+	<h1>Veel gestelde vragen</h1>
+	<div class="panel-group" id="accordionFAQ" data-toggle="collapse">
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordionFAQ" href="#faq1">
+			Ik kan mijn documenten niet verwijderen
+			</a>
+		  </h4>
+		</div>
+		<div id="faq1" class="panel-collapse collapse">
+		  <div class="panel-body">
+			 <b>Vraag:</b> Ik heb een document die ik wil verwijderen, hoe doe ik dat?<br />
+			 <br />
+			 <b>Antwoord:</b> U kunt documenten welke gearchiveerd zijn niet verwijderen. De functie verwijderen zit alleen in de map onverwerkt om te voorkomen dat iets per ongeluk verwijderd wordt.<br/>
+			 <br/>
+			 Indien u een bestand toch wilt verwijderen kan dat op de volgende wijze.<br />
+			 <ol>
+			 	<li>Klik op de <a class="btn btn-info btn-mini"> Bekijk </a> knop van het document</li>
+			 	<li>Wijzig de map naar "onverwerkt"</li>
+			 	<li>Sla het document op</li>
+			 	<li>Ga naar de map "onverwerkt"</li>
+			 	<li>Plaats een vinkje voor het gewenste document</li>
+			 	<li>Klik rechtsonder op "verwijderen"</li>
+			 </ol>
+		  </div>
+		</div>
+	  </div>
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordionFAQ" href="#faq2">
+			 Ik heb een nieuwe map aangemaakt, maar ik zie hem niet.
+			</a>
+		  </h4>
+		</div>
+		<div id="faq2" class="panel-collapse collapse">
+		  <div class="panel-body">
+			<b>Vraag:</b> Ik heb een nieuwe map aangemaakt via mijn bedrijfslogin maar ik zie hem niet als gebruiker.<br />
+			<br />
+			<b>Antwoord:</b> Omdat Digitar werkt met een rechtensysteem zijn mappen standaard niet aan een gebruiker gekoppeld. <br />
+			<br />
+			Om een map aan een gebruiker te koppelen kunt u de desbetreffende gebruiker bewerken. Dit doet u door in het gebruikersoverzicht op de knop "bewerken" (<i class="fa fa-pencil"></i>) te klikken.
+			Hier kunt u mappen aan gebruikers toekennen.<br/>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+</div>
+<div class="grid-body" style="margin-top:50px;">
+
+	<h1>Documenten</h1>
+	<div class="panel-group" id="accordion" data-toggle="collapse">
+	  <div class="panel panel-default collapsed">
+		<div class="panel-heading">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#DocumentenToevoegen">
+			   Documenten toevoegen 
+			</a>
+		  </h4>
+		</div>
+		<div id="DocumentenToevoegen" class="panel-collapse collapse" style="height: 0px;">
+		  <div class="panel-body">
+			 <b>Documenten kunnen op verschillende mannieren worden toegevoegd.</b><br/><br/>
+			 <p>
+			 	<i>Uploaden</i><br />
+			 	1. U kunt documenten uploaden door op de upload knop (<i class="fa fa-cloud-upload" style="display:inline-block"></i>) boven in het scherm naast de zoekbalk te klikken.<br />
+			 	2. U ziet dan een groot veld verschijnen waar u op kunt klikken of u kunt er documenten vanaf uw bureaublad in slepen. <br />
+			 	3. U ziet nu live de voortgang van uw uploads. Controleer of er bij ieder document een groen vinkje verschijnt. <br />
+			 </p> 
+			 <p>
+			 	<i>Email</i><br />
+			 	U heeft een persoonlijk e-mailadres gekregen van Digitar waar u uw documenten (als bijlage) naar toe kunt mailen. De door <br />
+			 	u gestuurde documenten zullen dan automatisch in uw onverwerkte map te rechtkomen.<br />
+			 </p> 
+			 <p>
+			 	<i>Scanner</i><br />
+			 	Documenten kunnen via de speciale Digitar scanner direct toegevoegd worden zonder tussenkomst van een computer.<br />
+			 	<a href="https://digitar.nu/#contact" onclick="window.location = 'http://digitar.nu/#contact'">Klik hier om meer informatie aan te vragen over de Digitar scanner.</a>
+			 </p> 
+		  </div>
+		</div>
+	  </div>
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#DocumentenBekijkenWijzigen">
+			  Documenten bekijken &amp; wijzigen
+			</a>
+		  </h4>
+		</div>
+		<div id="DocumentenBekijkenWijzigen" class="panel-collapse collapse" style="height: 0px;">
+		  <div class="panel-body">				
+              <p>
+              	<i>Bekijken</i><br />
+              	Om een document te bekijken klikt u op de <a class="btn btn-info btn-mini"> Bekijk </a> knop. Vervolgens zal er een "pop-up" openen waar u aan de rechterkant het document kunt bekijken
+              	en aan de linkerkant de documentgegevens kunt wijzigen.<br />
+              </p>
+              <p>
+              	<i>Wijzigen</i><br />
+              	Nadat u de "pop-up" hebt geopend kunt u aan de linker kant de gegevens wijzigen.<br />
+              	Indien u de <b>Datum wijzigt</b> naar een ander jaar dan zal het document na het opslaan verdwijnen uit de huidige map.<br />
+              	Indien u aan de linkerkant de <b>map wijzigt</b> in het keuzemenu zal het document bij opslaan uit de huidige map verdwijnen en in de aangegeven map verschijnen.<br />
+              </p>
+              <p>
+              	<i>Pop-up afsluiten</i><br />
+              	Om de "pop-up" te sluiten klikt aan de linkerkant op de knop "sluiten" of "opslaan".<br />
+              </p>
+		  </div>
+		</div>
+	  </div>
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#SamenvoegenOpsplitsen">
+			 Documenten opsplitsen &amp; samenvoegen 
+			</a>
+		  </h4>
+		</div>
+		<div id="SamenvoegenOpsplitsen" class="panel-collapse collapse">
+		  <div class="panel-body">
+			 <p>
+			 	Documenten opsplitsen &amp; samenvoegen kan alleen vanuit de map onverwerkt. <a href="/help#TerugNaarOnverwerkt" onclick="window.location = '/help#TerugNaarOnverwerkt'">Klik hier om te lezen hoe u documenten terug naar onverwerkt kunt zetten</a>.
+			 </p>
+			 <p>
+				<i>Opsplitsen</i><br />
+				Als u een overwerkt document hebt dat meerdere documenten bevat die niet bij elkaar horen kunt u dit document opsplitsen. Het systeem zal dan alle pagina's uit het document als apparte documenten aan maken.<br />
+				U vinkt de documenten aan die u wilt opsplitsen via de checkbox aan het begin van de regel (<img src="media/checkbox-checked.png" style="padding:3px;" />). Vervolgens klikt u op de knop "oplplitsen" rechts boven.
+			 </p>
+			 <p>
+				<i>Samenvoegen</i><br />
+				Als u een meerdere documenten heeft waar u &eacute;&eacute;n document van wilt maken kunt u dat doen met de knop "samenvoegen". Digitar zal dan automatisch een document maken met alle
+				pagina's en de oude documenten verwijderen.<br />
+				<b>Vink alleen de documenten aan die u wilt samenvoegen </b> via de checkbox voor aan het begin van de regel (<img src="media/checkbox-checked.png" style="padding:3px;" />). Vervolgens klikt u op de knop "samenvoegen" rechtsboven.<br />
+			 </p>
+		  </div>
+		</div>
+	  </div>
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#TerugNaarOnverwerkt">
+			 Terug naar onverwerkt
+			</a>
+		  </h4>
+		</div>
+		<div id="TerugNaarOnverwerkt" class="panel-collapse collapse">
+		  <div class="panel-body">
+			 Als u een document wilt verwijderen, opsplitsen of samenvoegen zult u deze eerst terug naar de map onverwerkt moeten zetten. Dit als extra beveiliging om te voorkomen dat u per ongeluk een document verwijderd.<br />
+			 <br />
+			 U kunt een document terugplaatsen door op de knop <a class="btn btn-info btn-mini"> Bekijk </a> te klikken. Selecteert nu de optie "onverwerkt" in het keuzemenu onder "map". Vervolgens klikt u op opslaan.<br />
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<h1>Mappen</h1>
+	<div class="panel-group" id="accordionMappen" data-toggle="collapse">
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordionMappen" href="#mappenToevoegen">
+			 Mappen toevoegen
+			</a>
+		  </h4>
+		</div>
+		<div id="mappenToevoegen" class="panel-collapse collapse">
+		  <div class="panel-body">
+			 Indien u inlogt als bedrijf ziet u aan de linker kant in het menu een knop "mappen". als u deze knop aanklikt ziet u de knop "Toevoegen". <br />
+			 U ziet nu een aantal elementen. Het eerste element is de hoofdmap. Als u een submap wilt maken geef u hier aan waar u de submap onder wilt laten vallen.<br />
+			 Het tweede element dat u ziet is een druppel in een blauw vakje. Via deze "druppel" kunt u de kleur van uw map aanpassen.<br />
+			 Het derde element is de uiteindelijke naam van uw map. Geeft de map een duidelijke naam zodat u deze eenvoudig terug kunt vinden.<br />
+			 <br />
+		  </div>
+		</div>
+	  </div>
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordionMappen" href="#mappenToewijzen">
+			 Mappen toekennen
+			</a>
+		  </h4>
+		</div>
+		<div id="mappenToewijzen" class="panel-collapse collapse">
+		  <div class="panel-body">
+		  	Indien u een nieuwe map hebt aangemaakt is deze standaard aan niemand toegekend, om een map aan een gebruiker toe te kennen logt u in als bedrijf.<br />
+			U ziet aan de linker kant in het menu een knop "gebruikers", als u deze knop aanklikt ziet u de knop "overzicht". <br />
+			Klik bij de gewenste gebruiker op het "bewerken" knop (<i class="fa fa-pencil"></i>), u ziet aan de rechterkant al uw mappen.<br />
+			Vink de mappen aan die u de gebruiker wilt toekennen. De mappen die niet aangevinkt zijn zal de gebruiker niet zien.<br />
+			<br />
+		  </div>
+		</div>
+	  </div>
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordionMappen" href="#mappenWijzigen">
+			 Mappen wijzigen
+			</a>
+		  </h4>
+		</div>
+		<div id="mappenWijzigen" class="panel-collapse collapse">
+		  <div class="panel-body">
+		  	Indien u een map wilt wijzigen kunt u dit doen onder "mappen" > "overzicht".<br />
+		  	Hier ziet u een lijst met al uw mappen, de naam van de map en de kleur. Aan het einde van de regel staat een bewerk- en een verwijderknop.<br />
+		  	<i>Let op: indien er geen knoppen zichtbaar zijn dan zijn de mappen door een hoger niveau toegekend, deze kunt u dan niet wijzigen.</i><br />
+		  	<br />
+		  	Via de knop "wijzigen" (<i class="fa fa-pencil"></i>) kunt u de hoofdmap, de kleur en de naam wijzigen.<br />
+			<br />
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<h1>Gebruikers</h1>
+	<div class="panel-group" id="accordionGebruiker" data-toggle="collapse">
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordionGebruiker" href="#gebruikersOverzicht">
+			 Gebruikers overzicht
+			</a>
+		  </h4>
+		</div>
+		<div id="gebruikersOverzicht" class="panel-collapse collapse">
+		  <div class="panel-body">
+			 Indien u als bedrijf inlogt opent direct het "gebruikers" scherm.<br />
+			 Hier ziet u de gebruikers binnen uw bedrijf. De lijst bestaat uit 4 kolommen, te weten NAAM, GEBRUIKERSNAAM, WACHTWOORD en een drietal functieknoppen.<br />
+			 <br />
+			 NAAM, de werkelijke naam van de gebruiker.<br />
+			 GEBRUIKERSNAAM, hiermee logt de gebruiker in.<br />
+			 WACHTWOORD, standaard staan hier puntjes, als u de puntjes aanklikt wordt het wachtwoord zichtbaar.<br />
+			 <br/>
+			 <i>De unieke combinatie gebruikersnaam &amp; wachtwoord geeft toegang tot het gebruikersaccount.</i><br />
+			 <br />
+			 <i>Functie knoppen</i><br />
+			 De "inloggen als gebruiker" knop ( <i class="fa fa-mail-forward"></i> ) geeft u direct toegang tot uw documenten en mappen gekoppeld aan deze gebruiker. <br />
+			 De "bewerken" knop ( <i class="fa fa-pencil"></i> ) geeft u een pagina om de gebruikersgegevens, mappen en instellingen te bewerken.<br />
+			 Met de "verwijder" knop ( <i class="fa fa-trash-o"></i> ) kunt u een gebruiker verwijderen. <small><i>Let op: alle kopelingen zullen verdwijnen. U zult dan in de documentmappen niet de juiste "uploader" zien.</i></small><br />
+		  </div>
+		</div>
+	  </div>
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordionGebruiker" href="#gebruikersWijzigen">
+			 Gebruikers wijzigen
+			</a>
+		  </h4>
+		</div>
+		<div id="gebruikersWijzigen" class="panel-collapse collapse">
+		  <div class="panel-body">
+			Indien u als bedrijf inlogt opent direct het "gebruikers" scherm.<br />
+			 Hier ziet u de gebruikers binnen uw bedrijf. Klik bij de gewenste gebruiker op de knop "bewerken" ( <i class="fa fa-mail-forward"></i> ).<br />
+			 <br />
+			 Aan de linkerkant kunt u alle N.A.W. gegevens wijzigen.<br />
+			 Rechts kunt u aangeven of een gebruiker alleen documenten mag inzien en verder geen wijzigingen mag maken. Rechts ziet u tevens welke mappen u kunt toekennen, <a href="#mappenToevoegen">Lees hier hoe u mappen kunt toekennen</a>.<br />
+		  </div>
+		</div>
+	  </div>
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordionGebruiker" href="#gebruikersVerwijderen">
+			 Gebruikers verwijderen
+			</a>
+		  </h4>
+		</div>
+		<div id="gebruikersVerwijderen" class="panel-collapse collapse">
+		  <div class="panel-body">
+			 Indien u als bedrijf inlogt opent direct het "gebruikers" scherm.<br />
+			 Hier ziet u de gebruikers binnen uw bedrijf. <br />
+			 Als u een gebruiker wilt verwijderen klikt u op de knop "verwijderen" ( <i class="fa fa-trash-o"></i> ) bij de gewenste gebruiker.<br />
+			 <br />
+			 <i>Let op: als u een gebruiker verwijdert zijn tevens alle koppelingen weg. U zult dan in de documentmappen niet de juiste "uploader" zien.</i>
+		  </div>
+		</div>
+	  </div>
+	  <div class="panel panel-default">
+		<div class="panel-heading collapsed">
+		  <h4 class="panel-title">
+			<a class="collapsed" data-toggle="collapse" data-parent="#accordionGebruiker" href="#gebruikersToevoegen">
+			 Gebruikers toevoegen
+			</a>
+		  </h4>
+		</div>
+		<div id="gebruikersToevoegen" class="panel-collapse collapse">
+		  <div class="panel-body">
+			 Als u een gebruiker wilt toevoegen dient u ingelogt te zijn als bedrijf.<br />
+			 U ziet u aan de linkerkant de knop "gebruikers". Indien u deze knop aanklikt zal de knop "toevoegen" verschijnen.<br /> 
+			 Middels de knop "toevoegen" kunt u aan de linkerkant alle bekende N.A.W. gegevens invullen.<br />
+			 Aan de rechterkant kunt u aangeven of een gebruiker alleen documenten mag inzien en verder geen wijzigingen mag maken. Tevens kunt u rechts aangeven welke mappen u wilt toekennen, <a href="#mappenToevoegen">Lees hier hoe u mappen kunt toekennen</a>.<br />
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,63 @@
+<div class="side-widget-title">Nieuwe Berichten</div>
+<div class="side-widget-content" id="newMessages">
+
+  <?php if(count(Messages::get(Auth::user()->cid)) > 0): ?>
+    <?php foreach(Messages::get(Auth::user()->cid) as $message): ?>
+      <?php
+        $d = new DateTime($message->created_at);
+        $dateCreated = $d->format("j F Y H:i");
+      ?>
+      <div class="user-details-wrapper" data-id="<?php echo $message->id; ?>">
+        <div class="remove">
+          <i class="fa fa-trash-o"></i>
+        </div>
+        <div class="user-details">
+          <div class="user-name">
+            <?php echo $message->title; ?>
+
+            <span class="pull-right" style="margin-right:20px;"><i class="fa fa-clock-o tip" title="<?php echo $dateCreated; ?>" data-placement="left"></i></span>
+          </div>
+          <div class="user-more">
+            <?php echo $message->message; ?>
+
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <p style="padding:5px 0px 5px 20px;">Geen nieuwe berichten</p>
+  <?php endif; ?>
+
+</div>
+<div class="side-widget-title">Gelezen Berichten</div>
+<div class="side-widget-content" id="newMessages">
+  <?php if(count(Messages::get(Auth::user()->cid,true)) > 0): ?>
+    <?php foreach(Messages::get(Auth::user()->cid,true) as $message): ?>
+      <?php
+        $d = new DateTime($message->created_at);
+        $dateCreated = $d->format("j F Y H:i");
+      ?>
+      <div class="user-details-wrapper" data-id="<?php echo $message->id; ?>">
+        <div class="remove">
+          <i class="fa fa-trash-o"></i>
+        </div>
+        <div class="user-details">
+          <div class="user-name">
+            <?php echo $message->title; ?>
+
+            <span class="pull-right" style="margin-right:20px;"><i class="fa fa-clock-o tip" title="<?php echo $dateCreated; ?>" data-placement="left"></i></span>
+          </div>
+          <div class="user-more">
+            <?php echo $message->message; ?>
+
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <p style="padding:5px 0px 5px 20px;">Geen gelezen berichten</p>
+  <?php endif; ?>
+
+</div>

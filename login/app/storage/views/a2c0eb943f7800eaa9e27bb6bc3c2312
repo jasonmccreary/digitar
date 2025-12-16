@@ -1,0 +1,84 @@
+<?php $__env->startSection('content'); ?>
+
+	<?php echo Form::open(); ?>
+
+	<div class="row">
+		<div class="col-md-6">
+			<h3>Gegevens</h3>
+			<div class="form-group">
+				<label class="form-label">Gebruikersnaam</label>
+				<div class="controls"><?php echo Form::text('username', Input::old('username'), array('class'=>'form-control', 'maxlength'=>'24')); ?></div>
+			</div>
+			<div class="form-group">
+				<label class="form-label">Volledige naam</label>
+				<div class="controls"><?php echo Form::text('name', Input::old('name'), array('class'=>'form-control')); ?></div>
+			</div>
+			<div class="form-group">
+				<label class="form-label">Adres</label>
+				<div class="controls"><?php echo Form::text('address', Input::old('address'), array('class'=>'form-control')); ?></div>
+			</div>
+			<div class="form-group">
+				<label class="form-label">Postcode</label>
+				<div class="controls"><?php echo Form::text('zipcode', Input::old('zipcode'), array('class'=>'form-control')); ?></div>
+			</div>
+			<div class="form-group">
+				<label class="form-label">Plaats</label>
+				<div class="controls"><?php echo Form::text('city', Input::old('city'), array('class'=>'form-control')); ?></div>
+			</div>
+			<div class="form-group">
+				<label class="form-label">Telefoon nr</label>
+				<div class="controls"><?php echo Form::text('tell', Input::old('tell'), array('class'=>'form-control')); ?></div>
+			</div>
+			<div class="form-group">
+				<label class="form-label">E-mail</label>
+				<div class="controls"><?php echo Form::text('email', Input::old('email'), array('class'=>'form-control')); ?></div>
+			</div>
+			<div class="form-group">
+				<label class="form-label">Website</label>
+				<div class="controls"><?php echo Form::text('website', Input::old('website'), array('class'=>'form-control')); ?></div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			
+			<?php if(User::checkBilling()): ?>
+			<h3>Instellingen</h3>
+			<div class="form-group">
+				<div class="checkbox check-success 	">
+					<?php echo Form::checkbox('billing', '1', false, array('id'=>'billing')); ?>
+
+		          <label for="billing">Facturatie</label>
+		        </div>
+		    </div>
+		    <?php endif; ?>
+
+			<h3>Mappen</h3>
+			<div class="form-group">
+				<?php if(count($sfolders) > 0): ?>
+					<?php foreach($sfolders as $f): ?>
+						<div class="checkbox check-success 	">
+							<?php echo Form::checkbox('fid['.$f->id.']', '1', false, array('id'=>$f->id,'class'=>'parentf')); ?>
+
+				          <label for="<?php echo $f->id; ?>"><?php echo $f->name; ?></label>
+				        </div>	
+				         <?php foreach(Folder::getSubfolders($f->id,true) as $sf): ?>
+							<div class="checkbox check-success" style="padding-left:20px;">
+								<?php echo Form::checkbox('fid['.$sf->id.']', '1', false, array('id'=>$sf->id,'parent'=>$f->id,'class'=>'subf')); ?>
+
+					          <label for="<?php echo $sf->id; ?>"><?php echo $sf->name; ?></label>
+					        </div>					
+						<?php endforeach; ?>				
+					<?php endforeach; ?>
+				<?php else: ?>
+					<p><i>Er zijn nog geen standaard mappen</i></p>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
+	</div>
+	<?php echo Form::close(); ?>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

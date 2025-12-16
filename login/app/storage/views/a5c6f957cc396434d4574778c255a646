@@ -1,0 +1,28 @@
+<?php $__env->startSection('content'); ?>
+	
+		<table class="table table-condensed" id="cleartable">
+		<thead>
+			<tr>
+				<th style="width:5%">Debiteurnr.</th>
+				<th style="width:15%">Naam</th>
+				<th style="width:22%">E-mail</th>
+				<th style="width:5%"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($debtors as $d): ?>
+				<tr>
+					<td><?php echo $d->debnumber; ?></td>
+					<td><?php echo $d->name; ?></td>
+					<td><?php echo $d->email; ?></td>
+					<td>
+						<a href="/billing/debtor/edit/<?php echo $d->id; ?>" class="btn btn-white btn-xs btn-mini" title="Bewerken"><i class="fa fa-pencil"></i></a>
+						<a href="/billing/debtor/delete/<?php echo $d->id; ?>" class="btn btn-white btn-xs btn-mini danger" title="Verwijderen"><i class="fa fa-trash-o"></i></a>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

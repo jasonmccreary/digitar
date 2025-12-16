@@ -1,0 +1,40 @@
+<?php $__env->startSection('content'); ?>
+	
+	<?php if(count($users) > 0): ?>
+	<div class="alert alert-error">
+		<button class="close" data-dismiss="alert"></button>
+		Er zijn <?php echo count($users); ?> gebruikers gevonden die <span class="semi-bold">geen</span> FTP account hebben!
+	</div>
+
+	<table class="table table-hover table-condensed" id="datatable">
+		<thead>
+			<tr>
+				<th>Naam</th>
+				<th>Gebruikersnaam</th>
+				<th width="140px"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($users as $u): ?>
+				<tr>
+					<td><?php echo $u->name; ?></td>
+					<td><?php echo $u->username; ?></td>
+					<td>
+						<form method="post">
+							<input type="hidden" name="organization" value="<?php echo User::getUserUsername($u->oid); ?>" />
+							<input type="hidden" name="password" value="<?php echo Crypt::decrypt($u->password); ?>" />
+							<button name="username" value="<?php echo $u->username; ?>" class="btn btn-white btn-xs btn-mini" title="Forwarder creëren"><i class="fa fa-wrench"></i></button>
+						</form>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+	<?php else: ?>
+
+		<h1>Geen fouten gevonden!</h1>
+
+	<?php endif; ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

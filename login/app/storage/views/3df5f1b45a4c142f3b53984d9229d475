@@ -1,0 +1,19 @@
+Geachte <?php echo isset($debtor->contact) ? $debtor->contact : $debtor->name; ?>,<br />
+<br />
+Hierbij ontvangt u uw digitale factuur van Digitar B.V.<br />
+Wij verzoeken u vriendelijk deze binnen de afgesproken betalingstermijn te voldoen.<br />
+<br />
+Mocht u vragen hebben naar aanleiding van deze factuur dan kunt u bellen met onze administratie: tel. 0314 - 820 280 of per email: info@digitar.nu , vermeld bij correspondentie altijd uw factuurnummer. <br />
+<br />
+<br />
+Met vriendelijke groet,<br />
+Team Digitar - <i>Het online archief</i><br />
+<img src="http://digitar.nu/images/logo.png" alt="Logo Digitar" /><br />
+<br />
+<br />
+<p>
+<small>
+	De informatie verzonden in dit e-mailbericht is vertrouwelijk en is uitsluitend bedoeld voor de geadresseerde. Openbaarmaking, vermenigvuldiging en/of verstrekking van deze informatie aan derden is niet toegestaan. Digitar B.V. staat niet in voor de juiste en volledige overbrenging van de inhoud van dit e-mailbericht (incl.
+eventuele bijlage(n)), noch voor tijdige ontvangst daarvan. Digitar B.V. kan niet garanderen dat een e-mailbericht wordt overgebracht zonder inbreuk of tussenkomst van onbevoegde derden. Digitar B.V. aanvaardt hiervoor geen aansprakelijkheid.
+</small>
+</p>

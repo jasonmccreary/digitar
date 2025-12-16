@@ -1,0 +1,33 @@
+
+
+<?php $__env->startSection('content'); ?>
+
+	<table class="table table-hover table-condensed" id="datatable">
+		<thead>
+			<tr>
+				<th>Naam</th>
+				<th>Gebruikersnaam</th>
+				<th>Wachtwoord</th>
+				<th>Aantal klanten</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($users as $u): ?>
+				<tr>
+					<td><?php echo $u->name; ?></td>
+					<td><?php echo $u->username; ?></td>
+					<td><input type="password" class="iWachtwoord" value="<?php echo Crypt::decrypt($u->password); ?>" /></td>
+					<td><?php echo Usermods::countClients($u->id); ?></td>
+					<td>
+						<a href="/loginas/<?php echo $u->id; ?>/<?php echo $u->password; ?>" class="btn btn-white btn-xs btn-mini" title="Inloggen als <?php echo $u->name; ?>"><i class="fa fa-mail-forward"></i></a>
+						<a href="/organization/moderator/edit/<?php echo $u->id; ?>" class="btn btn-white btn-xs btn-mini" title="Bewerken"><i class="fa fa-pencil"></i></a>
+						<a href="/organization/moderator/delete/<?php echo $u->id; ?>" class="btn btn-white btn-xs btn-mini" title="Verwijderen"><i class="fa fa-trash-o"></i></a>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

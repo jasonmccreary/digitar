@@ -1,0 +1,36 @@
+<?php $__env->startSection('content'); ?>
+
+	<table class="table table-striped table-flip-scroll cf">
+		<thead>
+			<tr>
+				<th>Bedrijfsnaam</th>
+				<th>Adres</th>
+				<th>Postcode</th>
+				<th>Plaats</th>
+				<th>Telefoon nr</th>
+				<th>E-mail</th>
+				<th>Website</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($organizations as $org): ?>
+				<tr>
+					<td><?php echo $org->name; ?></td>
+					<td><?php echo $org->address; ?></td>
+					<td><?php echo $org->zipcode; ?></td>
+					<td><?php echo $org->city; ?></td>
+					<td><?php echo $org->tell; ?></td>
+					<td><?php echo $org->email; ?></td>
+					<td><?php echo $org->website; ?></td>
+					<td>
+						<a href="/admin/organization/edit/<?php echo $org->id; ?>" class="btn btn-white btn-xs btn-mini" title="Bewerken"><i class="fa fa-pencil"></i></a>
+						<a href="/admin/organization/delete/<?php echo $org->id; ?>" class="btn btn-white btn-xs btn-mini" title="Verwijderen"><i class="fa fa-trash-o"></i></a>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

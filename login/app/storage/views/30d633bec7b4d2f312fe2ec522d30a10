@@ -1,0 +1,105 @@
+<h2>Factuur</h2>
+
+<div class="section">
+	<div class="customer-data">
+  		<strong><?php echo $toName; ?></strong><br />
+    	<?php echo $toAddress; ?><br />
+    	<?php echo $toZipcode; ?>   <?php echo $toCity; ?>
+
+	</div>
+   	<table class="payment-data">
+      <tr>
+          <td>Factuurnummer:</td>
+          <td><?php echo $invoicenumber; ?></td>
+      </tr>
+      <tr>
+          <td>Factuurdatum:</td>
+          <td><?php echo simple_date($date); ?></td>
+      </tr>
+	  <tr>
+          <td>Klantnummer:</td>
+          <td> <?php echo $toNumber; ?></td>
+      </tr>
+  	</table>
+</div>
+
+<div class="section" style="padding-top: 8em;">
+  <div class="invoice-data">
+    <table>
+      <thead>
+        <tr>
+    	  <th class="left" width="70px">Datum</th>
+          <th class="left">Omschrijving</th>
+          <th class="center" width="10px">Aantal</th>
+          <th class="right" width="10px">BTW</th>
+          <th class="right" width="60px">Prijs</th>
+          <th class="right" width="70px">Totaal</th>
+        </tr>
+      </thead>
+      <tbody>
+          <?php foreach(Invoicerows::where('iid','=',$id)->get() as $ir): ?>
+          <?php if($ir->type == 9): ?>
+            <tr>
+              <td class="left" colspan="6" style="padding-top:10px;padding-bottom:10px;"><?php echo nl2br($ir->description); ?></td>
+            </tr>
+          <?php else: ?>
+            <tr>
+              <td class="left"><?php echo simple_date($ir->date); ?></td>
+              <td class="left"><?php echo $ir->description; ?></td>
+              <td class="center"><?php echo $ir->amount; ?></td>
+              <td class="right">
+                  <span class="tax"><?php echo $ir->tax; ?>%</span>
+              </td>
+              <td class="right"><?php echo euro($ir->price); ?></td>
+              <td class="right"><?php echo euro($ir->amount * $ir->price); ?></td>
+            </tr>
+          <?php endif; ?>
+          <?php endforeach; ?>
+      </tbody>
+      <tfoot>
+            <tr class="sub">
+              <td colspan="4"></td>
+              <td colspan="2"><hr /></td>
+            </tr>
+            <tr>
+              <td colspan="4"></td>
+              <td class="right">Subtotaal</td>
+              <td class="right"><?php echo euro(Invoices::getTotal($id)); ?></td>
+            </tr>
+            <?php if(Invoices::getTotal($id,true,false,9) > 0): ?>
+            <tr>
+              <td colspan="4"></td>
+              <td class="right">BTW 9%</td>
+              <td class="right"><?php echo euro(Invoices::getTotal($id,true,false,9)); ?></td>
+            </tr>
+            <?php endif; ?>
+            <?php if(Invoices::getTotal($id,true,false,21) > 0): ?>
+            <tr>
+              <td colspan="4"></td>
+              <td class="right">BTW 21%</td>
+              <td class="right"><?php echo euro(Invoices::getTotal($id,true,false,21)); ?></td>
+            </tr>
+            <?php endif; ?>
+            <tr class="total">
+              <td colspan="4"></td>
+              <td colspan="2"><hr /></td>
+            </tr>
+            <tr>
+              <td colspan="4"></td>
+              <td class="td_total right">TOTAAL</td>
+              <td class="td_total right"><?php echo euro(Invoices::getTotal($id,false,true)); ?></td>
+            </tr>
+          </tfoot>
+    </table>
+  </div>
+</div>
+
+ 
+<div class="section">
+	<div class="terms">
+		Betaling gaarne binnen 14 dagen op <strong>NL21 RABO 0135 1443 45</strong> Onder vermelding van het factuurnummer.
+        <div class="grey">
+          Digitar B.V. <span>|</span> KvK: 59144505 <span>|</span> BTW: NL 8533.37.524.B.01 <span>|</span> BIC: RABONL2U
+        </div>
+	</div>
+</div>

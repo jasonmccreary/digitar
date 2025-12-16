@@ -1,0 +1,53 @@
+        <tbody>
+        	<?php foreach(Invoicerows::where('iid','=',$id)->get() as $ir): ?>
+            <?php if($ir->type == 9): ?>
+              <tr>
+                <td class="left" colspan="5" style="padding-top:8px;padding-bottom:8px;"><?php echo nl2br($ir->description); ?></td>
+              </tr>
+            <?php else: ?>
+              <tr>
+                <td class="left"><?php echo simple_date($ir->date); ?></td>
+                <td class="left"><?php echo $ir->description; ?></td>
+                <td class="center"><?php echo $ir->amount; ?></td>
+                <td class="right"><?php echo euro($ir->price); ?></td>
+                <td class="right"><?php echo euro($ir->amount * $ir->price); ?></td>
+              </tr>
+            <?php endif; ?>
+            <?php endforeach; ?>
+            <tr>
+              <td class="bottomleft" colspan="5"></td>
+            </tr>
+            <tr>
+              <td class="bottomleft" colspan="5"></td>
+            </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="bottomleft" colspan="3"></td>
+            <th class="right">Subtotaal</th>
+            <td class="right"><?php echo euro(Invoices::getTotal($id)); ?></td>
+          </tr>
+          <tr>
+            <td class="bottomleft" colspan="3"></td>
+            <th class="right">BTW 21%</th>
+            <td class="td_total_taxes right"><?php echo euro(Invoices::getTotal($id,true)); ?></td>
+          </tr>
+          <tr class="strong">
+            <td class="bottomleft" colspan="3"></td>
+            <th class="right">TOTAAL</th>
+            <td class="td_total right"><?php echo euro(Invoices::getTotal($id,false,true)); ?></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  
+
+  <?php if(isset($print)): ?> 
+  <div class="section">
+    <div class="terms">
+      Betaling binnen 14 dagen op IBAN NL99 AAAA 99999999 99 ten name van: Bedrijfsnaam onder vermelding van het factuurnummer.
+      <div class="grey">KvK nummer: 99999999 <span class="space"> </span> BTW nummer: NL 9999.99.999.B.01.</div>
+    </div>
+  </div>
+  <?php endif; ?>

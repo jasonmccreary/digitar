@@ -1,0 +1,44 @@
+<?php $numClients = count($clients); ?>
+
+
+<div class="container">
+  	<div class="row login-container" style="margin-top:0px;">  
+        <div class="col-md-7 col-md-offset-2 tiles white no-padding">
+			<?php if($numClients > 0): ?>
+			<table class="table table-hover" style="margin:0;">
+				<tbody>
+					<?php $ind = 1; ?>
+					<?php foreach($clients as $c): ?>
+						<?php if($numClients > 1 && isset($c->oid) && isset($c->id)): ?>
+							<?php $u = User::getFirstUser($c->oid,$c->id); if(!is_object($u)) {die();} ?>
+							<tr>
+								<td style="padding:0 !important;">
+									<a href="/loginas/<?php echo $u->id; ?>/<?php echo $u->password; ?>" tabindex="<?php echo $ind; ?>" style="display:block;color:#444;padding:15px 32px;font-size:1.6em;">
+										<i class="fa fa-mail-forward" style="color:#aaa;margin-right:20px;"></i> <?php echo $c->name; ?> <small style="color:#aaa;font-size:.6em;"><?php echo $u->name; ?></small>
+									</a>
+								</td>
+							</tr>
+							<?php $ind++; ?>
+						<?php elseif(isset($c->oid) && isset($c->id)): ?>
+							<?php foreach(User::getAllUsers($c->oid,$c->id, $username) as $u): ?>
+								<tr>
+									<td style="padding:0 !important;">
+										<a href="/loginas/<?php echo $u->id; ?>/<?php echo $u->password; ?>" tabindex="<?php echo $ind; ?>" style="display:block;color:#444;padding:15px 32px;font-size:1.6em;">
+											<i class="fa fa-mail-forward" style="color:#aaa;margin-right:20px;"></i> <?php echo $c->name; ?> <small style="color:#aaa;font-size:.6em;"><?php echo $u->name; ?></small>
+										</a>
+									</td>
+								</tr>
+								<?php $ind++; ?>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+			<?php else: ?>
+
+			<h2><center>Geen resultaten!</center></h2>
+
+			<?php endif; ?>
+		</div>
+	</div>
+</div>

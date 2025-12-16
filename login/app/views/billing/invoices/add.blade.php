@@ -1,0 +1,197 @@
+@extends('master')
+
+@section('content')
+
+	</div>
+</div>
+<style>
+	h3 { margin-bottom: 15px; border-bottom: 1px solid rgba(0, 0, 0, .0); }
+	.form-group { margin-bottom: 0; }
+	.form-label { margin-top: 0;}
+	.heading .form-label { padding-left: 10px; margin: 0; }
+	.invoicerow-placeholder { height: 47px; }
+	.form-control[readonly] { cursor: auto; background-color: #fff; }
+</style>
+{{ Form::open(array('class' => 'invoice')) }}
+
+<div class="grid simple">
+	<div class="grid-body">
+
+		<div class="row">
+			<div class="col-md-12 m-b-20">
+				<div class="row form-row">
+					<div class="col-md-4">
+						<label class="form-label">Debiteur</label>
+
+						<select id="selectDebtor" style="width:100%;" name="debtor">
+							<option disabled selected="">- Maak een keuze -</option>
+							@foreach(Debtors::where('cid','=',Auth::user()->cid)->get() as $debtor)
+								<option value="{{ $debtor->id }}" @if(Input::old('debtor') == $debtor->id) selected @endif>{{ $debtor->debnumber }} {{ $debtor->name }}</option>
+							@endforeach
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-12">
+				<div class="row form-row">
+					<div class="col-md-6">
+						<div id="debtorInfo" class="m-l-20"></div>
+					</div>
+					<div class="col-md-6">
+						<div class="row form-row">
+							<div class="col-md-12 form-group">
+								<label class="form-label">Factuurnummer</label>
+								{{ Form::text('invoicenumber', strlen(Input::old('invoicenumber')) > 0 ? Input::old('invoicenumber') : 'F'.str_pad(Invoices::newInvoiceNumber(), 7, "0", STR_PAD_LEFT), array('class' => 'form-control')) }}
+							</div>
+						</div>
+						<div class="row form-row">
+							<div class="col-md-12 form-group">
+								<label class="form-label">Factuur datum</label>
+								<div class="input-append success date no-padding" style="width:100%;">
+				                    <input type="text" name="date" value="{{ simple_date((strlen(Input::old('date')) > 0 ? Input::old('date') : date('Y-m-d'))) }}" class="form-control">
+				                	<span class="add-on" style="margin-left:-36px;"><span class="arrow"></span><i class="fa fa-th"></i></span>
+				                </div>
+				            </div>
+			            </div>
+			            <div class="row form-row">
+							<div class="col-md-12 form-group">
+								<label class="form-label">Referentie</label>
+								{{ Form::text('reference', Input::old('reference'), array('class' => 'form-control')) }}
+							</div>
+						</div>
+						<div class="row form-row">
+							<div class="col-md-12 form-group">
+								<label class="form-label">Layout</label>
+								{{ Form::select2('layout', Layouts::getInvoiceselect(), null, array('style' => 'width:100%;'),array(0)) }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="grid simple">
+	<div class="grid-body m-t-30">
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row form-row heading">
+					<div class="col-md-1 form-group">
+						<label class="form-label" style="line-height:37px;font-size:12px;">Datum</label>
+					</div>
+					<div class="col-md-2 form-group">
+						<label class="form-label" style="line-height:37px;font-size:12px;">Artikel</label>
+					</div>
+					<div class="col-md-1 form-group">
+						<label class="form-label" style="line-height:37px;font-size:12px;">Aantal</label>
+					</div>
+					<div class="col-md-4 form-group">
+						<label class="form-label" style="line-height:37px;font-size:12px;">Omschrijving</label>
+					</div>
+					<div class="col-md-1 form-group">
+						<label class="form-label" style="line-height:37px;font-size:12px;">BTW</label>
+					</div>
+					<div class="col-md-1 form-group">
+						<label class="form-label" style="line-height:37px;font-size:12px;">Prijs <span class="hide-phone">excl. BTW</span></label>
+					</div>
+					<div class="col-md-1 form-group">
+						<label class="form-label" style="line-height:37px;font-size:12px;">Totaal <span class="hide-phone">excl. BTW</span></label>
+					</div>
+				</div>
+				<div id="invoicerow-copy" style="display:none;">
+					<div class="row form-row">
+						<input type="hidden" name="r-type" value="1" />
+						<div class="col-md-1 form-group">
+							<input type="text" name="r-date" class="form-control input-sm date" value="{{ simple_date(date('Y-m-d')) }}" />
+						</div>
+						<div class="col-md-2 form-group sm-select">
+							{{ Form::select2('r-product', Products::getDropdown(), '0', array('class' => 'product-select leave', 'style' => 'width:100%;'),array(0)) }}
+						</div>
+						<div class="col-md-1 form-group">
+							<input type="text" name="r-amount" class="form-control input-sm amount auto" data-v-min="-999.99" data-v-max="999.99" data-a-dec="." data-a-sep="," value="1" />
+						</div>
+						<div class="col-md-4 form-group">
+							<input type="text" name="r-description" class="form-control input-sm description" value="" />
+						</div>
+						<div class="col-md-1 form-group">
+							<input type="text" name="r-tax" class="form-control input-sm tax auto" data-v-min="0" data-v-max="99" value="21" />
+						</div>
+						<div class="col-md-1 form-group">
+							<input type="text" name="r-price" class="form-control input-sm price auto" data-a-sep="." data-a-dec="," data-a-sign="€ " value="" />
+						</div>
+						<div class="col-md-1 form-group">
+							<input type="text" class="form-control input-sm total auto" data-a-sep="." data-a-dec="," data-a-sign="€ " readonly="true" tabindex="-1" />
+						</div>
+						<div class="col-md-1 form-group" style="text-align:right;">
+							<label class="form-label" style="line-height:37px;"><a class="btn btn-white btn-xs btn-mini handle"><i class="fa fa-arrows-v"></i></a></label>
+							<label class="form-label" style="line-height:37px;"><a class="btn btn-white btn-xs btn-mini delete"><i class="fa fa-trash-o"></i></a></label>
+						</div>
+					</div>
+				</div>
+				<div id="textrow-copy" style="display:none;">
+					<div class="row form-row">
+						<input type="hidden" name="r-type" value="9" />
+						<div class="col-md-11 form-group">
+							<input type="text" name="r-description" class="form-control input-sm textinput" value="" />
+						</div>
+						<div class="col-md-1 form-group" style="text-align:right;">
+							<label class="form-label" style="line-height:37px;"><a class="btn btn-white btn-xs btn-mini handle"><i class="fa fa-arrows-v"></i></a></label>
+							<label class="form-label" style="line-height:37px;"><a class="btn btn-white btn-xs btn-mini delete"><i class="fa fa-trash-o"></i></a></label>
+						</div>
+					</div>
+				</div>
+				<div id="invoicerows">
+
+					<div class="row form-row">
+						<input type="hidden" name="r-type" value="1" />
+						<div class="col-md-1 form-group">
+							{{ Form::text('r-date', simple_date(date('Y-m-d')), array('class' => 'form-control input-sm date')) }}
+						</div>
+						<div class="col-md-2 form-group sm-select">
+							{{ Form::select2('r-product', Products::getDropdown(), '0', array('class' => 'product-select', 'style' => 'width:100%;'),array(0)) }}
+						</div>
+						<div class="col-md-1 form-group">
+							{{ Form::text('r-amount', 1, array('class' => 'form-control input-sm amount auto', 'data-v-min' => '-999.99', 'data-v-max' => '999.99', 'data-a-dec' => '.', 'data-a-sep' => ',')) }}
+						</div>
+						<div class="col-md-4 form-group">
+							{{ Form::text('r-description', '', array('class' => 'form-control input-sm description')) }}
+						</div>
+						<div class="col-md-1 form-group">
+							{{ Form::text('r-tax', 21, array('class' => 'form-control input-sm tax auto', 'data-v-min' => '0', 'data-v-max' => '99')) }}
+						</div>
+						<div class="col-md-1 form-group">
+							{{ Form::text('r-price', '', array('class' => 'form-control input-sm price auto', 'data-a-sep' => '.', 'data-a-dec' => ',', 'data-a-sign' => '€ ')) }}
+						</div>
+						<div class="col-md-1 form-group">
+							<input type="text" class="form-control input-sm total auto" data-a-sep="." data-a-dec="," data-a-sign="€ " readonly="true" tabindex="-1" />
+						</div>
+						<div class="col-md-1 form-group" style="text-align:right;">
+							<label class="form-label" style="line-height:37px;"><a class="btn btn-white btn-xs btn-mini handle"><i class="fa fa-arrows-v"></i></a></label>
+							<label class="form-label" style="line-height:37px;"><a class="btn btn-white btn-xs btn-mini delete"><i class="fa fa-trash-o"></i></a></label>
+						</div>
+					</div>
+
+				</div>
+				<div class="row form-row heading">
+					<div class="col-md-12 form-group">
+						<a class="form-label addnewrow" style="line-height:37px;"><i class="fa fa-plus"></i> &nbsp;Factuurregel toevoegen</a>
+						<a class="form-label addnewtextrow" style="line-height:37px;"><i class="fa fa-plus"></i> &nbsp;Tekstregel toevoegen</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group m-t-40">
+			<button type="submit" class="btn btn-success btn-cons" disabled="true">Opslaan</button>
+		</div>
+
+	</div>
+</div>
+{{ Form::close() }}
+<div class="grid simple">
+	<div class="grid-body">
+
+@endsection

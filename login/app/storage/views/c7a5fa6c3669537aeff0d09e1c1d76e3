@@ -1,0 +1,11 @@
+Beste <?php echo $debtor->name; ?>,<br />
+<br />
+In de bijlage treft u de factuur voor de door u afgenomen producten of diensten. 
+<br />
+Mocht u nog vragen hebben laat dit ons dan weten.<br />
+<br />
+<br />
+Met vriendelijke groet,<br />
+<br />
+DirkJan en Joyce<br />
+De Kastanjefabriek

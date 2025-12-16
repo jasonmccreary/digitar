@@ -1,0 +1,80 @@
+	
+	<div class="top section">
+    	<div class="company-data">
+          	<h2>Invoice to</h2>
+      		<span>
+            	<?php echo $toName; ?><br />
+	      		<?php echo $toAddress; ?><br />
+    	    	<?php echo $toZipcode; ?>   <?php echo $toCity; ?>
+
+			</span>
+    	</div>
+        <div class="invoice-details">
+			<h2>Invoice number</h2>
+            <?php echo $invoicenumber; ?>
+
+			<h2>Invoice date</h2>
+            <?php echo simple_date($date); ?>
+
+        </div>
+
+		<div class="invoice-total">
+      		<h2>Invoice Total</h2>
+			<h1><?php echo euro(Invoices::getTotal($id,false,true)); ?></h1>
+   		</div>
+	</div>
+
+  <div class="section">
+
+    <div class="payment-data">
+      <table>
+        <thead>
+          <tr>
+            <th class="left">Description</th>
+            <th class="center" width="50px">Nights</th>
+            <th class="right" width="50px">Price</th>
+            <th class="right" width="50px">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+        	<?php foreach(Invoicerows::where('iid','=',$id)->get() as $ir): ?>
+            <?php if($ir->type == 9): ?>
+              <tr>
+                <td class="left" colspan="5" style="padding-top:8px;padding-bottom:8px;"><?php echo nl2br($ir->description); ?></td>
+              </tr>
+            <?php else: ?>
+              <tr class="rows">
+                <td class="left"><?php echo $ir->description; ?></td>
+                <td class="center"><?php echo floor($ir->amount); ?></td>
+                <td class="right"><?php echo euro($ir->price); ?></td>
+                <td class="right"><?php echo euro($ir->amount * $ir->price); ?></td>
+              </tr>
+            <?php endif; ?>
+            <?php endforeach; ?>
+            <tr>
+              <td class="bottomleft" colspan="4"></td>
+            </tr>
+            <tr>
+              <td class="bottomleft" colspan="4"></td>
+            </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="bottomleft" colspan="2"></td>
+            <th class="right">Subtotal</th>
+            <td class="right"><?php echo euro(Invoices::getTotal($id)); ?></td>
+          </tr>
+          <tr>
+            <td class="bottomleft" colspan="2"></td>
+            <th class="right">Tax</th>
+            <td class="td_total_taxes right"><?php echo euro(Invoices::getTotal($id,true)); ?></td>
+          </tr>
+          <tr class="strong">
+            <td class="bottomleft" colspan="2"></td>
+            <th class="right">TOTAL</th>
+            <td class="td_total right"><?php echo euro(Invoices::getTotal($id,false,true)); ?></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>

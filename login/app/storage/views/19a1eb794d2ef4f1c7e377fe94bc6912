@@ -1,0 +1,21 @@
+Beste <?php echo $debtor->name; ?>,<br />
+<br />
+Er is een nieuwe factuur voor u aangemaakt voor de door u afgenomen diensten / producten.<br />
+<br />
+U vindt de factuur met de nodige gegevens in de vorm van een PDF-bestand in de bijlage. Voor het bekijken van de documenten dient u te beschikken over Adobe Reader.<br />
+<br />
+Indien u niet beschikt over Adobe Reader dan kunt u middels onderstaande link deze gratis downloaden.<br />
+http://get.adobe.com/nl/reader/<br />
+<br />
+Voor meer informatie kunt u bellen naar de administratie, telefoonnummer 06 - 57932976 of mailen naar info@ebbersserviceentechniek.nl<br />
+<br />
+Hopende u voldoende te hebben geïnformeerd, <br />
+<br />
+Met vriendelijke groet,<br />
+<br />
+Lennis Ebbers<br />
+Ebbers Service en Techniek<br />
+Dorpsstraat 53<br />
+7025 AB Halle<br />
+Tel: 06-57932976<br />
+E-mail: info@ebbersserviceentechniek.nl<br />

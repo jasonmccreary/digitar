@@ -1,0 +1,42 @@
+<div class="section">
+    <div class="company-data">
+      <ul>
+        <li><?php echo $toName; ?></li>
+        <li><?php echo $toAddress; ?></li>
+        <li><?php echo $toZipcode; ?>   <?php echo $toCity; ?></li>
+      </ul>
+    </div>
+</div>
+
+<h2>Factuur</h2>
+
+<div class="section">
+    <div class="paper-detail">
+     <table>
+    	<tr>
+    		<td><?php echo $toNumber; ?></td>
+		</tr>
+        <tr>
+    		<td><?php echo nice_date($date); ?></td>
+    	</tr>
+     </table>
+    </div>
+
+    <div class="payment-data">
+      <table>
+        <?php foreach(Invoicerows::where('iid','=',$id)->get() as $ir): ?>
+            <?php if($ir->type == 9): ?>
+              <tr>
+                <td class="left" colspan="3" style="padding-top:15px;padding-bottom:15px;"><b><?php echo nl2br($ir->description); ?></b></td>
+              </tr>
+            <?php else: ?>
+              <tr>
+                <td class="center" width="33%" style="padding-right: 2em;"><?php echo round($ir->amount); ?></td>
+                <td class="left" width="45%"><?php echo $ir->description; ?></td>
+                <td class="left"><?php echo euro($ir->price); ?></td>
+              </tr>
+            <?php endif; ?>
+        <?php endforeach; ?>
+      </table>
+    </div>
+  </div>

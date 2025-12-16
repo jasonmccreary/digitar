@@ -1,0 +1,79 @@
+    <ul style="margin:20px 0 20px 0;">  
+      <!-- BEGIN DEFAULT FOLDERS -->
+      <li class="start">
+        <a href="/user/folder/inbox">
+          <i class="fa fa-inbox" style="font-size:18px;"></i>
+          <span class="title">Archief</span>
+        </a>
+      </li>
+
+      <li class="devider"></li>
+
+      <li>
+        <a href="/billing">
+          <i class="fa fa-bar-chart-o"></i>
+          <span class="title">Facturatie</span>
+        </a>
+      </li>
+      <li>
+        <a href="/billing/debtors">
+          <i class="fa fa-users"></i>
+          <span class="title">Debiteuren</span>
+          <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+          <li><a href="/billing/debtors">            
+              Overzicht
+          </a></li>
+          <li><a href="/billing/debtors/add">            
+              Toevoegen
+          </a></li> 
+        </ul>
+      </li>
+      <li>
+        <a href="/billing/products">
+          <i class="fa fa-users"></i>
+          <span class="title">Artikelen</span>
+          <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+          <li><a href="/billing/products">            
+              Overzicht
+          </a></li>
+          <li><a href="/billing/product/add">            
+              Toevoegen
+          </a></li> 
+        </ul>
+      </li>
+      <li>
+        <a href="/billing/invoices">
+          <i class="fa fa-list-alt"></i>
+          <span class="title">Facturen</span>
+          <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+          <li><a href="/billing/invoices">            
+              Overzicht
+          </a></li>
+          <li><a href="/billing/invoices/add">            
+              Toevoegen
+          </a></li> 
+        </ul>
+      </li>
+      <li>
+        <a href="/billing/settings/invoices">
+          <i class="fa fa-gear"></i>
+          <span class="title">Instellingen</span>
+          <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+          <li><a href="/billing/settings/invoices">            
+              Factuur layout
+          </a></li>
+          <li><a href="/billing/settings/mails">            
+              Mail layouts
+          </a></li> 
+        </ul>
+      </li>
+      <!-- END DEFAULT FOLDERS -->        
+    </ul>

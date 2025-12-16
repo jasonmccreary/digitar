@@ -1,0 +1,36 @@
+<?php $__env->startSection('content'); ?>
+
+	<?php echo Form::open(); ?>
+
+	<div class="row">
+		<div class="col-md-4">
+			<div class="form-group">
+				<h3><?php echo $user->name; ?></h3>
+				<?php echo $user->address; ?><br/>
+				<?php echo $user->zipcode; ?> <?php echo $user->city; ?><br/>
+				<?php echo $user->tell; ?><br/>
+				<?php echo $user->email; ?>
+
+			</div>
+		</div>
+		<div class="col-md-8">
+			<label>Beheerders</label>
+			<div class="form-group">
+				<?php foreach($mods as $mod): ?>
+					<div class="checkbox check-success 	">
+						<?php echo Form::checkbox('mod['.$mod->id.']', '1', Usermods::checked($mod->id,$user->id), array('id'=>$mod->id)); ?>
+
+			          <label for="<?php echo $mod->id; ?>"><?php echo $mod->name; ?></label>
+			        </div>					
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
+	</div>
+	<?php echo Form::close(); ?>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

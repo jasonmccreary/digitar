@@ -1,0 +1,34 @@
+<?php $__env->startSection('content'); ?>
+
+    <?php if(isset($deleted) && $deleted > 0): ?>
+    <div class="alert alert-error">
+        <button class="close" data-dismiss="alert"></button>
+        <span class="semi-bold"><?php echo $deleted; ?></span> bestanden zijn verwijderd omdat de eigenaar niet gevonden kon worden.
+    </div>
+    <?php endif; ?>
+
+    <?php if(isset($exec) && $exec > 0): ?>
+    <div class="alert alert-success">
+        <button class="close" data-dismiss="alert"></button>
+        <span class="semi-bold"><?php echo $exec; ?></span> bestanden zijn verwerkt.
+    </div>
+    <?php endif; ?>
+
+	<?php if($amount > 0): ?>
+        
+        <p>
+            Er zijn <span class="semi-bold"><?php echo $amount; ?></span> bestanden gevonden waar de gegevens van kunnen worden opgeslagen.
+        </p>
+
+        <form method="post">
+            <button name="getcontents" value="1" class="btn btn-white btn-xs btn-mini" title="Inhoud ophalen en opslaan">Inhoud ophalen en opslaan</button>
+        </form>
+
+	<?php else: ?>
+
+		<h1>Alle bestanden zijn up-to-date!</h1>
+
+	<?php endif; ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

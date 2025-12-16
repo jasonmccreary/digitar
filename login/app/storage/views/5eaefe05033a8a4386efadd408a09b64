@@ -1,0 +1,45 @@
+
+
+<?php $__env->startSection('content'); ?>
+
+	<table class="table table-hover table-condensed" id="cleartable" data-sort="3" data-sort-order="desc">
+      	<thead>
+        	<tr>
+	          	<th style="width:4%"></th>
+	          	<th style="width:28%">Document</th>
+	          	<th style="width:10%" data-hide="phone,tablet">Door</th>
+	          	<th style="width:10%">Datum</th>
+        	</tr>
+      	</thead>
+      	<tbody>
+
+	<?php foreach($files as $file): ?>
+		<?php $oFolder = $file->folder()->first(); ?>
+		<?php if($file->fid == 0 || (is_object($oFolder) && $oFolder->rights()->where('uid','=',Auth::user()->id)->count() > 0)): ?>
+			<tr>
+		        <td>
+		        	<a class="btn btn-info btn-mini" href="/user/viewfile/<?php echo $file->id; ?>" data-toggle="modal" data-target="#myModal<?php echo $file->id; ?>"> Bekijk </a>
+		        	<div class="modal fade" id="myModal<?php echo $file->id; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					    <div class="modal-dialog form-block" style="width:95%;">
+					        <div class="modal-content" style="border-radius:0;">
+					            <div class="modal-body" style="background:none;padding:0;">
+					            </div>
+					            <div style="clear:both;"></div>
+					        </div>
+					    </div>
+					</div>
+		        </td>
+		      	<td class="v-align-middle"><?php echo $file->name; ?></td>
+		      	<td><span class="muted"><?php echo User::getUserName($file->uid); ?></span></td>
+		      	<td class="v-align-middle"><span style="display:none;"><?php echo strtotime($file->date); ?></span><?php echo nice_date($file->date); ?></td>
+        	</tr>
+        <?php endif; ?>
+	<?php endforeach; ?>
+		</tbody>
+	</table>
+
+	<?php echo $files->links(); ?>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

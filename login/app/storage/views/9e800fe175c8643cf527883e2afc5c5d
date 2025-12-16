@@ -1,0 +1,83 @@
+<div class="section">
+<div class="company-data">
+  <ul>
+    <li><?php echo $toName; ?></li>
+    <li><?php echo $toAddress; ?></li>
+    <li><?php echo $toZipcode; ?>   <?php echo $toCity; ?></li>
+  </ul>
+</div>
+</div>
+
+<h2>Factuur</h2>
+
+<div class="section">
+
+<table width="100%" style="margin:1.5em 0 3em 0;">
+	<tr>
+		<td class="center">Klantnummer: <?php echo $toNumber; ?></td>
+		<td class="center">Factuurnummer: <?php echo $invoicenumber; ?></td>
+		<td class="center">Factuurdatum: <?php echo nice_date($date); ?></td>
+	</tr>
+</table>
+
+<div class="payment-data">
+  <table>
+    <thead>
+      <tr>
+      	<th class="left">Datum</th>
+        <th class="center">Aantal</th>
+        <th class="left">Omschrijving</th>
+        <th class="right">BTW</th>
+        <th class="right">Prijs</th>
+        <th class="right">Totaal</th>
+      </tr>
+    </thead>
+    <tbody>
+    	<?php foreach(Invoicerows::where('iid','=',$id)->get() as $ir): ?>
+        <?php if($ir->type == 9): ?>
+          <tr>
+            <td class="left" colspan="6" style="padding-top:15px;padding-bottom:15px;"><b><?php echo nl2br($ir->description); ?></b></td>
+          </tr>
+        <?php else: ?>
+          <tr>
+            <td class="left"><?php echo simple_date($ir->date); ?></td>
+            <td class="center"><?php echo $ir->amount; ?></td>
+            <td class="left"><?php echo $ir->description; ?></td>
+            <td class="right">
+                <span class="tax"><?php echo $ir->tax; ?>%</span>
+            </td>
+            <td class="right"><?php echo euro($ir->price); ?></td>
+            <td class="right"><?php echo euro($ir->amount * $ir->price); ?></td>
+          </tr>
+        <?php endif; ?>
+        <?php endforeach; ?>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td class="bottomleft" colspan="4"></td>
+        <th class="right">Basis BTW</th>
+        <td class="right"><?php echo euro(Invoices::getTotal($id)); ?></td>
+      </tr>
+      <tr>
+        <td class="bottomleft" colspan="4"></td>
+        <th class="right">Bedrag BTW</th>
+        <td class="td_total_taxes right"><?php echo euro(Invoices::getTotal($id,true)); ?></td>
+      </tr>
+      <tr class="strong">
+        <td class="bottomleft" colspan="4"></td>
+        <th class="right">Factuurbedrag</th>
+        <td class="td_total right"><?php echo euro(Invoices::getTotal($id,false,true)); ?></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+</div>
+
+<?php if(isset($print)): ?> 
+	<div class="section">
+		<div class="terms">
+			Betaling gaarne binnen 14 dagen op rekeningnummer 0000000000 onder vermelding van het factuurnummer.
+			<div class="grey">Woordes Bouw       KvK nummer: 000000       BTW nummer: NL 0000.00.000.B.01.</div>
+		</div>
+	</div>
+<?php endif; ?>

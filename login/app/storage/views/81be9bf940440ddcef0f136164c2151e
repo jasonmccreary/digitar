@@ -1,0 +1,94 @@
+	<?php if(count($files) > 0 || is_numeric($fid)): ?>
+	
+
+	<?php if(!is_numeric($fid) && Auth::user()->lookonly == 0): ?>
+	<form method="post" action="/user/files/bulk">
+		<div class="row hide-phone toolButtons" data-count="0">
+			<div class="pull-left countSelected"></div>
+			<div class="pull-right" style="padding-right:15px;">
+				<button type="submit" name="split" value="true" class="btn btn-default btn-cons"><i class="fa fa-expand"></i> Opsplitsen</button>
+				<button type="submit" name="combine" value="true" class="btn btn-default btn-cons"><i class="fa fa-compress"></i> Samenvoegen</button>
+				<button type="submit" name="sendmail" value="true" class="btn btn-success btn-cons"><i class="fa fa-envelope"></i> Versturen</button>
+				<button type="submit" name="download" value="true" class="btn btn-success btn-cons"><i class="fa fa-download"></i> Downloaden</button>
+				<button type="submit" name="delete" value="true" class="btn btn-danger btn-cons"><i class="fa fa-trash"></i> Verwijderen</button>
+			</div>			
+		</div>
+	<?php endif; ?>
+	<?php if(is_numeric($fid) && Auth::user()->lookonly == 0): ?>
+	<form method="post" action="/user/files/bulk">
+		<div class="row hide-phone toolButtons" data-count="0">
+			<div class="pull-left countSelected"></div>
+			<div class="pull-right" style="padding-right:15px;">
+				<button type="submit" name="sendmail" value="true" class="btn btn-success btn-cons"><i class="fa fa-envelope"></i> Versturen</button>
+				<button type="submit" name="download" value="true" class="btn btn-success btn-cons"><i class="fa fa-download"></i> Downloaden</button>
+			</div>			
+		</div>
+	<?php endif; ?>
+
+	<?php if(!is_numeric($fid) && Auth::user()->lookonly == 0): ?>
+	<table class="table table-hover table-condensed" id="filetable" data-sort="4" data-sort-order="desc">
+	<?php else: ?>
+	<table class="table table-hover table-condensed" id="filetable" data-sort="3" data-sort-order="desc">
+	<?php endif; ?>
+      	<thead>
+        	<tr>
+	          	<?php if(!is_numeric($fid) && Auth::user()->lookonly == 0): ?> 
+	          	<th style="width:1%"></th>
+	          	<?php endif; ?>
+	          	<th style="width:4%"></th>
+	          	<th style="width:28%">Document</th>
+	          	<th style="width:10%" class="hidden-phone" data-hide="phone,tablet">Door</th>
+	          	<th style="width:10%">Datum</th>
+        	</tr>
+      	</thead>
+      	<tbody>
+
+	<?php foreach($files as $file): ?>
+		<?php if(is_numeric($fid)): ?> 
+			<?php
+				$fDetails = Folder::where('id', '=', $file->fid)->first();
+			?>
+			<?php if(isset($fDetails->bookedcheck) && $fDetails->bookedcheck == 1 && $file->geboekt == 0 && Session::has('highrank')): ?> 
+				<tr class="red checkableRow">
+			<?php else: ?>
+				<tr class="checkableRow">
+			<?php endif; ?>
+		<?php else: ?>
+			<tr class="checkableRow">
+		<?php endif; ?>
+				<?php if(!is_numeric($fid) && Auth::user()->lookonly == 0): ?> 
+		      	<td class="v-align-middle hide-phone"><div class="checkbox check-default">
+		          	<input type="checkbox" value="<?php echo $file->name; ?>" name="fileid[<?php echo $file->id; ?>]" id="checkbox<?php echo $file->id; ?>">
+		          	<label for="checkbox<?php echo $file->id; ?>"></label>
+		        </div></td>
+		        <?php endif; ?>
+		        <td>
+		        	<?php if(is_numeric($fid) && Auth::user()->lookonly == 0): ?> 
+		        		<input type="checkbox" value="<?php echo $file->name; ?>" name="fileid[<?php echo $file->id; ?>]" style="display:none;">
+		        	<?php endif; ?>
+		        	<a class="btn btn-info btn-mini" href="/user/viewfile/<?php echo $file->id; ?>" data-toggle="modal" data-target="#myModal<?php echo $file->id; ?>"> Bekijk </a>
+		        	<div class="modal fade" id="myModal<?php echo $file->id; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					    <div class="modal-dialog form-block" style="width:95%;">
+					        <div class="modal-content" style="border-radius:0;">
+					            <div class="modal-body" style="background:none;padding:0;">
+					            </div>
+					            <div style="clear:both;"></div>
+					        </div>
+					    </div>
+					</div>
+		        </td>
+		      	<td class="v-align-middle"><?php echo $file->name; ?></td>
+		      	<td class="hidden-phone"><span class="muted"><?php echo User::getUserName($file->uid); ?></span></td>
+		      	<td class="v-align-middle"><span style="display:none;"><?php echo strtotime($file->date); ?></span><?php echo nice_date($file->date); ?></td>
+        	</tr>
+	<?php endforeach; ?>
+		</tbody>
+	</table>
+
+	</form>
+
+	<?php else: ?>
+
+	<center><h1>Geen onverwerkte documenten <div class="smiley">:)</div></h1></center>
+
+	<?php endif; ?>

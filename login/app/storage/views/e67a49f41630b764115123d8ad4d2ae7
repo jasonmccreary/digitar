@@ -1,0 +1,47 @@
+<?php $__env->startSection('content'); ?>
+
+	<table class="table table-striped table-flip-scroll cf">
+		<thead>
+			<tr>
+				<th>Naam</th>
+				<th>Kleur</th>
+				<th width="100px"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($folders as $f): ?>
+				<?php
+          			$subfolders = Folder::getSubfolders($f->id,$f->cfid);
+        		?>
+				<tr>
+					<td style="vertical-align: middle;"><?php echo $f->name; ?></td>
+					<td><div style="border-radius:3px;background:#1B1E24;padding:10px;float:left;">
+						<div style="width:14px;height:14px;border-radius:50%;border:3px solid <?php echo $f->color; ?>;"></div>
+					</div></td>
+					<td style="vertical-align: middle;">
+						<?php if($f->uid == Auth::user()->id): ?>
+							<a href="/client/folder/edit/<?php echo $f->id; ?>" class="btn btn-white btn-xs btn-mini" title="Bewerken"><i class="fa fa-pencil"></i></a>
+							<a href="/client/folder/delete/<?php echo $f->id; ?>" class="btn btn-white btn-xs btn-mini" title="Verwijderen"><i class="fa fa-trash-o"></i></a>
+						<?php endif; ?>
+					</td>
+				</tr>
+				<?php foreach($subfolders as $folder): ?>
+					<tr>
+						<td style="vertical-align: middle;"><span style="padding:0px 10px 0px 20px;"><i class="fa fa-angle-right"></i></span><?php echo $folder->name; ?></td>
+						<td><div style="border-radius:3px;background:#1B1E24;padding:10px;float:left;">
+							<div style="width:14px;height:14px;border-radius:50%;border:3px solid <?php echo $folder->color; ?>;"></div>
+						</div></td>
+						<td style="vertical-align: middle;">
+							<?php if($folder->uid == Auth::user()->id): ?>
+								<a href="/client/folder/edit/<?php echo $folder->id; ?>" class="btn btn-white btn-xs btn-mini" title="Bewerken"><i class="fa fa-pencil"></i></a>
+								<a href="/client/folder/delete/<?php echo $folder->id; ?>" class="btn btn-white btn-xs btn-mini" title="Verwijderen"><i class="fa fa-trash-o"></i></a>
+							<?php endif; ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
