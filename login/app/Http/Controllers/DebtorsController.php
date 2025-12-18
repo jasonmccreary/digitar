@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Debtors;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Prologue\Alerts\Facades\Alert;
@@ -24,7 +24,7 @@ class DebtorsController extends Controller
             'payterm' => 'numeric',
         ];
 
-        $v = Validator::make(Input::all(), $rules);
+        $v = Validator::make(Request::all(), $rules);
         if ($v->fails()) {
             foreach ($v->messages()->all() as $message) {
                 Alert::error($message)->flash();
@@ -34,29 +34,29 @@ class DebtorsController extends Controller
         } else {
             $d = new Debtors;
 
-            $check = $d->where('debnumber', '=', Input::get('debnumber'))->where('cid', '=', Auth::user()->cid);
+            $check = $d->where('debnumber', '=', Request::get('debnumber'))->where('cid', '=', Auth::user()->cid);
             if ($check->count() > 0) {
                 Alert::error('Dit dibiteur nummer bestaat al.')->flash();
 
                 return Redirect::back()->withInput();
             }
 
-            $d->debnumber = Input::get('debnumber');
+            $d->debnumber = Request::get('debnumber');
             $d->cid = Auth::user()->cid;
             $d->uid = Auth::user()->id;
-            $d->name = Input::get('name');
-            $d->address = Input::get('address');
-            $d->zipcode = Input::get('zipcode');
-            $d->city = Input::get('city');
-            $d->country = Input::get('country');
-            $d->contact = Input::get('contact');
-            $d->phone = Input::get('phone');
-            $d->mobile = Input::get('mobile');
-            $d->email = Input::get('email');
-            $d->website = Input::get('website');
-            $d->kvknr = Input::get('kvknr');
-            $d->btwnr = Input::get('btwnr');
-            $d->payterm = Input::get('payterm');
+            $d->name = Request::get('name');
+            $d->address = Request::get('address');
+            $d->zipcode = Request::get('zipcode');
+            $d->city = Request::get('city');
+            $d->country = Request::get('country');
+            $d->contact = Request::get('contact');
+            $d->phone = Request::get('phone');
+            $d->mobile = Request::get('mobile');
+            $d->email = Request::get('email');
+            $d->website = Request::get('website');
+            $d->kvknr = Request::get('kvknr');
+            $d->btwnr = Request::get('btwnr');
+            $d->payterm = Request::get('payterm');
 
             $d->save();
 
@@ -79,7 +79,7 @@ class DebtorsController extends Controller
             'payterm' => 'numeric',
         ];
 
-        $v = Validator::make(Input::all(), $rules);
+        $v = Validator::make(Request::all(), $rules);
         if ($v->fails()) {
             foreach ($v->messages()->all() as $message) {
                 Alert::error($message)->flash();
@@ -89,7 +89,7 @@ class DebtorsController extends Controller
         } else {
             $debtor = new Debtors;
 
-            $check = $debtor->where('debnumber', '=', Input::get('debnumber'))->where('cid', '=', Auth::user()->cid);
+            $check = $debtor->where('debnumber', '=', Request::get('debnumber'))->where('cid', '=', Auth::user()->cid);
             if ($check->count() > 0 && $id != $check->first()->id) {
                 Alert::error('Dit dibiteur nummer bestaat al.')->flash();
 
@@ -98,21 +98,21 @@ class DebtorsController extends Controller
 
             $d = $debtor->find($id);
 
-            $d->debnumber = Input::get('debnumber');
+            $d->debnumber = Request::get('debnumber');
             $d->uid = Auth::user()->id;
-            $d->name = Input::get('name');
-            $d->address = Input::get('address');
-            $d->zipcode = Input::get('zipcode');
-            $d->city = Input::get('city');
-            $d->country = Input::get('country');
-            $d->contact = Input::get('contact');
-            $d->phone = Input::get('phone');
-            $d->mobile = Input::get('mobile');
-            $d->email = Input::get('email');
-            $d->website = Input::get('website');
-            $d->kvknr = Input::get('kvknr');
-            $d->btwnr = Input::get('btwnr');
-            $d->payterm = Input::get('payterm');
+            $d->name = Request::get('name');
+            $d->address = Request::get('address');
+            $d->zipcode = Request::get('zipcode');
+            $d->city = Request::get('city');
+            $d->country = Request::get('country');
+            $d->contact = Request::get('contact');
+            $d->phone = Request::get('phone');
+            $d->mobile = Request::get('mobile');
+            $d->email = Request::get('email');
+            $d->website = Request::get('website');
+            $d->kvknr = Request::get('kvknr');
+            $d->btwnr = Request::get('btwnr');
+            $d->payterm = Request::get('payterm');
 
             $d->save();
 
@@ -124,7 +124,7 @@ class DebtorsController extends Controller
 
     public function delete($id)
     {
-        if (Input::get('delete') == 'true') {
+        if (Request::get('delete') == 'true') {
             $d = new Debtors;
             $debtor = $d->where('cid', '=', Auth::user()->cid)->where('id', '=', $id)->delete();
 

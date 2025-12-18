@@ -26,7 +26,7 @@
 						<select id="selectDebtor" style="width:100%;" name="debtor">
 							<option disabled selected="">- Maak een keuze -</option>
 							@foreach(Debtors::where('cid','=',Auth::user()->cid)->get() as $debtor)
-								<option value="{!! $debtor->id !!}" @if(Input::old('debtor') == $debtor->id) selected @endif>{!! $debtor->debnumber !!} {!! $debtor->name !!}</option>
+								<option value="{!! $debtor->id !!}" @if(Request::old('debtor') == $debtor->id) selected @endif>{!! $debtor->debnumber !!} {!! $debtor->name !!}</option>
 							@endforeach
 						</select>
 					</div>
@@ -42,14 +42,14 @@
 						<div class="row form-row">
 							<div class="col-md-12 form-group">
 								<label class="form-label">Factuurnummer</label>
-								{!! Form::text('invoicenumber', strlen(Input::old('invoicenumber')) > 0 ? Input::old('invoicenumber') : 'F'.str_pad(Invoices::newInvoiceNumber(), 7, "0", STR_PAD_LEFT), array('class' => 'form-control')) !!}
+								{!! Form::text('invoicenumber', strlen(Request::old('invoicenumber')) > 0 ? Request::old('invoicenumber') : 'F'.str_pad(Invoices::newInvoiceNumber(), 7, "0", STR_PAD_LEFT), array('class' => 'form-control')) !!}
 							</div>
 						</div>
 						<div class="row form-row">
 							<div class="col-md-12 form-group">
 								<label class="form-label">Factuur datum</label>
 								<div class="input-append success date no-padding" style="width:100%;">
-				                    <input type="text" name="date" value="{!! simple_date((strlen(Input::old('date')) > 0 ? Input::old('date') : date('Y-m-d'))) !!}" class="form-control">
+				                    <input type="text" name="date" value="{!! simple_date((strlen(Request::old('date')) > 0 ? Request::old('date') : date('Y-m-d'))) !!}" class="form-control">
 				                	<span class="add-on" style="margin-left:-36px;"><span class="arrow"></span><i class="fa fa-th"></i></span>
 				                </div>
 				            </div>
@@ -57,7 +57,7 @@
 			            <div class="row form-row">
 							<div class="col-md-12 form-group">
 								<label class="form-label">Referentie</label>
-								{!! Form::text('reference', Input::old('reference'), array('class' => 'form-control')) !!}
+								{!! Form::text('reference', Request::old('reference'), array('class' => 'form-control')) !!}
 							</div>
 						</div>
 						<div class="row form-row">

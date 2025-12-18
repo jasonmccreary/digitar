@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Organizations;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Prologue\Alerts\Facades\Alert;
 
@@ -16,7 +16,7 @@ class OrganizationsController extends Controller
      */
     public function add()
     {
-        $input = Input::all();
+        $input = Request::all();
 
         $rules = [
             'businessname' => 'required',
@@ -36,13 +36,13 @@ class OrganizationsController extends Controller
             return redirect('/admin/organizations/add')->withInput();
         } else {
             $o = new Organizations;
-            $o->name = Input::get('businessname');
-            $o->address = Input::get('address');
-            $o->zipcode = Input::get('zipcode');
-            $o->city = Input::get('city');
-            $o->tell = Input::get('tell');
-            $o->email = Input::get('email');
-            $o->website = Input::get('website');
+            $o->name = Request::get('businessname');
+            $o->address = Request::get('address');
+            $o->zipcode = Request::get('zipcode');
+            $o->city = Request::get('city');
+            $o->tell = Request::get('tell');
+            $o->email = Request::get('email');
+            $o->website = Request::get('website');
             $o->save();
 
             Alert::success('De nieuwe organisatie is toegevoegd')->flash();
@@ -59,7 +59,7 @@ class OrganizationsController extends Controller
      */
     public function delete($id)
     {
-        if (Input::get('delete') == 'true') {
+        if (Request::get('delete') == 'true') {
             $organization = new Organizations;
             $o = $organization->find($id);
             $o->delete();
@@ -78,7 +78,7 @@ class OrganizationsController extends Controller
      */
     public function edit($id)
     {
-        $input = Input::all();
+        $input = Request::all();
 
         $rules = [
             'businessname' => 'required',
@@ -99,13 +99,13 @@ class OrganizationsController extends Controller
         } else {
             $organization = new Organizations;
             $o = $organization->find($id);
-            $o->name = Input::get('businessname');
-            $o->address = Input::get('address');
-            $o->zipcode = Input::get('zipcode');
-            $o->city = Input::get('city');
-            $o->tell = Input::get('tell');
-            $o->email = Input::get('email');
-            $o->website = Input::get('website');
+            $o->name = Request::get('businessname');
+            $o->address = Request::get('address');
+            $o->zipcode = Request::get('zipcode');
+            $o->city = Request::get('city');
+            $o->tell = Request::get('tell');
+            $o->email = Request::get('email');
+            $o->website = Request::get('website');
             $o->save();
 
             Alert::success('Organizatie opgeslagen')->flash();

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Files;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Prologue\Alerts\Facades\Alert;
 
 class ToolsController extends Controller
@@ -98,12 +98,12 @@ class ToolsController extends Controller
         $xmlapi->set_debug(0);
 
         $p['domain'] = 'digitar.nu';
-        $p['email'] = strtolower(Input::get('username')).'@digitar.nu';
+        $p['email'] = strtolower(Request::get('username')).'@digitar.nu';
         $p['fwdopt'] = 'pipe';
         $p['pipefwd'] = '/home/digitar/crons/mailPipe.php';
         $res = $xmlapi->api2_query('digitar', 'Email', 'addforward', $p);
 
-        Alert::success('Een nieuwe forwarder is aangemaakt voor: '.Input::get('username'))->flash();
+        Alert::success('Een nieuwe forwarder is aangemaakt voor: '.Request::get('username'))->flash();
 
         return redirect('/admin/tools/forwardcheck');
     }
@@ -146,10 +146,10 @@ class ToolsController extends Controller
         $xmlapi->set_debug(1);
 
         $args = [
-            'user' => strtolower(Input::get('username')),
-            'pass' => Input::get('password'),
+            'user' => strtolower(Request::get('username')),
+            'pass' => Request::get('password'),
             'quota' => 0,
-            'homedir' => 'clients/'.strtolower(Input::get('organization')).'/'.strtolower(Input::get('username')).'/unsorted',
+            'homedir' => 'clients/'.strtolower(Request::get('organization')).'/'.strtolower(Request::get('username')).'/unsorted',
         ];
         $obj = $xmlapi->api2_query('digitar', 'Ftp', 'addftp', $args);
 
@@ -157,7 +157,7 @@ class ToolsController extends Controller
         if (isset($obj->cpanelresult->error)) {
             Alert::error($obj->cpanelresult->error)->flash();
         } else {
-            Alert::success('Een nieuw FTP account is aangemaakt voor: '.Input::get('username'))->flash();
+            Alert::success('Een nieuw FTP account is aangemaakt voor: '.Request::get('username'))->flash();
         }
 
         return redirect('/admin/tools/ftpcheck');

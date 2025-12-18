@@ -5,8 +5,8 @@
 	</head>
 	<body>
 		<div>
-			@if(Input::has('message'))
-				{!! Input::get('message') !!}
+			@if(Request::has('message'))
+				{!! Request::get('message') !!}
 			@endif
 		</div>
 	</body>

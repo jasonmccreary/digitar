@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
 <div class="content">
   	<div class="page-title">
-    	<h3>Zoeken naar: {!! Input::get('search') !!}</h3>
+    	<h3>Zoeken naar: {!! Request::get('search') !!}</h3>
   	</div>
 
   	<div class="row-fluid">

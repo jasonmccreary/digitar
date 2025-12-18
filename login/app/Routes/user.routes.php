@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Request;
+
 Route::get('user', function () {
     if (! Session::has('year')) {
         Session::put('year', date('Y'));
@@ -30,11 +32,11 @@ Route::post('user/file/edit/{id}', ['uses' => 'FileController@editFile']);
 Route::post('user/file/editdetails/{id}', ['uses' => 'CloudsController@editFile']);
 
 Route::post('user/files/bulk', ['before' => 'auth|folders', 'uses' => function () {
-    if (is_array(Input::get('fileid'))) {
-        if (Input::has('delete')) {
-            if (Input::has('sure')) {
-                if (Input::get('sure') == 'true') {
-                    foreach (Input::get('fileid') as $fid => $file) {
+    if (is_array(Request::get('fileid'))) {
+        if (Request::has('delete')) {
+            if (Request::has('sure')) {
+                if (Request::get('sure') == 'true') {
+                    foreach (Request::get('fileid') as $fid => $file) {
                         FileController::deleteFile($fid);
                     }
                     Alert::success('Bestand(en) verwijderd')->flash();
@@ -47,35 +49,35 @@ Route::post('user/files/bulk', ['before' => 'auth|folders', 'uses' => function (
             } else {
                 return view('users.deletefiles', [
                     'title' => 'Bestanden verwijderen',
-                    'filesArray' => Input::get('fileid'),
+                    'filesArray' => Request::get('fileid'),
                 ]);
             }
-        } elseif (Input::has('split')) {
-            foreach (Input::get('fileid') as $fid => $file) {
+        } elseif (Request::has('split')) {
+            foreach (Request::get('fileid') as $fid => $file) {
                 FileController::splitFiles($fid);
             }
             Alert::success('Bestanden opgesplitst')->flash();
 
             return redirect('/user/folder/inbox');
-        } elseif (Input::has('combine')) {
-            FileController::combineFiles(Input::get('fileid'));
+        } elseif (Request::has('combine')) {
+            FileController::combineFiles(Request::get('fileid'));
 
             return redirect('/user/folder/inbox');
-        } elseif (Input::has('download')) {
-            FileController::downloadFiles(Input::get('fileid'));
+        } elseif (Request::has('download')) {
+            FileController::downloadFiles(Request::get('fileid'));
 
             return Redirect::back()->with('download', true);
-        } elseif (Input::has('booked')) {
-            FileController::markBooked(Input::get('fileid'));
+        } elseif (Request::has('booked')) {
+            FileController::markBooked(Request::get('fileid'));
 
             return Redirect::back();
-        } elseif (Input::has('sendmail')) {
+        } elseif (Request::has('sendmail')) {
             return view('users.sendfiles', [
                 'title' => 'Bestanden versturen',
-                'files' => Input::get('fileid'),
+                'files' => Request::get('fileid'),
             ]);
-        } elseif (Input::has('movefiles')) {
-            FileController::moveToFolder(Input::get('fileid'), Input::get('folder'));
+        } elseif (Request::has('movefiles')) {
+            FileController::moveToFolder(Request::get('fileid'), Request::get('folder'));
 
             return Redirect::back();
         } else {
@@ -90,22 +92,22 @@ Route::post('user/files/bulk', ['before' => 'auth|folders', 'uses' => function (
     }
 }]);
 Route::get('user/files/bulk', ['before' => 'auth|folders', 'uses' => function () {
-    if (Input::old('sendmail')) {
+    if (Request::old('sendmail')) {
         return view('users.sendfiles', [
             'title' => 'Bestanden versturen',
-            'files' => Input::old('files'),
+            'files' => Request::old('files'),
         ]);
     } else {
-        // dd(Input::old('fileid'));
+        // dd(Request::old('fileid'));
         return redirect('/user/folder/inbox');
     }
 }]);
 Route::post('user/sendmail', ['uses' => 'FileController@sendmail']);
 
 Route::post('user/files/download', ['before' => 'auth|folders', 'uses' => function () {
-    if (is_array(Input::get('fileid'))) {
-        if (Input::has('download')) {
-            FileController::downloadFiles(Input::get('fileid'));
+    if (is_array(Request::get('fileid'))) {
+        if (Request::has('download')) {
+            FileController::downloadFiles(Request::get('fileid'));
 
             return Redirect::back();
         }
@@ -117,11 +119,11 @@ Route::post('user/files/download', ['before' => 'auth|folders', 'uses' => functi
 }]);
 
 Route::post('user/cloud/bulk', ['before' => 'auth|folders', 'uses' => function () {
-    if (is_array(Input::get('fileid'))) {
-        if (Input::has('delete')) {
-            if (Input::has('sure')) {
-                if (Input::get('sure') == 'true') {
-                    foreach (Input::get('fileid') as $fid => $file) {
+    if (is_array(Request::get('fileid'))) {
+        if (Request::has('delete')) {
+            if (Request::has('sure')) {
+                if (Request::get('sure') == 'true') {
+                    foreach (Request::get('fileid') as $fid => $file) {
                         CloudsController::deleteFile($fid);
                     }
                     Alert::success('Bestanden verwijderd')->flash();
@@ -134,7 +136,7 @@ Route::post('user/cloud/bulk', ['before' => 'auth|folders', 'uses' => function (
             } else {
                 return view('users.deletecloudfiles', [
                     'title' => 'Bestanden verwijderen',
-                    'filesArray' => Input::get('fileid'),
+                    'filesArray' => Request::get('fileid'),
                 ]);
             }
         }

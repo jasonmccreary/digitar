@@ -8,7 +8,7 @@ use App\Layouts;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Prologue\Alerts\Facades\Alert;
@@ -37,9 +37,9 @@ class SettingsController extends Controller
 
         $layout->cid = Auth::user()->cid;
         $layout->type = 'mail';
-        $layout->name = Input::get('name');
-        $layout->code = Input::get('code');
-        $layout->params = serialize(['subject' => Input::get('subject')]);
+        $layout->name = Request::get('name');
+        $layout->code = Request::get('code');
+        $layout->params = serialize(['subject' => Request::get('subject')]);
         $layout->save();
 
         Alert::success('Mail layout opgeslagen!')->flash();
@@ -69,13 +69,13 @@ class SettingsController extends Controller
             $layout = new Layouts;
         }
 
-        if (Input::hasFile('file')) {
-            if (Input::file('file')->guessClientExtension() == 'jpeg') {
+        if (Request::hasFile('file')) {
+            if (Request::file('file')->guessClientExtension() == 'jpeg') {
                 $path = '/home/digitar/public_html/login/public/uploads/';
                 $filename = 'factuurpapier-'.User::getUserUsername(Auth::user()->cid).'-'.uniqid().'.jpg';
                 $url = 'https://login.digitar.nu/uploads/';
 
-                Input::file('file')->move($path, $filename);
+                Request::file('file')->move($path, $filename);
 
                 $params['background'] = $url.$filename;
 
@@ -84,12 +84,12 @@ class SettingsController extends Controller
             }
         }
 
-        $params['css'] = Input::get('css');
+        $params['css'] = Request::get('css');
 
         $layout->cid = Auth::user()->cid;
         $layout->type = 'factuur';
-        $layout->name = Input::get('name');
-        $layout->code = Input::get('code');
+        $layout->name = Request::get('name');
+        $layout->code = Request::get('code');
         if (isset($params)) {
             $layout->params = serialize($params);
         }
