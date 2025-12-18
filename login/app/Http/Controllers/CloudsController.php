@@ -19,7 +19,7 @@ class CloudsController extends Controller
         $files->where('cid', '=', Auth::user()->cid);
         $files->orderBy('date', 'asc');
 
-        return View::make('users.cloud', [
+        return view('users.cloud', [
             'title' => $title,
             'files' => $files->get(),
         ]);
@@ -124,7 +124,7 @@ class CloudsController extends Controller
             ->where('cid', '=', Auth::user()->cid)
             ->first();
 
-        return View::make('users.viewdetails', [
+        return view('users.viewdetails', [
             'file' => $file,
         ]);
     }

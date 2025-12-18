@@ -1,7 +1,7 @@
 <?php
 
 Route::get('billing', function () {
-    return View::make('billing.overview', [
+    return view('billing.overview', [
         'title' => 'Facturatie',
     ]);
 })->before('auth');
@@ -16,14 +16,14 @@ Route::get('billing/debtors', function () {
     $debtors = new Debtors;
     $aDebtors = $debtors->where('cid', '=', Auth::user()->cid)->get();
 
-    return View::make('billing.debtors.overview', [
+    return view('billing.debtors.overview', [
         'title' => 'Debiteuren',
         'debtors' => $aDebtors,
     ]);
 })->before('auth');
 
 Route::get('billing/debtors/add', function () {
-    return View::make('billing.debtors.add', [
+    return view('billing.debtors.add', [
         'title' => 'Debiteur toevoegen',
     ]);
 })->before('auth');
@@ -35,7 +35,7 @@ Route::post('billing/debtors/add', [
 Route::get('billing/debtor/edit/{id}', function ($id) {
     $debtor = Debtors::where('id', '=', $id)->where('cid', '=', Auth::user()->cid)->first();
 
-    return View::make('billing.debtors.edit', [
+    return view('billing.debtors.edit', [
         'title' => 'Factuur bewerken',
         'd' => $debtor,
     ]);
@@ -46,7 +46,7 @@ Route::get('billing/debtor/delete/{id}', function ($id) {
     $debtor = new Debtors;
     $d = $debtor->find($id);
 
-    return View::make('billing.debtors.delete', [
+    return view('billing.debtors.delete', [
         'title' => 'Factuur verwijderen',
         'd' => $d,
     ]);
@@ -63,14 +63,14 @@ Route::get('billing/invoices', ['as' => 'invoices', function () {
     $invoices = new Invoices;
     $aInvoices = $invoices->where('cid', '=', Auth::user()->cid)->where('date', 'like', Session::get('year').'%')->orderBy('invoicenumber', 'ASC')->get();
 
-    return View::make('billing.invoices.overview', [
+    return view('billing.invoices.overview', [
         'title' => 'Facturen',
         'invoices' => $aInvoices,
     ]);
 }])->before('auth');
 
 Route::get('billing/invoices/add', function () {
-    return View::make('billing.invoices.add', [
+    return view('billing.invoices.add', [
         'title' => 'Factuur aanmaken',
     ]);
 })->before('auth');
@@ -82,7 +82,7 @@ Route::post('billing/invoices/add', [
 Route::get('billing/invoice/edit/{id}', function ($id) {
     $invoice = Invoices::where('id', '=', $id)->where('cid', '=', Auth::user()->cid)->first();
 
-    return View::make('billing.invoices.edit', [
+    return view('billing.invoices.edit', [
         'title' => 'Factuur bewerken',
         'i' => $invoice,
     ]);
@@ -93,7 +93,7 @@ Route::get('billing/invoice/delete/{id}', function ($id) {
     $invoice = new Invoices;
     $i = $invoice->find($id);
 
-    return View::make('billing.invoices.delete', [
+    return view('billing.invoices.delete', [
         'title' => 'Factuur verwijderen',
         'i' => $i,
     ]);
@@ -107,7 +107,7 @@ Route::get('billing/invoice/paid/{id}', function ($id) {
 
     Alert::success('Betaling opgeslagen')->flash();
 
-    return Redirect::to('/billing/invoices');
+    return redirect('/billing/invoices');
 })->before('auth');
 
 Route::get('billing/invoice/send/{id}', function ($id) {
@@ -121,7 +121,7 @@ Route::get('billing/invoice/send/{id}', function ($id) {
             return Redirect::back();
         }
 
-        return View::make('billing.invoices.send', [
+        return view('billing.invoices.send', [
             'title' => 'Factuur versturen',
             'i' => $i,
         ]);
@@ -143,14 +143,14 @@ Route::get('billing/products', function () {
     $products = new Products;
     $aProducts = $products->where('cid', '=', Auth::user()->cid)->get();
 
-    return View::make('billing.products.overview', [
+    return view('billing.products.overview', [
         'title' => 'Artikelen &amp; Diensten',
         'products' => $aProducts,
     ]);
 })->before('auth');
 
 Route::get('billing/product/add', function () {
-    return View::make('billing.products.add', [
+    return view('billing.products.add', [
         'title' => 'Artikel aanmaken',
     ]);
 })->before('auth');
@@ -162,7 +162,7 @@ Route::post('billing/product/add', [
 Route::get('billing/product/edit/{id}', function ($id) {
     $product = Products::byID($id)->first();
 
-    return View::make('billing.products.edit', [
+    return view('billing.products.edit', [
         'title' => 'Artikel bewerken',
         'product' => $product,
     ]);
@@ -175,7 +175,7 @@ Route::post('billing/product/edit/{id}', [
 Route::get('billing/product/delete/{id}', function ($id) {
     $p = Products::byID($id)->first();
 
-    return View::make('billing.products.delete', [
+    return view('billing.products.delete', [
         'title' => 'Artikel verwijderen',
         'p' => $p,
     ]);
@@ -189,13 +189,13 @@ Route::post('billing/product/delete/{id}', 'ProductsController@delete')->before(
  */
 
 Route::get('billing/settings/invoices', ['as' => 'settingsInvoices', function () {
-    return View::make('billing.settings.invoice.overview', [
+    return view('billing.settings.invoice.overview', [
         'title' => 'Factuur layouts',
     ]);
 }])->before('auth');
 
 Route::get('billing/settings/invoice/add', function () {
-    return View::make('billing.settings.invoice.add', [
+    return view('billing.settings.invoice.add', [
         'title' => 'Factuur layout toevoegen',
     ]);
 })->before('auth');
@@ -204,7 +204,7 @@ Route::post('billing/settings/invoice/add', 'SettingsController@saveInvoices')->
 Route::get('billing/settings/invoice/edit/{id}', function ($id) {
     $invoice = Layouts::getInvoice($id)->first();
 
-    return View::make('billing.settings.invoice.edit', [
+    return view('billing.settings.invoice.edit', [
         'title' => 'Factuur layout bewerken',
         'layout' => $invoice,
     ]);
@@ -214,7 +214,7 @@ Route::post('billing/settings/invoice/edit/{id}', 'SettingsController@saveInvoic
 Route::get('billing/settings/invoice/delete/{id}', function ($id) {
     $invoice = Layouts::getInvoice($id)->first();
 
-    return View::make('billing.settings.invoice.delete', [
+    return view('billing.settings.invoice.delete', [
         'title' => 'Factuur layout verwijderen',
         'layout' => $invoice,
     ]);
@@ -222,13 +222,13 @@ Route::get('billing/settings/invoice/delete/{id}', function ($id) {
 Route::post('billing/settings/invoice/delete/{id}', 'SettingsController@deleteInvoice')->before('auth');
 
 Route::get('billing/settings/mails', ['as' => 'settingsMails', function () {
-    return View::make('billing.settings.mail.overview', [
+    return view('billing.settings.mail.overview', [
         'title' => 'Mail layouts',
     ]);
 }])->before('auth');
 
 Route::get('billing/settings/mail/add', function () {
-    return View::make('billing.settings.mail.add', [
+    return view('billing.settings.mail.add', [
         'title' => 'Mail layout toevoegen',
     ]);
 })->before('auth');
@@ -237,7 +237,7 @@ Route::post('billing/settings/mail/add', 'SettingsController@saveMails')->before
 Route::get('billing/settings/mail/edit/{id}', function ($id) {
     $invoice = Layouts::getMail($id)->first();
 
-    return View::make('billing.settings.mail.edit', [
+    return view('billing.settings.mail.edit', [
         'title' => 'Factuur layout bewerken',
         'layout' => $invoice,
     ]);
@@ -247,7 +247,7 @@ Route::post('billing/settings/mail/edit/{id}', 'SettingsController@saveMails')->
 Route::get('billing/settings/mail/delete/{id}', function ($id) {
     $invoice = Layouts::getMail($id)->first();
 
-    return View::make('billing.settings.mail.delete', [
+    return view('billing.settings.mail.delete', [
         'title' => 'Factuur layout verwijderen',
         'layout' => $invoice,
     ]);
@@ -255,7 +255,7 @@ Route::get('billing/settings/mail/delete/{id}', function ($id) {
 Route::post('billing/settings/mail/delete/{id}', 'SettingsController@deleteMail')->before('auth');
 
 Route::get('billing/settings/port', function () {
-    return View::make('billing.settings.port.index');
+    return view('billing.settings.port.index');
 })->before('auth');
 Route::get('billing/settings/port/exportdebtors', 'SettingsController@genDebtorsExport')->before('auth');
 Route::get('billing/settings/port/exportbilling', 'SettingsController@genBillingExport')->before('auth');
@@ -317,13 +317,13 @@ Route::any('billing/search', ['uses' => 'InvoiceController@searchFiles']);
  */
 
 Route::get('billing/viewmail/{id}', function ($id) {
-    return View::make('emails.invoice', [
+    return view('emails.invoice', [
         'id' => $id,
     ]);
 })->before('auth');
 
 Route::get('billing/viewpdf/{id}', function ($id) {
-    return View::make('billing.pdf', [
+    return view('billing.pdf', [
         'id' => $id,
     ]);
 })->before('auth');

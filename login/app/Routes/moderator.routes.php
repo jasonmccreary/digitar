@@ -1,7 +1,7 @@
 <?php
 
 Route::get('moderator', function () {
-    return Redirect::to('/moderator/users');
+    return redirect('/moderator/users');
 })->before('auth');
 Route::get('moderator/users', function () {
     $users = new Usermods;
@@ -18,7 +18,7 @@ Route::get('moderator/users', function () {
         $aUsers = [];
     }
 
-    return View::make('moderator.users.overview', [
+    return view('moderator.users.overview', [
         'title' => 'Gebruikers',
         'users' => $aUsers,
     ]);

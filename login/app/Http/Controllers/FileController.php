@@ -17,7 +17,7 @@ class FileController extends Controller
     public function showFiles($fid, $ajax = false)
     {
         if (! Auth::check() || Auth::user()->rights != 1) {
-            return Redirect::to('/');
+            return redirect('/');
         }
         View::share('fid', $fid);
 
@@ -26,7 +26,7 @@ class FileController extends Controller
                 $folder = Folderright::where('uid', '=', Auth::user()->id)->orderBy('id', 'desc')->first();
 
                 // dd($folder);
-                return Redirect::to('/user/folder/'.$folder->fid);
+                return redirect('/user/folder/'.$folder->fid);
             }
             switch ($fid) {
                 case 'inbox':
@@ -39,7 +39,7 @@ class FileController extends Controller
             $bookedcheck = 1;
         } else {
             if (Folderright::where('fid', '=', $fid)->where('uid', '=', Auth::user()->id)->count() <= 0) {
-                return Redirect::to('403');
+                return redirect('403');
             } // IF A USER IS NOT AUTHORIZED TO VIEW THE FOLDER
             $fo = Folder::where('id', '=', $fid)->first();
             $title = $fo->name;
@@ -58,7 +58,7 @@ class FileController extends Controller
         $files->orderBy('date', 'desc');
 
         if ($ajax == false) {
-            return View::make('users.files', [
+            return view('users.files', [
                 'title' => $title,
                 'noGrid' => 'true',
             ]);
@@ -320,7 +320,7 @@ class FileController extends Controller
                 Auth::logout();
                 Alert::error('DE ACTIE DIE U PROBEERT UIT TE VOEREN IS NIET TOEGESTAAN!!!')->flash();
 
-                return Redirect::to('/');
+                return redirect('/');
             }
 
             Alert::success('De documenten zijn gemarkeerd als geboekt.')->flash();
@@ -343,7 +343,7 @@ class FileController extends Controller
                 Auth::logout();
                 Alert::error('DE ACTIE DIE U PROBEERT UIT TE VOEREN IS NIET TOEGESTAAN!!!')->flash();
 
-                return Redirect::to('/');
+                return redirect('/');
             }
 
             Alert::success('De documenten zijn verplaatst naar de map.')->flash();
@@ -640,7 +640,7 @@ class FileController extends Controller
         $file = Input::file('file');
         // dd($file);
         if (! is_object($file)) {
-            return Response::make('Geen geldig bestands type.', 400);
+            return response('Geen geldig bestands type.', 400);
         }
 
         if (Input::get('userid')) {
@@ -761,7 +761,7 @@ class FileController extends Controller
             ->where('cid', '=', Auth::user()->cid)
             ->first();
 
-        return View::make('users.viewfile', [
+        return view('users.viewfile', [
             'file' => $file,
         ]);
     }
@@ -778,7 +778,7 @@ class FileController extends Controller
         $organization = User::where('id', '=', Auth::user()->oid)->first();
         $client = User::where('id', '=', Auth::user()->cid)->where('oid', '=', Auth::user()->oid);
         if (! $client->count()) {
-            return Redirect::to('/user/folder/inbox');
+            return redirect('/user/folder/inbox');
         }
         $path = '/home/digitar/clients/'.$organization->username.'/'.$client->first()->username.'/';
 
@@ -811,9 +811,9 @@ class FileController extends Controller
                     $isIE11UP = (preg_match('/(?i)trident\/[7-9]/', $_SERVER['HTTP_USER_AGENT']));
                     $isIE10UP = ($isIE10 == 1 || $isIE11UP == 1 ? 1 : 0);
                     if ($viewer == 'pdfjs') {
-                        return Redirect::to('/pdfjs/web/viewer.html?file=/user/loadpdf/'.$file->id);
+                        return redirect('/pdfjs/web/viewer.html?file=/user/loadpdf/'.$file->id);
                     } else {
-                        return Redirect::to('/user/loadpdf/'.$file->id);
+                        return redirect('/user/loadpdf/'.$file->id);
                     }
                 } else {
                     header('Content-Type: image/jpeg');
@@ -880,7 +880,7 @@ class FileController extends Controller
 
             Alert::success('De bestanden zijn verstuurd!')->flash();
 
-            return Redirect::to('/user/folder/inbox');
+            return redirect('/user/folder/inbox');
         }
     }
 
@@ -896,13 +896,13 @@ class FileController extends Controller
         $organization = $u
             ->where('id', '=', $oid);
         if (! $organization->count()) {
-            return Redirect::to('/user/folder/inbox');
+            return redirect('/user/folder/inbox');
         }
         $client = $u
             ->where('id', '=', $clientid)
             ->where('oid', '=', $oid);
         if (! $client->count()) {
-            return Redirect::to('/user/folder/inbox');
+            return redirect('/user/folder/inbox');
         }
 
         return '../../../clients/'.$organization->first()->username.'/'.$client->first()->username.'/';

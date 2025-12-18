@@ -200,7 +200,7 @@ class InvoiceController extends Controller
             $i = Invoices::find($id);
             $d = Debtors::find($i->did);
 
-            return View::make('billing.invoices.sendto', [
+            return view('billing.invoices.sendto', [
                 'title' => 'Factuur versturen naar: '.$d->email,
             ]);
         }
@@ -309,12 +309,12 @@ class InvoiceController extends Controller
         // dd($invoices);
 
         if (Request::is('*ajax*')) {
-            return View::make('billing.ajax.search', [
+            return view('billing.ajax.search', [
                 'title' => 'Zoeken naar: '.$search,
                 'invoices' => $invoices,
             ]);
         } else {
-            return View::make('billing.search', [
+            return view('billing.search', [
                 'title' => 'Zoeken naar: '.$search,
                 'invoices' => $invoices,
             ]);

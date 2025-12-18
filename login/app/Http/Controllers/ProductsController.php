@@ -23,7 +23,7 @@ class ProductsController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return Redirect::to('/billing/product/add')->withInput();
+            return redirect('/billing/product/add')->withInput();
         } else {
             $p = new Products;
             $p->cid = Auth::user()->cid;
@@ -37,7 +37,7 @@ class ProductsController extends Controller
 
             Alert::success('Product toegevoegd!')->flash();
 
-            return Redirect::to('/billing/products');
+            return redirect('/billing/products');
         }
     }
 
@@ -62,7 +62,7 @@ class ProductsController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return Redirect::to('/billing/product/edit/'.$id)->withInput();
+            return redirect('/billing/product/edit/'.$id)->withInput();
         } else {
             $p = Products::byID($id)->first();
 
@@ -83,7 +83,7 @@ class ProductsController extends Controller
 
             Alert::success('Artikel opgeslagen!')->flash();
 
-            return Redirect::to('/billing/products');
+            return redirect('/billing/products');
         }
     }
 
@@ -96,6 +96,6 @@ class ProductsController extends Controller
             Alert::success('Artikel succesvol verwijderd')->flash();
         }
 
-        return Redirect::to('/billing/products');
+        return redirect('/billing/products');
     }
 }

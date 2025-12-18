@@ -7,9 +7,9 @@ class HomeController extends Controller
     public function getIndex()
     {
         if (! Auth::check()) {
-            return View::make('login.login');
+            return view('login.login');
         } else {
-            return View::make('users.viewfile');
+            return view('users.viewfile');
         }
     }
 
@@ -64,7 +64,7 @@ class HomeController extends Controller
 
             });
 
-            // return View::make('emails.notification', $forView);
+            // return view('emails.notification', $forView);
         }
 
         // dd($mail);

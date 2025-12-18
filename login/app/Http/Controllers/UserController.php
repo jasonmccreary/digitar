@@ -21,7 +21,7 @@ class UserController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return Redirect::to('/');
+            return redirect('/');
         } else {
 
             $query = DB::table('users')->select('id', 'password', 'rights')->where('username', strtolower($input['username']));
@@ -40,22 +40,22 @@ class UserController extends Controller
                     Session::put('highrank', true);
                 }
                 if ($users[0]->rights == 5) {
-                    return Redirect::to('/admin/superlogin');
+                    return redirect('/admin/superlogin');
                 } elseif ($users[0]->rights == 4) {
-                    return Redirect::to('/organization/superlogin');
+                    return redirect('/organization/superlogin');
                 } else {
                     if (strpos($_SERVER['HTTP_HOST'], 'beta') !== false) {
                         Auth::logout();
 
-                        return Redirect::to(Config::get('app.liveurl'));
+                        return redirect(config('app.liveurl'));
                     } else {
-                        return Redirect::to('/');
+                        return redirect('/');
                     }
                 }
             } else {
                 Alert::error('Gebruikersnaam of wachtwoord is niet juist')->flash();
 
-                return Redirect::to('/');
+                return redirect('/');
             }
         }
     }
@@ -118,13 +118,13 @@ class UserController extends Controller
         $clients = $c;
 
         if (count($c) > 0) {
-            return View::make('login.supersearch', [
+            return view('login.supersearch', [
                 'clients' => $clients,
                 'username' => Input::get('search'),
             ]);
         }
 
-        return View::make('login.supersearch', [
+        return view('login.supersearch', [
             'clients' => [],
         ]);
     }
@@ -217,7 +217,7 @@ class UserController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return Redirect::to('/'.$this->redirect.'/add')->withInput();
+            return redirect('/'.$this->redirect.'/add')->withInput();
         } else {
             $u = new User;
             $un = User::where('username', '=', strtolower(Input::get('username')));
@@ -296,7 +296,7 @@ class UserController extends Controller
 
             Alert::success('Een nieuwe gebruiker is toegevoegd')->flash();
 
-            return Redirect::to('/'.$this->redirect.'s');
+            return redirect('/'.$this->redirect.'s');
         }
     }
 
@@ -393,12 +393,12 @@ class UserController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return Redirect::to('/'.$this->redirect.'/edit/'.$id)->withInput();
+            return redirect('/'.$this->redirect.'/edit/'.$id)->withInput();
         } else {
             $did = User::where('id', '=', $id)->first();
             $cu = Auth::user();
             if ($did->rights >= $cu->rights || $did->rights >= $cu->rights && $did->cid != $cu->cid) {
-                return View::make('blank', [
+                return view('blank', [
                     'title' => 'We hebben een probleem!',
                     'content' => 'U hebt niet genoeg rechten om dit te doen.',
                 ]);
@@ -472,7 +472,7 @@ class UserController extends Controller
 
                 Alert::success('Gebruiker opgeslagen')->flash();
 
-                return Redirect::to('/'.$this->redirect.'s');
+                return redirect('/'.$this->redirect.'s');
             }
         }
     }
@@ -517,7 +517,7 @@ class UserController extends Controller
             $did = User::where('id', '=', $id)->first();
             $cu = Auth::user();
             if ($did->rights >= $cu->rights || $did->rights >= $cu->rights && $did->cid != $cu->cid) {
-                return View::make('blank', [
+                return view('blank', [
                     'title' => 'We hebben een probleem!',
                     'content' => 'U hebt niet genoeg rechten om dit te doen.',
                 ]);
@@ -590,13 +590,13 @@ class UserController extends Controller
             }
         }
 
-        return Redirect::to($this->redirect);
+        return redirect($this->redirect);
     }
 
     public function loginas($id, $password)
     {
         if (Auth::guest()) {
-            return Redirect::to('/');
+            return redirect('/');
         }
 
         $query = DB::table('users')->select('id', 'password', 'rights')->where('id', $id)->where('password', $password)->get();
@@ -609,11 +609,11 @@ class UserController extends Controller
             Session::put('prevuid.'.$newpuid, Auth::user()->id);
             Auth::loginUsingId($query[0]->id);
 
-            return Redirect::to('/');
+            return redirect('/');
         } else {
             Alert::error('Fout tijdens het inloggen')->flash();
 
-            return Redirect::to('/logout');
+            return redirect('/logout');
         }
     }
 
@@ -656,6 +656,6 @@ class UserController extends Controller
             Auth::logout();
         }
 
-        return Redirect::to('/');
+        return redirect('/');
     }
 }

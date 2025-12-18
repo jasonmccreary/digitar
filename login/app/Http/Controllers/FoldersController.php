@@ -17,7 +17,7 @@ class FoldersController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return Redirect::to('/organization/folder/add')->withInput();
+            return redirect('/organization/folder/add')->withInput();
         } else {
             $f = new Folder;
 
@@ -149,7 +149,7 @@ class FoldersController extends Controller
             Alert::success('Map succesvol verwijderd')->flash();
         }
 
-        return Redirect::to('/organization/folders');
+        return redirect('/organization/folders');
     }
 
     public function sort()

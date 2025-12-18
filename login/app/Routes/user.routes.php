@@ -5,7 +5,7 @@ Route::get('user', function () {
         Session::put('year', date('Y'));
     }
 
-    return Redirect::to('/user/folder/inbox');
+    return redirect('/user/folder/inbox');
 })->before('auth');
 
 Route::get('user/folder/{fid}', ['uses' => 'FileController@showFiles']);
@@ -15,12 +15,12 @@ Route::any('user/search/{search}', ['uses' => 'FileController@showFiles']);
 Route::any('user/search/{search}/ajax/', ['uses' => 'FileController@searchFiles']);
 
 Route::get('user/upload', ['before' => 'auth|folders', 'uses' => function () {
-    return View::make('users.upload', [
+    return view('users.upload', [
         'title' => 'Bestanden toevoegen',
     ]);
 }]);
 Route::get('user/ajax/messages', ['before' => 'auth', 'uses' => function () {
-    return View::make('users.ajax.messages');
+    return view('users.ajax.messages');
 }]);
 
 Route::get('user/files', ['uses' => 'CloudsController@showFiles']);
@@ -39,13 +39,13 @@ Route::post('user/files/bulk', ['before' => 'auth|folders', 'uses' => function (
                     }
                     Alert::success('Bestand(en) verwijderd')->flash();
 
-                    return Redirect::to('/user/folder/inbox');
+                    return redirect('/user/folder/inbox');
                 } else {
-                    return Redirect::to('/user/folder/inbox');
+                    return redirect('/user/folder/inbox');
                 }
 
             } else {
-                return View::make('users.deletefiles', [
+                return view('users.deletefiles', [
                     'title' => 'Bestanden verwijderen',
                     'filesArray' => Input::get('fileid'),
                 ]);
@@ -56,11 +56,11 @@ Route::post('user/files/bulk', ['before' => 'auth|folders', 'uses' => function (
             }
             Alert::success('Bestanden opgesplitst')->flash();
 
-            return Redirect::to('/user/folder/inbox');
+            return redirect('/user/folder/inbox');
         } elseif (Input::has('combine')) {
             FileController::combineFiles(Input::get('fileid'));
 
-            return Redirect::to('/user/folder/inbox');
+            return redirect('/user/folder/inbox');
         } elseif (Input::has('download')) {
             FileController::downloadFiles(Input::get('fileid'));
 
@@ -70,7 +70,7 @@ Route::post('user/files/bulk', ['before' => 'auth|folders', 'uses' => function (
 
             return Redirect::back();
         } elseif (Input::has('sendmail')) {
-            return View::make('users.sendfiles', [
+            return view('users.sendfiles', [
                 'title' => 'Bestanden versturen',
                 'files' => Input::get('fileid'),
             ]);
@@ -86,18 +86,18 @@ Route::post('user/files/bulk', ['before' => 'auth|folders', 'uses' => function (
     } else {
         Alert::info('Selecteer selecteer eerst minimaal een document.')->flash();
 
-        return Redirect::to('/user/folder/inbox');
+        return redirect('/user/folder/inbox');
     }
 }]);
 Route::get('user/files/bulk', ['before' => 'auth|folders', 'uses' => function () {
     if (Input::old('sendmail')) {
-        return View::make('users.sendfiles', [
+        return view('users.sendfiles', [
             'title' => 'Bestanden versturen',
             'files' => Input::old('files'),
         ]);
     } else {
         // dd(Input::old('fileid'));
-        return Redirect::to('/user/folder/inbox');
+        return redirect('/user/folder/inbox');
     }
 }]);
 Route::post('user/sendmail', ['uses' => 'FileController@sendmail']);
@@ -126,13 +126,13 @@ Route::post('user/cloud/bulk', ['before' => 'auth|folders', 'uses' => function (
                     }
                     Alert::success('Bestanden verwijderd')->flash();
 
-                    return Redirect::to('/user/files');
+                    return redirect('/user/files');
                 } else {
-                    return Redirect::to('/user/files');
+                    return redirect('/user/files');
                 }
 
             } else {
-                return View::make('users.deletecloudfiles', [
+                return view('users.deletecloudfiles', [
                     'title' => 'Bestanden verwijderen',
                     'filesArray' => Input::get('fileid'),
                 ]);
@@ -141,7 +141,7 @@ Route::post('user/cloud/bulk', ['before' => 'auth|folders', 'uses' => function (
     } else {
         Alert::info('Selecteer selecteer eerst minimaal een document.')->flash();
 
-        return Redirect::to('/user/folder/inbox');
+        return redirect('/user/folder/inbox');
     }
 }]);
 

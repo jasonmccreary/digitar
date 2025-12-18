@@ -53,7 +53,7 @@ class DebtorsController extends Controller
 
             Alert::success('Debiteur toegevoegd')->flash();
 
-            return Redirect::to('/billing/debtors');
+            return redirect('/billing/debtors');
         }
     }
 
@@ -109,7 +109,7 @@ class DebtorsController extends Controller
 
             Alert::success('Debiteur opgeslagen')->flash();
 
-            return Redirect::to('/billing/debtors');
+            return redirect('/billing/debtors');
         }
     }
 
@@ -122,6 +122,6 @@ class DebtorsController extends Controller
             Alert::success('Map succesvol verwijderd')->flash();
         }
 
-        return Redirect::to('/billing/debtors');
+        return redirect('/billing/debtors');
     }
 }

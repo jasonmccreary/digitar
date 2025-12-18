@@ -1,7 +1,7 @@
 <?php
 
 Route::get('client', function () {
-    return Redirect::to('/client/users');
+    return redirect('/client/users');
 })->before('auth');
 Route::get('client/users', function () {
     $users = new User;
@@ -12,7 +12,7 @@ Route::get('client/users', function () {
         $aUsers = [];
     }
 
-    return View::make('client.users.overview', [
+    return view('client.users.overview', [
         'title' => 'Gebruikers',
         'users' => $aUsers,
     ]);
@@ -26,7 +26,7 @@ Route::get('client/user/add', function () {
 
     $sfolders = Folder::getAllUserFolders();
 
-    return View::make('client.users.add', [
+    return view('client.users.add', [
         'title' => 'Gebruiker toevoegen',
         'sfolders' => $sfolders,
     ]);
@@ -46,7 +46,7 @@ Route::get('client/user/edit/{id}', function ($id) {
 
     $sfolders = Folder::getAllUserFolders();
 
-    return View::make('client.users.edit', [
+    return view('client.users.edit', [
         'title' => 'Gebruiker bewerken',
         'user' => $user,
         'sfolders' => $sfolders,
@@ -62,7 +62,7 @@ Route::get('client/user/delete/{id}', function ($id) {
     $u = new User;
     $user = $u->find($id);
 
-    return View::make('client.users.delete', [
+    return view('client.users.delete', [
         'title' => 'Gebruiker verwijderen',
         'user' => $user,
     ]);
@@ -88,11 +88,11 @@ Route::get('client/user/credentials/{id}', function ($id) {
         });
         Alert::success('Inlog gegevens zijn verstuurd!')->flash();
 
-        return Redirect::to('/client/users');
+        return redirect('/client/users');
     } else {
         Alert::error('Gebruiker heeft geen email adres!')->flash();
 
-        return Redirect::to('/client/users');
+        return redirect('/client/users');
     }
 })->before('auth|user');
 
@@ -106,7 +106,7 @@ Route::get('client/folders', ['as' => 'folders', function () {
     $f = new Folder;
     $aFolders = $f->getAllUserFolders();
 
-    return View::make('client.folders.overview', [
+    return view('client.folders.overview', [
         'title' => 'Mappen',
         'folders' => $aFolders,
     ]);
@@ -122,7 +122,7 @@ Route::get('client/folder/add', function () {
         $aFolders[$folder->id] = $folder->name;
     }
 
-    return View::make('client.folders.add', [
+    return view('client.folders.add', [
         'title' => 'Nieuwe map toevoegen',
         'folders' => $aFolders,
     ]);
@@ -137,7 +137,7 @@ Route::get('client/folder/edit/{id}', function ($id) {
         $aFolders[$foldera->id] = $foldera->name;
     }
 
-    return View::make('client.folders.edit', [
+    return view('client.folders.edit', [
         'title' => 'Map bewerken',
         'folder' => $folder,
         'folders' => $aFolders,
@@ -151,7 +151,7 @@ Route::get('client/folder/delete/{id}', function ($id) {
 
         return Redirect::route('folders');
     } else {
-        return View::make('client.folders.delete', [
+        return view('client.folders.delete', [
             'title' => 'Map verwijderen',
         ]);
     }

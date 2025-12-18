@@ -41,7 +41,7 @@ class ToolsController extends Controller
 
         }
 
-        return View::make('admin.tools.savepdfcontents', [
+        return view('admin.tools.savepdfcontents', [
             'title' => 'Save PDF contents',
             'exec' => $exec,
             'amount' => $files1->count(),
@@ -99,7 +99,7 @@ class ToolsController extends Controller
 
         Alert::success('Een nieuwe forwarder is aangemaakt voor: '.Input::get('username'))->flash();
 
-        return Redirect::to('/admin/tools/forwardcheck');
+        return redirect('/admin/tools/forwardcheck');
     }
 
     public static function checkFtp()
@@ -154,7 +154,7 @@ class ToolsController extends Controller
             Alert::success('Een nieuw FTP account is aangemaakt voor: '.Input::get('username'))->flash();
         }
 
-        return Redirect::to('/admin/tools/ftpcheck');
+        return redirect('/admin/tools/ftpcheck');
     }
 
     public static function getUserDirSize($uid)

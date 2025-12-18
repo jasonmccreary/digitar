@@ -40,6 +40,6 @@ class ModeratorController extends Controller
             }
         }
 
-        return Redirect::to('/organization/moderator/link');
+        return redirect('/organization/moderator/link');
     }
 }

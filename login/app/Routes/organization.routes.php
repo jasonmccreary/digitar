@@ -3,14 +3,14 @@
 Route::get('organization/superlogin', function () {
     $u = new User;
 
-    return View::make('login.superlogin', [
+    return view('login.superlogin', [
         'superlogin' => 'true',
     ]);
 })->before('auth');
 Route::post('organization/supersearch', 'UserController@supersearch')->before('auth');
 
 Route::get('organization', function () {
-    return Redirect::to('/organization/clients');
+    return redirect('/organization/clients');
 })->before('auth');
 Route::get('organization/clients', function () {
     $users = new User;
@@ -21,7 +21,7 @@ Route::get('organization/clients', function () {
         $aUsers = [];
     }
 
-    return View::make('organization.clients.overview', [
+    return view('organization.clients.overview', [
         'title' => 'Klanten',
         'users' => $aUsers,
     ]);
@@ -35,7 +35,7 @@ Route::get('organization/client/add', function () {
 
     $sfolders = Folder::where('uid', '=', Auth::user()->id)->whereNull('pid')->get();
 
-    return View::make('organization.clients.add', [
+    return view('organization.clients.add', [
         'title' => 'Klant toevoegen',
         'sfolders' => $sfolders,
     ]);
@@ -56,7 +56,7 @@ Route::get('organization/client/edit/{id}', function ($id) {
 
     $sfolders = Folder::where('uid', '=', Auth::user()->id)->whereNull('pid')->get();
 
-    return View::make('organization.clients.edit', [
+    return view('organization.clients.edit', [
         'title' => 'Klant bewerken',
         'user' => $user,
         'sfolders' => $sfolders,
@@ -72,7 +72,7 @@ Route::get('organization/client/delete/{id}', function ($id) {
     $u = new User;
     $user = $u->find($id);
 
-    return View::make('organization.clients.delete', [
+    return view('organization.clients.delete', [
         'title' => 'Klant verwijderen',
         'user' => $user,
     ]);
@@ -94,7 +94,7 @@ Route::get('organization/moderators', function () {
         $aUsers = [];
     }
 
-    return View::make('organization.moderator.overview', [
+    return view('organization.moderator.overview', [
         'title' => 'Beheerders',
         'users' => $aUsers,
     ]);
@@ -105,7 +105,7 @@ Route::get('organization/moderators', function () {
     |--------------------------------------------------------------------------
    */
 Route::get('organization/moderator/add', function () {
-    return View::make('organization.moderator.add', [
+    return view('organization.moderator.add', [
         'title' => 'Beheerder toevoegen',
     ]);
 })->before('auth');
@@ -123,7 +123,7 @@ Route::get('organization/moderator/edit/{id}', function ($id) {
     $u = new User;
     $user = $u->find($id);
 
-    return View::make('organization.moderator.edit', [
+    return view('organization.moderator.edit', [
         'title' => 'Beheerder bewerken',
         'user' => $user,
     ]);
@@ -138,7 +138,7 @@ Route::get('organization/moderator/delete/{id}', function ($id) {
     $u = new User;
     $user = $u->find($id);
 
-    return View::make('organization.moderator.delete', [
+    return view('organization.moderator.delete', [
         'title' => 'Beheerder verwijderen',
         'user' => $user,
     ]);
@@ -161,7 +161,7 @@ Route::get('organization/moderator/link', function () {
 
     $sfolders = Folder::where('uid', '=', Auth::user()->id)->whereNull('pid')->get();
 
-    return View::make('organization.moderator.link', [
+    return view('organization.moderator.link', [
         'title' => 'Beheerders koppelen',
         'users' => $aUsers,
         'sfolders' => $sfolders,
@@ -182,7 +182,7 @@ Route::get('organization/moderator/linkedit/{id}', function ($id) {
     $m->where('rights', '=', '3');
     $mods = $m->get();
 
-    return View::make('organization.moderator.linkedit', [
+    return view('organization.moderator.linkedit', [
         'title' => 'Beheerder(s) koppelen aan gebruiker',
         'user' => $user,
         'mods' => $mods,
@@ -199,7 +199,7 @@ Route::post('organization/moderator/linkedit/{id}', 'ModeratorController@edit')-
 Route::get('organization/folders', ['as' => 'folders', function () {
     $aFolders = Folder::where('uid', '=', Auth::user()->id)->whereNull('pid')->orderBy('order')->get();
 
-    return View::make('organization.folders.overview', [
+    return view('organization.folders.overview', [
         'title' => 'Standaard mappen',
         'standardfolders' => $aFolders,
     ]);
@@ -212,7 +212,7 @@ Route::get('organization/folder/add', function () {
         $aFolders[$folder->id] = $folder->name;
     }
 
-    return View::make('organization.folders.add', [
+    return view('organization.folders.add', [
         'title' => 'Nieuwe standaard map toevoegen',
         'folders' => $aFolders,
     ]);
@@ -227,7 +227,7 @@ Route::get('organization/folder/edit/{id}', function ($id) {
 
     $folder = Folder::where('uid', '=', Auth::user()->id)->where('id', '=', $id)->first();
 
-    return View::make('organization.folders.edit', [
+    return view('organization.folders.edit', [
         'title' => 'Map bewerken',
         'folder' => $folder,
         'folders' => $aFolders,
@@ -236,7 +236,7 @@ Route::get('organization/folder/edit/{id}', function ($id) {
 Route::post('organization/folder/edit/{id}', 'FoldersController@edit')->before('auth');
 
 Route::get('organization/folder/delete/{id}', function ($id) {
-    return View::make('organization.folders.delete', [
+    return view('organization.folders.delete', [
         'title' => 'Standaard map verwijderen',
     ]);
 })->before('auth');
@@ -261,7 +261,7 @@ Route::get('organization/linkedorganizations', function () {
             $aOrgs = [];
         }
 
-        return View::make('organization.organization.overview', [
+        return view('organization.organization.overview', [
             'title' => 'Gekoppelde organisaties',
             'users' => $aOrgs,
         ]);

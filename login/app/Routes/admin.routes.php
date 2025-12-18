@@ -3,13 +3,13 @@
 use Carbon\Carbon;
 
 Route::get('admin', function () {
-    return Redirect::to('/admin/superlogin');
+    return redirect('/admin/superlogin');
 })->before('auth');
 
 Route::get('admin/superlogin', function () {
     $u = new User;
 
-    return View::make('login.superlogin', [
+    return view('login.superlogin', [
         'superlogin' => 'true',
     ]);
 })->before('auth');
@@ -18,7 +18,7 @@ Route::post('admin/supersearch', 'UserController@supersearch')->before('auth');
 Route::get('admin/organizations', function () {
     $o = new Organizations;
 
-    return View::make('admin.organizations.overview', [
+    return view('admin.organizations.overview', [
         'title' => 'Organisaties',
         'organizations' => $o->all(),
     ]);
@@ -29,7 +29,7 @@ Route::get('admin/organizations', function () {
  |--------------------------------------------------------------------------
 */
 Route::get('admin/organizations/add', function () {
-    return View::make('admin.organizations.add')->withTitle('Organisatie toevoegen');
+    return view('admin.organizations.add')->withTitle('Organisatie toevoegen');
 })->before('auth');
 Route::post('admin/organizations/add', 'OrganizationsController@add')->before('auth');
 /*
@@ -41,7 +41,7 @@ Route::get('admin/organization/edit/{id}', function ($id) {
     $o = new Organizations;
     $org = $o->find($id);
 
-    return View::make('admin.organizations.edit', [
+    return view('admin.organizations.edit', [
         'title' => 'Organisatie bewerken',
         'organization' => $org,
     ]);
@@ -56,7 +56,7 @@ Route::get('admin/organization/delete/{id}', function ($id) {
     $o = new Organizations;
     $org = $o->find($id);
 
-    return View::make('admin.organizations.delete', [
+    return view('admin.organizations.delete', [
         'title' => 'Organisatie verwijderen',
         'organization' => $org,
     ]);
@@ -73,7 +73,7 @@ Route::get('admin/users', function () {
     }
     $o = new Organizations;
 
-    return View::make('admin.users.overview', [
+    return view('admin.users.overview', [
         'title' => 'Administrators',
         'users' => $aUsers,
         'organizations' => $o->all(),
@@ -92,7 +92,7 @@ Route::get('admin/user/add', function () {
             $organizations[$org->id] = $org->name;
         }
 
-        return View::make('admin.users.add', [
+        return view('admin.users.add', [
             'title' => 'Administrator toevoegen',
             'organizations' => $organizations,
         ]);
@@ -100,7 +100,7 @@ Route::get('admin/user/add', function () {
         // if there are no organizations redirect with message
         Alert::warning('Er zijn nog geen organisaties, maak eerst een organisatie.')->flash();
 
-        return Redirect::to('/admin/organizations/add');
+        return redirect('/admin/organizations/add');
     }
 })->before('auth');
 Route::post('admin/user/add', [
@@ -120,7 +120,7 @@ Route::get('admin/user/edit/{id}', function ($id) {
     $u = new User;
     $user = $u->find($id);
 
-    return View::make('admin.users.edit', [
+    return view('admin.users.edit', [
         'title' => 'Administrator bewerken',
         'user' => $user,
         'organizations' => $organizations,
@@ -136,7 +136,7 @@ Route::get('admin/user/delete/{id}', function ($id) {
     $u = new User;
     $user = $u->find($id);
 
-    return View::make('admin.users.delete', [
+    return view('admin.users.delete', [
         'title' => 'Administrator verwijderen',
         'user' => $user,
     ]);
@@ -160,7 +160,7 @@ Route::get('admin/logs', function () {
         $monolog .= '<h3>Logs are empty!</h3>';
     }
 
-    return View::make('blank', [
+    return view('blank', [
         'title' => 'Logs',
         'content' => $monolog,
     ]);
@@ -170,7 +170,7 @@ Route::get('admin/logs/clear', function () {
 
     Alert::success('Logs cleared!')->flash();
 
-    return Redirect::to('/admin/logs');
+    return redirect('/admin/logs');
 })->before('auth');
 
 Route::get('admin/size', function () {
@@ -237,7 +237,7 @@ Route::get('admin/size', function () {
 
     $return .= '</tbody></table>';
 
-    return View::make('blank', [
+    return view('blank', [
         'title' => 'Verbruik klanten',
         'content' => $return,
     ]);
@@ -264,7 +264,7 @@ Route::get('admin/lastlogin', function () {
     $Date = new DateTime;
     $return .= 'Huidige servertijd: <b>'.$Date->format('H:i:s').'</b>';
 
-    return View::make('blank', [
+    return view('blank', [
         'title' => 'De 10 laatst ingelogde gebruikers',
         'content' => $return,
     ]);
@@ -298,7 +298,7 @@ Route::get('admin/client/details/{id}', function ($id) {
         }
     }
 
-    return View::make('admin.clientpopup', [
+    return view('admin.clientpopup', [
         'trueblank' => true,
         'user' => $user,
         'subuser' => $subuser,
@@ -314,7 +314,7 @@ Route::get('admin/client/details/{id}', function ($id) {
 
 Route::get('admin/tools/forwardcheck', function () {
 
-    return View::make('admin.tools.checkforwarders', [
+    return view('admin.tools.checkforwarders', [
         'title' => 'Check e-mail forwarders',
         'users' => ToolsController::checkForwarders(),
     ]);
@@ -327,7 +327,7 @@ Route::post('admin/tools/forwardcheck', [
 
 Route::get('admin/tools/ftpcheck', function () {
 
-    return View::make('admin.tools.ftpcheck', [
+    return view('admin.tools.ftpcheck', [
         'title' => 'Check FTP accounts',
         'users' => ToolsController::checkFtp(),
     ]);
@@ -340,7 +340,7 @@ Route::post('admin/tools/ftpcheck', [
 
 Route::get('admin/tools/getpdfcontents', function () {
 
-    return View::make('admin.tools.savepdfcontents', [
+    return view('admin.tools.savepdfcontents', [
         'title' => 'Check FTP accounts',
         'amount' => Files::whereNull('contents')->where('updated_at', '<', Carbon::today())->orderBy('ID', 'DESC')->count(),
     ]);

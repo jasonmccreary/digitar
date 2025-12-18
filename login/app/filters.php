@@ -40,7 +40,7 @@ Route::filter('user', function () {
         $did = User::where('id', '=', $params['id'])->first();
         $cu = Auth::user();
         if ($did->rights >= $cu->rights || $did->rights >= $cu->rights && $did->cid != $cu->cid) {
-            return View::make('blank', [
+            return view('blank', [
                 'title' => 'We hebben een probleem!',
                 'content' => 'U hebt niet genoeg rechten om dit te doen.',
             ]);
@@ -53,7 +53,7 @@ Route::filter('folder', function () {
     if (isset($params['id'])) {
         $did = Folder::where('id', '=', $params['id'])->first();
         if ($did->uid != Auth::user()->id) {
-            return View::make('blank', [
+            return view('blank', [
                 'title' => 'We hebben een probleem!',
                 'content' => 'U hebt niet genoeg rechten om dit te doen.',
             ]);
@@ -71,31 +71,31 @@ Route::filter('auth', function () {
     switch (Auth::user()->rights) {
         case 5:
             if (! Request::is('admin*')) {
-                return Redirect::to('/admin/organizations');
+                return redirect('/admin/organizations');
             }
             break;
         case 4:
             if (! Request::is('organization*')) {
-                return Redirect::to('/organization');
+                return redirect('/organization');
             }
             break;
         case 3:
             if (! Request::is('moderator*')) {
-                return Redirect::to('/moderator');
+                return redirect('/moderator');
             }
             break;
         case 2:
             if (! Request::is('client*')) {
-                return Redirect::to('/client');
+                return redirect('/client');
             }
             break;
         case 1:
             if (! Request::is('user*') && ! Request::is('billing*')) {
-                return Redirect::to('/user');
+                return redirect('/user');
             }
             break;
         default:
-            return Redirect::to('/');
+            return redirect('/');
             break;
     }
 });
@@ -121,7 +121,7 @@ Route::filter('auth.basic', function () {
 
 Route::filter('guest', function () {
     if (Auth::check()) {
-        return Redirect::to('/admin');
+        return redirect('/admin');
     }
 });
 

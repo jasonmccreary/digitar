@@ -44,25 +44,25 @@ Route::get('/api/genpass', function () {
 if (! Auth::guest()) {
     if (Auth::user()->rights == 1) {
         Route::get('help', function () {
-            return View::make('help.overview', [
+            return view('help.overview', [
                 'title' => 'Veel gestelde vragen &amp; uitleg',
             ]);
         })->before('folders');
     } else {
         Route::get('help', function () {
-            return View::make('help.overview', [
+            return view('help.overview', [
                 'title' => 'Veel gestelde vragen &amp; uitleg',
             ]);
         });
     }
 } else {
     Route::get('help', function () {
-        return Redirect::to('/');
+        return redirect('/');
     });
 }
 
 Route::get('403', function () {
-    return View::make('errors.403');
+    return view('errors.403');
 });
 
 $pgcount = Session::get('pgcount') + 1;
