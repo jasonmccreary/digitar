@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Prologue\Alerts\Facades\Alert;
 
 class UserController extends Controller
@@ -254,7 +255,7 @@ class UserController extends Controller
             if ($clientid != false) {
                 $u->cid = $clientid;
             }
-            $pass = Crypt::encrypt(str_random(8));
+            $pass = Crypt::encrypt(Str::random(8));
             $u->username = strtolower(Request::get('username'));
             $u->billing = Request::get('billing');
             $u->password = $pass;
