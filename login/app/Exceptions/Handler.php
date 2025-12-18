@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -13,6 +15,8 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
+        AuthorizationException::class,
+        ValidationException::class,
         'Symfony\Component\HttpKernel\Exception\HttpException',
     ];
 
