@@ -1,6 +1,6 @@
 <?php
-namespace Database\Seeders;
 
+namespace Database\Seeders;
 
 class DatabaseSeeder extends Seeder
 {

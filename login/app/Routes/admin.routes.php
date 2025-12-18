@@ -3,8 +3,8 @@
 use App\Http\Controllers\OrganizationsController;
 use App\Http\Controllers\ToolsController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Route;
 
 Route::get('admin', function () {
     return redirect('/admin/superlogin');
