@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use App\Cloud;
 use App\Debtors;
 use App\Files;
@@ -254,7 +255,7 @@ class UserController extends Controller
             if ($clientid != false) {
                 $u->cid = $clientid;
             }
-            $pass = Crypt::encrypt(str_random(8));
+            $pass = Crypt::encrypt(Str::random(8));
             $u->username = strtolower(Request::get('username'));
             $u->billing = Request::get('billing');
             $u->password = $pass;

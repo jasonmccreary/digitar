@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 Route::get('/', 'HomeController@getIndex')->before('guest');
 Route::post('/', 'UserController@postLogin')->before('guest');
 
@@ -38,7 +40,7 @@ Route::post('/api/upload', ['uses' => 'FileController@upload']);
 Route::get('logout', 'UserController@logout');
 Route::get('/api/filestoday', 'HomeController@filestoday');
 Route::get('/api/genpass', function () {
-    return str_random(8);
+    return Str::random(8);
 });
 
 if (! Auth::guest()) {

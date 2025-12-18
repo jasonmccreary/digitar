@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use App\Files;
 use App\Folder;
 use App\Folderright;
@@ -418,7 +419,7 @@ class FileController extends Controller
             });
         }
 
-        $zipname = str_random(8);
+        $zipname = Str::random(8);
         // dd('zip /home/digitar/mono/'.$zipname.'.zip '.$bind.'');
         $process = new Process('cd /home/digitar/mono/; zip '.$zipname.'.zip '.$bind.'');
         $process->run(function ($type, $buffer) {
@@ -575,7 +576,7 @@ class FileController extends Controller
             }
         }
 
-        $newfile = str_random(32).'.pdf';
+        $newfile = Str::random(32).'.pdf';
         $process = new Process('/usr/local/bin/pdftk '.$bind.'cat output '.$path.$newfile);
         $process->run(function ($type, $buffer) {
             if ($type === 'err') {
@@ -628,7 +629,7 @@ class FileController extends Controller
             $num = explode(':', $process->getOutput());
 
             if ($num[1] > 1) {
-                $newFileName = str_random(32);
+                $newFileName = Str::random(32);
                 $process = new Process('/usr/local/bin/pdftk '.$path.$file->file.' burst output '.$path.$newFileName.'-%03d.pdf compress');
                 $process->run(function ($type, $buffer) {
                     if ($type === 'err') {
@@ -676,9 +677,9 @@ class FileController extends Controller
                 ->first();
 
             $destinationPath = '../../../clients/'.$organization->username.'/'.$client->username.'';
-            $filename = str_random(32).'.'.Request::file('file')->getClientOriginalExtension();
+            $filename = Str::random(32).'.'.Request::file('file')->getClientOriginalExtension();
             while (File::exists($destinationPath.'/'.$filename)) {
-                $filename = str_random(32).'.'.Request::file('file')->getClientOriginalExtension();
+                $filename = Str::random(32).'.'.Request::file('file')->getClientOriginalExtension();
             }
 
             $upload_success = Request::file('file')->move($destinationPath, $filename);
@@ -750,9 +751,9 @@ class FileController extends Controller
                 ->first();
 
             $destinationPath = '../../../clients/'.$organization->username.'/'.$client->username.'';
-            $filename = str_random(32).'.'.Request::file('file')->getClientOriginalExtension();
+            $filename = Str::random(32).'.'.Request::file('file')->getClientOriginalExtension();
             while (File::exists($destinationPath.'/'.$filename)) {
-                $filename = str_random(32).'.'.Request::file('file')->getClientOriginalExtension();
+                $filename = Str::random(32).'.'.Request::file('file')->getClientOriginalExtension();
             }
 
             $upload_success = Request::file('file')->move($destinationPath, $filename);
