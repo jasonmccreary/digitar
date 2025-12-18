@@ -10,8 +10,8 @@ class FileController extends Controller
     public function __construct()
     {
 
-        // $this->beforeFilter('auth');
-        $this->beforeFilter('folders');
+        // $this->middleware('auth');
+        $this->middleware('folders');
     }
 
     public function showFiles($fid, $ajax = false)
