@@ -1,50 +1,20 @@
 <IfModule mod_rewrite.c>
-	<IfModule mod_negotiation.c>
-    	Options -MultiViews
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
     </IfModule>
 
     RewriteEngine On
 
-    # Redirect Trailing Slashes...
-	RewriteRule ^(.*)/$ /$1 [L,R=301]
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
 
-	# Handle Front Controller...
+    # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>
-
-<ifModule mod_gzip.c>
-    mod_gzip_on Yes
-    mod_gzip_dechunk Yes
-    mod_gzip_item_include file .(html?|txt|css|js|php|pl|map)$
-    mod_gzip_item_include handler ^cgi-script$
-    mod_gzip_item_include mime ^text/.*
-    mod_gzip_item_include mime ^application/x-javascript.*
-    mod_gzip_item_exclude mime ^image/.*
-    mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
-</ifModule>
-
-<ifModule mod_deflate.c>
-    <filesmatch "\.(js|css|html|jpg|png|gif|eot|woff|ttf|svg)$">
-        SetOutputFilter DEFLATE
-    </filesmatch>
-</ifModule>
-
-<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|cache)$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch>
-
-<IfModule mod_expires.c>
-    ExpiresActive on
- 
-    ExpiresDefault "access plus 1 hour"
-    ExpiresByType image/jpg "access plus 1 month"
-    ExpiresByType image/jpeg "access plus 1 month"
-    ExpiresByType image/gif "access plus 1 month"
-    ExpiresByType image/png "access plus 1 month"
-</IfModule>
-
-
-    Header set Access-Control-Allow-Origin "*"
