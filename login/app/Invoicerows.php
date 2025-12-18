@@ -8,6 +8,6 @@ class Invoicerows extends Model
 {
     public function product()
     {
-        return $this->belongsTo('App\Products', 'pid', 'id');
+        return $this->belongsTo(\App\Products::class, 'pid', 'id');
     }
 }
