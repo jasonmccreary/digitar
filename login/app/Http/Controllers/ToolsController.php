@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Prologue\Alerts\Facades\Alert;
-use Illuminate\Support\Facades\Input;
-use App\User;
 use App\Files;
+use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Input;
+use Prologue\Alerts\Facades\Alert;
 
 class ToolsController extends Controller
 {

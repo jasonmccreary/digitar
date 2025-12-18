@@ -1,27 +1,27 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Response;
-use App\Messages;
 use App\Cloud;
 use App\Debtors;
-use App\Products;
-use App\Invoicerows;
-use App\Invoices;
-use App\Usermods;
 use App\Files;
 use App\Folderright;
+use App\Invoicerows;
+use App\Invoices;
 use App\Layouts;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Auth;
+use App\Messages;
+use App\Products;
 use App\User;
+use App\Usermods;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
-use Prologue\Alerts\Facades\Alert;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
-
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Prologue\Alerts\Facades\Alert;
 
 class UserController extends Controller
 {

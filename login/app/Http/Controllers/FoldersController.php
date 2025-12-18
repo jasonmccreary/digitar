@@ -1,18 +1,18 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Session;
+use App\Files;
+use App\Folder;
 use App\Folderright;
 use App\User;
-use App\Files;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
-use App\Folder;
-use Prologue\Alerts\Facades\Alert;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
-
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Prologue\Alerts\Facades\Alert;
 
 class FoldersController extends Controller
 {

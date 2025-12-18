@@ -1,20 +1,19 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Request;
-use Barryvdh\DomPDF\Facade;
-use App\User;
-use Illuminate\Support\Facades\Mail;
-use App\Layouts;
 use App\Debtors;
 use App\Invoicerows;
-use Illuminate\Support\Facades\Auth;
 use App\Invoices;
-use Illuminate\Support\Facades\Redirect;
-use Prologue\Alerts\Facades\Alert;
+use App\Layouts;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Prologue\Alerts\Facades\Alert;
 
 class InvoiceController extends Controller
 {

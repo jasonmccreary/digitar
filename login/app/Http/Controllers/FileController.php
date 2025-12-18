@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Redirect;
-use Prologue\Alerts\Facades\Alert;
-use App\Messages;
-use Illuminate\Support\Facades\Response;
-use App\User;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
 use App\Files;
 use App\Folder;
 use App\Folderright;
-use Illuminate\Support\Facades\View;
+use App\Messages;
+use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
+use Prologue\Alerts\Facades\Alert;
 use Symfony\Component\Process\Process;
 
 class FileController extends Controller

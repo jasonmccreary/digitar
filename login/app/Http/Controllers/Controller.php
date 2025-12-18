@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 abstract class Controller extends BaseController
 {
     use DispatchesCommands, ValidatesRequests;
+
     /**
      * Setup the layout used by the controller.
      *

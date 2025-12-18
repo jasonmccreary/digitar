@@ -1,11 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Organizations;
-use Prologue\Alerts\Facades\Alert;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
-
+use Illuminate\Support\Facades\Validator;
+use Prologue\Alerts\Facades\Alert;
 
 class OrganizationsController extends Controller
 {
