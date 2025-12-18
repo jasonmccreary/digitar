@@ -87,7 +87,7 @@ $aYears = Files::getYears();
             <span class="add-on"><span class="iconset top-search"></span></span>
             @if (Request::is('billing*'))
               <form method="POST" action="/billing/search" style="float:left;">
-                <input name="billing-search" value="{!! e(Request::get('search')) !!}" type="text" class="no-boarder" autocomplete="off" placeholder="Doorzoek facturatie" style="width:350px;">
+                <input name="billing-search" value="{{ Request::get('search') }}" type="text" class="no-boarder" autocomplete="off" placeholder="Doorzoek facturatie" style="width:350px;">
               </form>
             @else
               {{-- <form method="POST" action="/user/search" style="float:left;"> --}}
@@ -203,7 +203,7 @@ $aYears = Files::getYears();
       <div class="details-status tip" title="{!! $size !!} mb data in gebruik" data-placement="left">
         <span data-animation-duration="560" data-value="{!! $percentage !!}" class="animate-number"></span>%
       </div>
-      <a href="/help" class="circle tip" title="Veel gestelde vragen &amp; uitleg" data-placement="left"> 
+      <a href="/help" class="circle tip" title="Veel gestelde vragen &amp; uitleg" data-placement="left">
         <i class="fa fa-question"></i>
       </a>
     </div>
