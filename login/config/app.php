@@ -1,0 +1,1 @@
+        Illuminate\Broadcasting\BroadcastServiceProvider::class,
