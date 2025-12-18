@@ -11,12 +11,12 @@ Route::get('organization/superlogin', function () {
     return view('login.superlogin', [
         'superlogin' => 'true',
     ]);
-})->before('auth');
-Route::post('organization/supersearch', [UserController::class, 'supersearch'])->before('auth');
+})->middleware('auth');
+Route::post('organization/supersearch', [UserController::class, 'supersearch'])->middleware('auth');
 
 Route::get('organization', function () {
     return redirect('/organization/clients');
-})->before('auth');
+})->middleware('auth');
 Route::get('organization/clients', function () {
     $users = new User;
     $u = $users->where('rights', '=', '2')->where('oid', '=', Auth::user()->id)->get();
@@ -30,7 +30,7 @@ Route::get('organization/clients', function () {
         'title' => 'Klanten',
         'users' => $aUsers,
     ]);
-})->before('auth');
+})->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Add new Client
@@ -44,9 +44,9 @@ Route::get('organization/client/add', function () {
         'title' => 'Klant toevoegen',
         'sfolders' => $sfolders,
     ]);
-})->before('auth');
+})->middleware('auth');
 Route::post('organization/client/add', [
-    'before' => 'auth',
+    'middleware' => 'auth',
     'uses' => [UserController::class, 'addClient'],
 ]);
 /*
@@ -66,8 +66,8 @@ Route::get('organization/client/edit/{id}', function ($id) {
         'user' => $user,
         'sfolders' => $sfolders,
     ]);
-})->before('auth')->before('user');
-Route::post('organization/client/edit/{id}', [UserController::class, 'editClient'])->before('auth');
+})->middleware('auth')->middleware('user');
+Route::post('organization/client/edit/{id}', [UserController::class, 'editClient'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Delete a Client
@@ -81,8 +81,8 @@ Route::get('organization/client/delete/{id}', function ($id) {
         'title' => 'Klant verwijderen',
         'user' => $user,
     ]);
-})->before('auth|user');
-Route::post('organization/client/delete/{id}', [UserController::class, 'deleteClient'])->before('auth');
+})->middleware('auth|user');
+Route::post('organization/client/delete/{id}', [UserController::class, 'deleteClient'])->middleware('auth');
 
 /*
  |--------------------------------------------------------------------------
@@ -103,7 +103,7 @@ Route::get('organization/moderators', function () {
         'title' => 'Beheerders',
         'users' => $aUsers,
     ]);
-})->before('auth');
+})->middleware('auth');
 /*
     |--------------------------------------------------------------------------
     |	Add new moderator
@@ -113,9 +113,9 @@ Route::get('organization/moderator/add', function () {
     return view('organization.moderator.add', [
         'title' => 'Beheerder toevoegen',
     ]);
-})->before('auth');
+})->middleware('auth');
 Route::post('organization/moderator/add', [
-    'before' => 'auth',
+    'middleware' => 'auth',
     'uses' => [UserController::class, 'addModerator'],
 ]);
 /*
@@ -132,8 +132,8 @@ Route::get('organization/moderator/edit/{id}', function ($id) {
         'title' => 'Beheerder bewerken',
         'user' => $user,
     ]);
-})->before('auth|user');
-Route::post('organization/moderator/edit/{id}', [UserController::class, 'editModerator'])->before('auth');
+})->middleware('auth|user');
+Route::post('organization/moderator/edit/{id}', [UserController::class, 'editModerator'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Delete a moderator
@@ -147,8 +147,8 @@ Route::get('organization/moderator/delete/{id}', function ($id) {
         'title' => 'Beheerder verwijderen',
         'user' => $user,
     ]);
-})->before('auth|user');
-Route::post('organization/moderator/delete/{id}', [UserController::class, 'deleteModerator'])->before('auth');
+})->middleware('auth|user');
+Route::post('organization/moderator/delete/{id}', [UserController::class, 'deleteModerator'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Link user to a moderator
@@ -171,8 +171,8 @@ Route::get('organization/moderator/link', function () {
         'users' => $aUsers,
         'sfolders' => $sfolders,
     ]);
-})->before('auth|user');
-Route::post('organization/moderator/edit/{id}', [UserController::class, 'editModerator'])->before('auth');
+})->middleware('auth|user');
+Route::post('organization/moderator/edit/{id}', [UserController::class, 'editModerator'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Edit a moderator
@@ -192,8 +192,8 @@ Route::get('organization/moderator/linkedit/{id}', function ($id) {
         'user' => $user,
         'mods' => $mods,
     ]);
-})->before('auth|user');
-Route::post('organization/moderator/linkedit/{id}', [ModeratorController::class, 'edit'])->before('auth');
+})->middleware('auth|user');
+Route::post('organization/moderator/linkedit/{id}', [ModeratorController::class, 'edit'])->middleware('auth');
 
 /*
  |--------------------------------------------------------------------------
@@ -208,7 +208,7 @@ Route::get('organization/folders', function () {
         'title' => 'Standaard mappen',
         'standardfolders' => $aFolders,
     ]);
-})->name('folders')->before('auth');
+})->name('folders')->middleware('auth');
 
 Route::get('organization/folder/add', function () {
 
@@ -221,8 +221,8 @@ Route::get('organization/folder/add', function () {
         'title' => 'Nieuwe standaard map toevoegen',
         'folders' => $aFolders,
     ]);
-})->before('auth');
-Route::post('organization/folder/add', [FoldersController::class, 'add'])->before('auth');
+})->middleware('auth');
+Route::post('organization/folder/add', [FoldersController::class, 'add'])->middleware('auth');
 
 Route::get('organization/folder/edit/{id}', function ($id) {
     $aFolders['-'] = 'Geen';
@@ -237,17 +237,17 @@ Route::get('organization/folder/edit/{id}', function ($id) {
         'folder' => $folder,
         'folders' => $aFolders,
     ]);
-})->before('auth');
-Route::post('organization/folder/edit/{id}', [FoldersController::class, 'edit'])->before('auth');
+})->middleware('auth');
+Route::post('organization/folder/edit/{id}', [FoldersController::class, 'edit'])->middleware('auth');
 
 Route::get('organization/folder/delete/{id}', function ($id) {
     return view('organization.folders.delete', [
         'title' => 'Standaard map verwijderen',
     ]);
-})->before('auth');
-Route::post('organization/folder/delete/{id}', [FoldersController::class, 'delete'])->before('auth');
+})->middleware('auth');
+Route::post('organization/folder/delete/{id}', [FoldersController::class, 'delete'])->middleware('auth');
 
-Route::any('organization/folder/sort', [FoldersController::class, 'sort'])->before('auth');
+Route::any('organization/folder/sort', [FoldersController::class, 'sort'])->middleware('auth');
 
 /*
  |--------------------------------------------------------------------------
@@ -273,4 +273,4 @@ Route::get('organization/linkedorganizations', function () {
     } else {
         return false;
     }
-})->before('auth');
+})->middleware('auth');

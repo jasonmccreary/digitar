@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('client', function () {
     return redirect('/client/users');
-})->before('auth');
+})->middleware('auth');
 Route::get('client/users', function () {
     $users = new User;
     $u = $users->where('rights', '=', '1')->where('oid', '=', Auth::user()->oid)->where('cid', '=', Auth::user()->id)->get();
@@ -20,7 +20,7 @@ Route::get('client/users', function () {
         'title' => 'Gebruikers',
         'users' => $aUsers,
     ]);
-})->before('auth');
+})->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Add new User
@@ -34,9 +34,9 @@ Route::get('client/user/add', function () {
         'title' => 'Gebruiker toevoegen',
         'sfolders' => $sfolders,
     ]);
-})->before('auth');
+})->middleware('auth');
 Route::post('client/user/add', [
-    'before' => 'auth',
+    'middleware' => 'auth',
     'uses' => [UserController::class, 'addUser'],
 ]);
 /*
@@ -55,8 +55,8 @@ Route::get('client/user/edit/{id}', function ($id) {
         'user' => $user,
         'sfolders' => $sfolders,
     ]);
-})->before('auth|user');
-Route::post('client/user/edit/{id}', [UserController::class, 'editUser'])->before('auth');
+})->middleware('auth|user');
+Route::post('client/user/edit/{id}', [UserController::class, 'editUser'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Delete a User
@@ -70,8 +70,8 @@ Route::get('client/user/delete/{id}', function ($id) {
         'title' => 'Gebruiker verwijderen',
         'user' => $user,
     ]);
-})->before('auth|user');
-Route::post('client/user/delete/{id}', [UserController::class, 'deleteUser'])->before('auth');
+})->middleware('auth|user');
+Route::post('client/user/delete/{id}', [UserController::class, 'deleteUser'])->middleware('auth');
 
 /*
  |--------------------------------------------------------------------------
@@ -98,7 +98,7 @@ Route::get('client/user/credentials/{id}', function ($id) {
 
         return redirect('/client/users');
     }
-})->before('auth|user');
+})->middleware('auth|user');
 
 /*
  |--------------------------------------------------------------------------
@@ -114,7 +114,7 @@ Route::get('client/folders', function () {
         'title' => 'Mappen',
         'folders' => $aFolders,
     ]);
-})->name('folders')->before('auth');
+})->name('folders')->middleware('auth');
 
 Route::get('client/folder/add', function () {
 
@@ -130,8 +130,8 @@ Route::get('client/folder/add', function () {
         'title' => 'Nieuwe map toevoegen',
         'folders' => $aFolders,
     ]);
-})->before('auth');
-Route::post('client/folder/add', [FoldersController::class, 'add'])->before('auth');
+})->middleware('auth');
+Route::post('client/folder/add', [FoldersController::class, 'add'])->middleware('auth');
 
 Route::get('client/folder/edit/{id}', function ($id) {
     $folder = Folder::where('uid', '=', Auth::user()->id)->where('id', '=', $id)->first();
@@ -146,8 +146,8 @@ Route::get('client/folder/edit/{id}', function ($id) {
         'folder' => $folder,
         'folders' => $aFolders,
     ]);
-})->before('auth|folder');
-Route::post('client/folder/edit/{id}', [FoldersController::class, 'edit'])->before('auth');
+})->middleware('auth|folder');
+Route::post('client/folder/edit/{id}', [FoldersController::class, 'edit'])->middleware('auth');
 
 Route::get('client/folder/delete/{id}', function ($id) {
     if (Files::where('fid', '=', $id)->count() > 1) {
@@ -159,5 +159,5 @@ Route::get('client/folder/delete/{id}', function ($id) {
             'title' => 'Map verwijderen',
         ]);
     }
-})->before('auth|folder');
-Route::post('client/folder/delete/{id}', [FoldersController::class, 'delete'])->before('auth');
+})->middleware('auth|folder');
+Route::post('client/folder/delete/{id}', [FoldersController::class, 'delete'])->middleware('auth');

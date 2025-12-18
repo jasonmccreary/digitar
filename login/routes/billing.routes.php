@@ -10,7 +10,7 @@ Route::get('billing', function () {
     return view('billing.overview', [
         'title' => 'Facturatie',
     ]);
-})->before('auth');
+})->middleware('auth');
 
 /*
  * ======================
@@ -26,15 +26,15 @@ Route::get('billing/debtors', function () {
         'title' => 'Debiteuren',
         'debtors' => $aDebtors,
     ]);
-})->before('auth');
+})->middleware('auth');
 
 Route::get('billing/debtors/add', function () {
     return view('billing.debtors.add', [
         'title' => 'Debiteur toevoegen',
     ]);
-})->before('auth');
+})->middleware('auth');
 Route::post('billing/debtors/add', [
-    'before' => 'auth',
+    'middleware' => 'auth',
     'uses' => [DebtorsController::class, 'add'],
 ]);
 
@@ -45,8 +45,8 @@ Route::get('billing/debtor/edit/{id}', function ($id) {
         'title' => 'Factuur bewerken',
         'd' => $debtor,
     ]);
-})->before('auth');
-Route::post('billing/debtor/edit/{id}', [DebtorsController::class, 'edit'])->before('auth');
+})->middleware('auth');
+Route::post('billing/debtor/edit/{id}', [DebtorsController::class, 'edit'])->middleware('auth');
 
 Route::get('billing/debtor/delete/{id}', function ($id) {
     $debtor = new Debtors;
@@ -56,8 +56,8 @@ Route::get('billing/debtor/delete/{id}', function ($id) {
         'title' => 'Factuur verwijderen',
         'd' => $d,
     ]);
-})->before('auth');
-Route::post('billing/debtor/delete/{id}', [DebtorsController::class, 'delete'])->before('auth');
+})->middleware('auth');
+Route::post('billing/debtor/delete/{id}', [DebtorsController::class, 'delete'])->middleware('auth');
 
 /*
  * ======================
@@ -73,15 +73,15 @@ Route::get('billing/invoices', function () {
         'title' => 'Facturen',
         'invoices' => $aInvoices,
     ]);
-})->name('invoices')->before('auth');
+})->name('invoices')->middleware('auth');
 
 Route::get('billing/invoices/add', function () {
     return view('billing.invoices.add', [
         'title' => 'Factuur aanmaken',
     ]);
-})->before('auth');
+})->middleware('auth');
 Route::post('billing/invoices/add', [
-    'before' => 'auth',
+    'middleware' => 'auth',
     'uses' => [InvoiceController::class, 'add'],
 ]);
 
@@ -92,8 +92,8 @@ Route::get('billing/invoice/edit/{id}', function ($id) {
         'title' => 'Factuur bewerken',
         'i' => $invoice,
     ]);
-})->before('auth');
-Route::post('billing/invoice/edit/{id}', [InvoiceController::class, 'edit'])->before('auth');
+})->middleware('auth');
+Route::post('billing/invoice/edit/{id}', [InvoiceController::class, 'edit'])->middleware('auth');
 
 Route::get('billing/invoice/delete/{id}', function ($id) {
     $invoice = new Invoices;
@@ -103,8 +103,8 @@ Route::get('billing/invoice/delete/{id}', function ($id) {
         'title' => 'Factuur verwijderen',
         'i' => $i,
     ]);
-})->before('auth');
-Route::post('billing/invoice/delete/{id}', [InvoiceController::class, 'delete'])->before('auth');
+})->middleware('auth');
+Route::post('billing/invoice/delete/{id}', [InvoiceController::class, 'delete'])->middleware('auth');
 
 Route::get('billing/invoice/paid/{id}', function ($id) {
     $invoice = Invoices::where('cid', '=', Auth::user()->cid)->where('id', '=', $id)->first();
@@ -114,7 +114,7 @@ Route::get('billing/invoice/paid/{id}', function ($id) {
     Alert::success('Betaling opgeslagen')->flash();
 
     return redirect('/billing/invoices');
-})->before('auth');
+})->middleware('auth');
 
 Route::get('billing/invoice/send/{id}', function ($id) {
     $m = Layouts::getMail();
@@ -136,8 +136,8 @@ Route::get('billing/invoice/send/{id}', function ($id) {
 
         return Redirect::back();
     }
-})->before('auth');
-Route::post('billing/invoice/send/{id}', [InvoiceController::class, 'send'])->before('auth');
+})->middleware('auth');
+Route::post('billing/invoice/send/{id}', [InvoiceController::class, 'send'])->middleware('auth');
 
 /*
  * ======================
@@ -153,15 +153,15 @@ Route::get('billing/products', function () {
         'title' => 'Artikelen &amp; Diensten',
         'products' => $aProducts,
     ]);
-})->before('auth');
+})->middleware('auth');
 
 Route::get('billing/product/add', function () {
     return view('billing.products.add', [
         'title' => 'Artikel aanmaken',
     ]);
-})->before('auth');
+})->middleware('auth');
 Route::post('billing/product/add', [
-    'before' => 'auth',
+    'middleware' => 'auth',
     'uses' => [ProductsController::class, 'add'],
 ]);
 
@@ -172,9 +172,9 @@ Route::get('billing/product/edit/{id}', function ($id) {
         'title' => 'Artikel bewerken',
         'product' => $product,
     ]);
-})->before('auth');
+})->middleware('auth');
 Route::post('billing/product/edit/{id}', [
-    'before' => 'auth',
+    'middleware' => 'auth',
     'uses' => [ProductsController::class, 'edit'],
 ]);
 
@@ -185,8 +185,8 @@ Route::get('billing/product/delete/{id}', function ($id) {
         'title' => 'Artikel verwijderen',
         'p' => $p,
     ]);
-})->before('auth');
-Route::post('billing/product/delete/{id}', [ProductsController::class, 'delete'])->before('auth');
+})->middleware('auth');
+Route::post('billing/product/delete/{id}', [ProductsController::class, 'delete'])->middleware('auth');
 
 /*
  * ======================
@@ -198,14 +198,14 @@ Route::get('billing/settings/invoices', function () {
     return view('billing.settings.invoice.overview', [
         'title' => 'Factuur layouts',
     ]);
-})->name('settingsInvoices')->before('auth');
+})->name('settingsInvoices')->middleware('auth');
 
 Route::get('billing/settings/invoice/add', function () {
     return view('billing.settings.invoice.add', [
         'title' => 'Factuur layout toevoegen',
     ]);
-})->before('auth');
-Route::post('billing/settings/invoice/add', [SettingsController::class, 'saveInvoices'])->before('auth');
+})->middleware('auth');
+Route::post('billing/settings/invoice/add', [SettingsController::class, 'saveInvoices'])->middleware('auth');
 
 Route::get('billing/settings/invoice/edit/{id}', function ($id) {
     $invoice = Layouts::getInvoice($id)->first();
@@ -214,8 +214,8 @@ Route::get('billing/settings/invoice/edit/{id}', function ($id) {
         'title' => 'Factuur layout bewerken',
         'layout' => $invoice,
     ]);
-})->before('auth');
-Route::post('billing/settings/invoice/edit/{id}', [SettingsController::class, 'saveInvoices'])->before('auth');
+})->middleware('auth');
+Route::post('billing/settings/invoice/edit/{id}', [SettingsController::class, 'saveInvoices'])->middleware('auth');
 
 Route::get('billing/settings/invoice/delete/{id}', function ($id) {
     $invoice = Layouts::getInvoice($id)->first();
@@ -224,21 +224,21 @@ Route::get('billing/settings/invoice/delete/{id}', function ($id) {
         'title' => 'Factuur layout verwijderen',
         'layout' => $invoice,
     ]);
-})->before('auth');
-Route::post('billing/settings/invoice/delete/{id}', [SettingsController::class, 'deleteInvoice'])->before('auth');
+})->middleware('auth');
+Route::post('billing/settings/invoice/delete/{id}', [SettingsController::class, 'deleteInvoice'])->middleware('auth');
 
 Route::get('billing/settings/mails', function () {
     return view('billing.settings.mail.overview', [
         'title' => 'Mail layouts',
     ]);
-})->name('settingsMails')->before('auth');
+})->name('settingsMails')->middleware('auth');
 
 Route::get('billing/settings/mail/add', function () {
     return view('billing.settings.mail.add', [
         'title' => 'Mail layout toevoegen',
     ]);
-})->before('auth');
-Route::post('billing/settings/mail/add', [SettingsController::class, 'saveMails'])->before('auth');
+})->middleware('auth');
+Route::post('billing/settings/mail/add', [SettingsController::class, 'saveMails'])->middleware('auth');
 
 Route::get('billing/settings/mail/edit/{id}', function ($id) {
     $invoice = Layouts::getMail($id)->first();
@@ -247,8 +247,8 @@ Route::get('billing/settings/mail/edit/{id}', function ($id) {
         'title' => 'Factuur layout bewerken',
         'layout' => $invoice,
     ]);
-})->before('auth');
-Route::post('billing/settings/mail/edit/{id}', [SettingsController::class, 'saveMails'])->before('auth');
+})->middleware('auth');
+Route::post('billing/settings/mail/edit/{id}', [SettingsController::class, 'saveMails'])->middleware('auth');
 
 Route::get('billing/settings/mail/delete/{id}', function ($id) {
     $invoice = Layouts::getMail($id)->first();
@@ -257,14 +257,14 @@ Route::get('billing/settings/mail/delete/{id}', function ($id) {
         'title' => 'Factuur layout verwijderen',
         'layout' => $invoice,
     ]);
-})->before('auth');
-Route::post('billing/settings/mail/delete/{id}', [SettingsController::class, 'deleteMail'])->before('auth');
+})->middleware('auth');
+Route::post('billing/settings/mail/delete/{id}', [SettingsController::class, 'deleteMail'])->middleware('auth');
 
 Route::get('billing/settings/port', function () {
     return view('billing.settings.port.index');
-})->before('auth');
-Route::get('billing/settings/port/exportdebtors', [SettingsController::class, 'genDebtorsExport'])->before('auth');
-Route::get('billing/settings/port/exportbilling', [SettingsController::class, 'genBillingExport'])->before('auth');
+})->middleware('auth');
+Route::get('billing/settings/port/exportdebtors', [SettingsController::class, 'genDebtorsExport'])->middleware('auth');
+Route::get('billing/settings/port/exportbilling', [SettingsController::class, 'genBillingExport'])->middleware('auth');
 
 /*
  * ======================
@@ -284,7 +284,7 @@ Route::get('billing/getdebtor/{did}', function ($did) {
 		';
 
     return $html;
-})->before('auth');
+})->middleware('auth');
 
 Route::get('billing/getproduct/{pid}', function ($pid) {
     $product = Products::byID($pid);
@@ -306,7 +306,7 @@ Route::get('billing/getproduct/{pid}', function ($pid) {
     }
 
     echo json_encode($array, JSON_PRETTY_PRINT);
-})->before('auth');
+})->middleware('auth');
 
 /*
  * ======================
@@ -326,18 +326,18 @@ Route::get('billing/viewmail/{id}', function ($id) {
     return view('emails.invoice', [
         'id' => $id,
     ]);
-})->before('auth');
+})->middleware('auth');
 
 Route::get('billing/viewpdf/{id}', function ($id) {
     return view('billing.pdf', [
         'id' => $id,
     ]);
-})->before('auth');
+})->middleware('auth');
 
 Route::get('billing/checkinvoicenumber/{id}', function ($id) {
     $check = Invoices::where('invoicenumber', '=', $id)->where('cid', '=', Auth::user()->cid);
     echo $check->count();
-})->before('auth');
+})->middleware('auth');
 
 Route::get('billing/pdf/{action}/{id}', function ($action, $id) {
     $i = Invoices::where('id', '=', $id)->where('cid', '=', Auth::user()->cid)->first();
@@ -389,4 +389,4 @@ Route::get('billing/pdf/{action}/{id}', function ($action, $id) {
         return $pdf->download($i->invoicenumber.'.pdf');
     }
 
-})->before('auth');
+})->middleware('auth');

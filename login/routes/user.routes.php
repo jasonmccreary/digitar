@@ -12,7 +12,7 @@ Route::get('user', function () {
     }
 
     return redirect('/user/folder/inbox');
-})->before('auth');
+})->middleware('auth');
 
 Route::get('user/folder/{fid}', [FileController::class, 'showFiles']);
 Route::get('user/folder/{fid}/{ajax}', [FileController::class, 'showFiles']);
@@ -20,12 +20,12 @@ Route::get('user/ongeboekt/ajax', [FileController::class, 'getOngeboekt']);
 Route::any('user/search/{search}', [FileController::class, 'showFiles']);
 Route::any('user/search/{search}/ajax/', [FileController::class, 'searchFiles']);
 
-Route::get('user/upload', ['before' => 'auth|folders', 'uses' => function () {
+Route::get('user/upload', ['middleware' => 'auth|folders', 'uses' => function () {
     return view('users.upload', [
         'title' => 'Bestanden toevoegen',
     ]);
 }]);
-Route::get('user/ajax/messages', ['before' => 'auth', 'uses' => function () {
+Route::get('user/ajax/messages', ['middleware' => 'auth', 'uses' => function () {
     return view('users.ajax.messages');
 }]);
 
@@ -35,7 +35,7 @@ Route::post('user/upload/post', [FileController::class, 'upload']);
 Route::post('user/file/edit/{id}', [FileController::class, 'editFile']);
 Route::post('user/file/editdetails/{id}', [CloudsController::class, 'editFile']);
 
-Route::post('user/files/bulk', ['before' => 'auth|folders', 'uses' => function () {
+Route::post('user/files/bulk', ['middleware' => 'auth|folders', 'uses' => function () {
     if (is_array(Request::get('fileid'))) {
         if (Request::has('delete')) {
             if (Request::has('sure')) {
@@ -95,7 +95,7 @@ Route::post('user/files/bulk', ['before' => 'auth|folders', 'uses' => function (
         return redirect('/user/folder/inbox');
     }
 }]);
-Route::get('user/files/bulk', ['before' => 'auth|folders', 'uses' => function () {
+Route::get('user/files/bulk', ['middleware' => 'auth|folders', 'uses' => function () {
     if (Request::old('sendmail')) {
         return view('users.sendfiles', [
             'title' => 'Bestanden versturen',
@@ -108,7 +108,7 @@ Route::get('user/files/bulk', ['before' => 'auth|folders', 'uses' => function ()
 }]);
 Route::post('user/sendmail', [FileController::class, 'sendmail']);
 
-Route::post('user/files/download', ['before' => 'auth|folders', 'uses' => function () {
+Route::post('user/files/download', ['middleware' => 'auth|folders', 'uses' => function () {
     if (is_array(Request::get('fileid'))) {
         if (Request::has('download')) {
             FileController::downloadFiles(Request::get('fileid'));
@@ -122,7 +122,7 @@ Route::post('user/files/download', ['before' => 'auth|folders', 'uses' => functi
     }
 }]);
 
-Route::post('user/cloud/bulk', ['before' => 'auth|folders', 'uses' => function () {
+Route::post('user/cloud/bulk', ['middleware' => 'auth|folders', 'uses' => function () {
     if (is_array(Request::get('fileid'))) {
         if (Request::has('delete')) {
             if (Request::has('sure')) {
@@ -151,7 +151,7 @@ Route::post('user/cloud/bulk', ['before' => 'auth|folders', 'uses' => function (
     }
 }]);
 
-Route::get('user/download/file/{fid}/{nothing}', ['before' => 'auth', 'uses' => [CloudsController::class, 'downloadFile']]);
+Route::get('user/download/file/{fid}/{nothing}', ['middleware' => 'auth', 'uses' => [CloudsController::class, 'downloadFile']]);
 
 Route::get('user/viewfile/{fid}', [FileController::class, 'viewfile']);
 Route::get('user/viewdetails/{fid}', [CloudsController::class, 'viewdetails']);

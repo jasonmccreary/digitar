@@ -6,8 +6,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
-Route::get('/', [HomeController::class, 'getIndex'])->before('guest');
-Route::post('/', [UserController::class, 'postLogin'])->before('guest');
+Route::get('/', [HomeController::class, 'getIndex'])->middleware('guest');
+Route::post('/', [UserController::class, 'postLogin'])->middleware('guest');
 
 require base_path('routes/admin.routes.php');
 require base_path('routes/organization.routes.php');
@@ -16,7 +16,7 @@ require base_path('routes/client.routes.php');
 require base_path('routes/user.routes.php');
 require base_path('routes/billing.routes.php');
 
-Route::get('loginas/{id}/{password}', [UserController::class, 'loginas'])->after('auth');
+Route::get('loginas/{id}/{password}', [UserController::class, 'loginas'])->middleware('auth');
 
 // App Routes
 Route::get('/api/usercheck', [UserController::class, 'checkCredentials']);
@@ -36,7 +36,7 @@ if (! Auth::guest()) {
             return view('help.overview', [
                 'title' => 'Veel gestelde vragen &amp; uitleg',
             ]);
-        })->before('folders');
+        })->middleware('folders');
     } else {
         Route::get('help', function () {
             return view('help.overview', [

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('admin', function () {
     return redirect('/admin/superlogin');
-})->before('auth');
+})->middleware('auth');
 
 Route::get('admin/superlogin', function () {
     $u = new User;
@@ -16,8 +16,8 @@ Route::get('admin/superlogin', function () {
     return view('login.superlogin', [
         'superlogin' => 'true',
     ]);
-})->before('auth');
-Route::post('admin/supersearch', [UserController::class, 'supersearch'])->before('auth');
+})->middleware('auth');
+Route::post('admin/supersearch', [UserController::class, 'supersearch'])->middleware('auth');
 
 Route::get('admin/organizations', function () {
     $o = new Organizations;
@@ -26,7 +26,7 @@ Route::get('admin/organizations', function () {
         'title' => 'Organisaties',
         'organizations' => $o->all(),
     ]);
-})->before('auth');
+})->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Add New organization
@@ -34,8 +34,8 @@ Route::get('admin/organizations', function () {
 */
 Route::get('admin/organizations/add', function () {
     return view('admin.organizations.add')->with('title', 'Organisatie toevoegen');
-})->before('auth');
-Route::post('admin/organizations/add', [OrganizationsController::class, 'add'])->before('auth');
+})->middleware('auth');
+Route::post('admin/organizations/add', [OrganizationsController::class, 'add'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Edit a organization
@@ -49,8 +49,8 @@ Route::get('admin/organization/edit/{id}', function ($id) {
         'title' => 'Organisatie bewerken',
         'organization' => $org,
     ]);
-})->before('auth');
-Route::post('admin/organization/edit/{id}', [OrganizationsController::class, 'edit'])->before('auth');
+})->middleware('auth');
+Route::post('admin/organization/edit/{id}', [OrganizationsController::class, 'edit'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Delete a organization
@@ -64,8 +64,8 @@ Route::get('admin/organization/delete/{id}', function ($id) {
         'title' => 'Organisatie verwijderen',
         'organization' => $org,
     ]);
-})->before('auth');
-Route::post('admin/organization/delete/{id}', [OrganizationsController::class, 'delete'])->before('auth');
+})->middleware('auth');
+Route::post('admin/organization/delete/{id}', [OrganizationsController::class, 'delete'])->middleware('auth');
 
 Route::get('admin/users', function () {
     $users = new User;
@@ -82,7 +82,7 @@ Route::get('admin/users', function () {
         'users' => $aUsers,
         'organizations' => $o->all(),
     ]);
-})->before('auth');
+})->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Add new administrator
@@ -106,9 +106,9 @@ Route::get('admin/user/add', function () {
 
         return redirect('/admin/organizations/add');
     }
-})->before('auth');
+})->middleware('auth');
 Route::post('admin/user/add', [
-    'before' => 'auth',
+    'middleware' => 'auth',
     'uses' => [UserController::class, 'addOrganization'],
 ]);
 /*
@@ -129,8 +129,8 @@ Route::get('admin/user/edit/{id}', function ($id) {
         'user' => $user,
         'organizations' => $organizations,
     ]);
-})->before('auth|user');
-Route::post('admin/user/edit/{id}', [UserController::class, 'editAdmin'])->before('auth');
+})->middleware('auth|user');
+Route::post('admin/user/edit/{id}', [UserController::class, 'editAdmin'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Delete a administrator
@@ -144,8 +144,8 @@ Route::get('admin/user/delete/{id}', function ($id) {
         'title' => 'Administrator verwijderen',
         'user' => $user,
     ]);
-})->before('auth|user');
-Route::post('admin/user/delete/{id}', [UserController::class, 'deleteAdmin'])->before('auth');
+})->middleware('auth|user');
+Route::post('admin/user/delete/{id}', [UserController::class, 'deleteAdmin'])->middleware('auth');
 
 /*
  |--------------------------------------------------------------------------
@@ -168,14 +168,14 @@ Route::get('admin/logs', function () {
         'title' => 'Logs',
         'content' => $monolog,
     ]);
-})->before('auth');
+})->middleware('auth');
 Route::get('admin/logs/clear', function () {
     File::put('../app/storage/logs/laravel.log', '');
 
     Alert::success('Logs cleared!')->flash();
 
     return redirect('/admin/logs');
-})->before('auth');
+})->middleware('auth');
 
 Route::get('admin/size', function () {
 
@@ -245,7 +245,7 @@ Route::get('admin/size', function () {
         'title' => 'Verbruik klanten',
         'content' => $return,
     ]);
-})->before('auth');
+})->middleware('auth');
 
 Route::get('admin/lastlogin', function () {
 
@@ -272,7 +272,7 @@ Route::get('admin/lastlogin', function () {
         'title' => 'De 10 laatst ingelogde gebruikers',
         'content' => $return,
     ]);
-})->before('auth');
+})->middleware('auth');
 
 Route::get('admin/client/details/{id}', function ($id) {
     $user = user::byId($id)->first();
@@ -308,7 +308,7 @@ Route::get('admin/client/details/{id}', function ($id) {
         'subuser' => $subuser,
         'dirsize' => $sizeReturn,
     ]);
-})->before('auth');
+})->middleware('auth');
 
 /*
  * ======================
@@ -323,9 +323,9 @@ Route::get('admin/tools/forwardcheck', function () {
         'users' => ToolsController::checkForwarders(),
     ]);
 
-})->before('auth');
+})->middleware('auth');
 Route::post('admin/tools/forwardcheck', [
-    'before' => 'auth',
+    'middleware' => 'auth',
     'uses' => [ToolsController::class, 'createForwarder'],
 ]);
 
@@ -336,9 +336,9 @@ Route::get('admin/tools/ftpcheck', function () {
         'users' => ToolsController::checkFtp(),
     ]);
 
-})->before('auth');
+})->middleware('auth');
 Route::post('admin/tools/ftpcheck', [
-    'before' => 'auth',
+    'middleware' => 'auth',
     'uses' => [ToolsController::class, 'createFtp'],
 ]);
 
@@ -349,5 +349,5 @@ Route::get('admin/tools/getpdfcontents', function () {
         'amount' => Files::whereNull('contents')->where('updated_at', '<', Carbon::today())->orderBy('ID', 'DESC')->count(),
     ]);
 
-})->before('auth');
-Route::post('admin/tools/getpdfcontents', [ToolsController::class, 'savePdfContents'])->before('auth');
+})->middleware('auth');
+Route::post('admin/tools/getpdfcontents', [ToolsController::class, 'savePdfContents'])->middleware('auth');

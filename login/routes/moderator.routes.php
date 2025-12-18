@@ -2,7 +2,7 @@
 
 Route::get('moderator', function () {
     return redirect('/moderator/users');
-})->before('auth');
+})->middleware('auth');
 Route::get('moderator/users', function () {
     $users = new Usermods;
     $u = Usermods::join('users', 'users.id', '=', 'usermods.uid');
@@ -22,4 +22,4 @@ Route::get('moderator/users', function () {
         'title' => 'Gebruikers',
         'users' => $aUsers,
     ]);
-})->before('auth');
+})->middleware('auth');
