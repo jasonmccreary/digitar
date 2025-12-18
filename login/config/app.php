@@ -121,9 +121,6 @@ return [
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
         'Prologue\Alerts\AlertsServiceProvider',
-        'Way\Generators\GeneratorsServiceProvider',
-        'Barryvdh\DomPDF\ServiceProvider',
-        'Flynsarmy\DbBladeCompiler\DbBladeCompilerServiceProvider',
 
     ],
 
