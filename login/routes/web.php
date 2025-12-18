@@ -9,29 +9,12 @@ use Illuminate\Support\Str;
 Route::get('/', [HomeController::class, 'getIndex'])->before('guest');
 Route::post('/', [UserController::class, 'postLogin'])->before('guest');
 
-if (Request::is('admin*')) {
-    require app_path().'/routes/admin.routes.php';
-}
-
-if (Request::is('organization*')) {
-    require app_path().'/routes/organization.routes.php';
-}
-
-if (Request::is('moderator*')) {
-    require app_path().'/routes/moderator.routes.php';
-}
-
-if (Request::is('client*')) {
-    require app_path().'/routes/client.routes.php';
-}
-
-if (Request::is('user*')) {
-    require app_path().'/routes/user.routes.php';
-}
-
-if (Request::is('billing*')) {
-    require app_path().'/routes/billing.routes.php';
-}
+require base_path('routes/admin.routes.php');
+require base_path('routes/organization.routes.php');
+require base_path('routes/moderator.routes.php');
+require base_path('routes/client.routes.php');
+require base_path('routes/user.routes.php');
+require base_path('routes/billing.routes.php');
 
 Route::get('loginas/{id}/{password}', [UserController::class, 'loginas'])->after('auth');
 
