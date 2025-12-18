@@ -1,4 +1,9 @@
 <?php
+namespace App\Http\Controllers;
+
+use App\Usermods;
+use Illuminate\Support\Facades\Input;
+
 
 class ModeratorController extends Controller
 {

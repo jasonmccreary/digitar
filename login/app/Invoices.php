@@ -1,5 +1,8 @@
 <?php
 
+namespace App;
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Invoices extends Model
@@ -93,6 +96,6 @@ class Invoices extends Model
 
     public function debtor()
     {
-        return $this->belongsTo('Debtors', 'did', 'id');
+        return $this->belongsTo('App\Debtors', 'did', 'id');
     }
 }

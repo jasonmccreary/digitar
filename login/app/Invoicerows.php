@@ -1,11 +1,13 @@
 <?php
 
+namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Invoicerows extends Model
 {
     public function product()
     {
-        return $this->belongsTo('Products', 'pid', 'id');
+        return $this->belongsTo('App\Products', 'pid', 'id');
     }
 }

@@ -1,5 +1,16 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Invoices;
+use Illuminate\Support\Facades\Response;
+use App\Debtors;
+use App\User;
+use Illuminate\Support\Facades\Redirect;
+use Prologue\Alerts\Facades\Alert;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Auth;
+use App\Layouts;
 use Carbon\Carbon;
 
 class SettingsController extends Controller

@@ -1,4 +1,13 @@
 <?php
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
+use App\Products;
+use Prologue\Alerts\Facades\Alert;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
+
 
 class ProductsController extends Controller
 {

@@ -1,5 +1,9 @@
 <?php
 
+namespace App;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Files extends Model
@@ -52,11 +56,11 @@ class Files extends Model
 
     public function folder()
     {
-        return $this->belongsTo('Folder', 'fid', 'id');
+        return $this->belongsTo('App\Folder', 'fid', 'id');
     }
 
     // public function userss() {
-    // 	return $this->belongsTo('User','uid','id');
+    // 	return $this->belongsTo('App\User','uid','id');
     // }
 
     public function rights()

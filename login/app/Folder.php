@@ -1,5 +1,8 @@
 <?php
 
+namespace App;
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Folder extends Model
@@ -59,6 +62,6 @@ class Folder extends Model
 
     public function rights()
     {
-        return $this->belongsTo('Folderright', 'id', 'fid');
+        return $this->belongsTo('App\Folderright', 'id', 'fid');
     }
 }

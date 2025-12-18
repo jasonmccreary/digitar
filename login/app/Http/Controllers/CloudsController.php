@@ -1,4 +1,17 @@
 <?php
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Prologue\Alerts\Facades\Alert;
+use App\User;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+use App\Cloud;
+use Illuminate\Support\Facades\View;
+
 
 class CloudsController extends Controller
 {
