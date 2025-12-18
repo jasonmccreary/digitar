@@ -29,7 +29,7 @@ Route::get('admin/organizations', function () {
  |--------------------------------------------------------------------------
 */
 Route::get('admin/organizations/add', function () {
-    return view('admin.organizations.add')->withTitle('Organisatie toevoegen');
+    return view('admin.organizations.add')->with('title', 'Organisatie toevoegen');
 })->before('auth');
 Route::post('admin/organizations/add', 'OrganizationsController@add')->before('auth');
 /*
