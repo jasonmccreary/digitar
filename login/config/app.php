@@ -162,6 +162,4 @@ return [
         'Seeder' => 'Illuminate\Database\Seeder',
     ])->toArray(),
 
-    'cipher' => MCRYPT_RIJNDAEL_256,
-
 ];
