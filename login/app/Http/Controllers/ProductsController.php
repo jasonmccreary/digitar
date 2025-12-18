@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Products;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Prologue\Alerts\Facades\Alert;
 
@@ -26,7 +26,7 @@ class ProductsController extends Controller
             'price.required' => 'Het veld "Prijs excl. Btw" is verplicht.',
         ];
 
-        $v = Validator::make(Input::all(), $rules, $messages);
+        $v = Validator::make(Request::all(), $rules, $messages);
         if ($v->fails()) {
             foreach ($v->messages()->all() as $message) {
                 Alert::error($message)->flash();
@@ -36,12 +36,12 @@ class ProductsController extends Controller
         } else {
             $p = new Products;
             $p->cid = Auth::user()->cid;
-            $p->ledger = Input::get('ledger');
-            $p->productnumber = Input::get('productnumber');
-            $p->name = Input::get('name');
-            $p->description = Input::get('description');
-            $p->price = priceToDB(Input::get('price'));
-            $p->tax = Input::get('tax');
+            $p->ledger = Request::get('ledger');
+            $p->productnumber = Request::get('productnumber');
+            $p->name = Request::get('name');
+            $p->description = Request::get('description');
+            $p->price = priceToDB(Request::get('price'));
+            $p->tax = Request::get('tax');
             $p->save();
 
             Alert::success('Product toegevoegd!')->flash();
@@ -65,7 +65,7 @@ class ProductsController extends Controller
             'price.required' => 'Het veld "Prijs excl. Btw" is verplicht.',
         ];
 
-        $v = Validator::make(Input::all(), $rules, $messages);
+        $v = Validator::make(Request::all(), $rules, $messages);
         if ($v->fails()) {
             foreach ($v->messages()->all() as $message) {
                 Alert::error($message)->flash();
@@ -75,18 +75,18 @@ class ProductsController extends Controller
         } else {
             $p = Products::byID($id)->first();
 
-            if (Products::numberExists(Input::get('productnumber'))->count() > 0 && $p->productnumber != Input::get('productnumber')) {
+            if (Products::numberExists(Request::get('productnumber'))->count() > 0 && $p->productnumber != Request::get('productnumber')) {
                 Alert::error('Artikelnummer bestaat al!')->flash();
 
-                return Redirect::back()->withInput(Input::except('productnumber'));
+                return Redirect::back()->withInput(Request::except('productnumber'));
             }
 
-            $p->ledger = Input::get('ledger');
-            $p->productnumber = Input::get('productnumber');
-            $p->name = Input::get('name');
-            $p->description = Input::get('description');
-            $p->price = priceToDB(Input::get('price'));
-            $p->tax = Input::get('tax');
+            $p->ledger = Request::get('ledger');
+            $p->productnumber = Request::get('productnumber');
+            $p->name = Request::get('name');
+            $p->description = Request::get('description');
+            $p->price = priceToDB(Request::get('price'));
+            $p->tax = Request::get('tax');
 
             $p->save();
 
@@ -98,7 +98,7 @@ class ProductsController extends Controller
 
     public function delete($id)
     {
-        if (Input::get('delete') == 'true') {
+        if (Request::get('delete') == 'true') {
             $p = Products::byID($id);
             $p->delete();
 

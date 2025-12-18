@@ -27,7 +27,7 @@
 					<span class="help">Geef het email adres op van de persoon waar de documenten heen moeten</span>
 					<span class="help"></span>
 					<div class="controls">
-						<input type="text" name="to" class="form-control " value="{!! Input::old('to') !!}">
+						<input type="text" name="to" class="form-control " value="{!! Request::old('to') !!}">
 					</div>
 				</div>
 			</div>
@@ -36,7 +36,7 @@
 					<label class="form-label">Onderwerp</label>
 					<span class="help">Geef het onderwerp van de mail op bijv. "Factuur van T-mobile"</span>
 					<div class="controls">
-						<input type="text" name="subject" class="form-control " value="{!! Input::old('subject') !!}">
+						<input type="text" name="subject" class="form-control " value="{!! Request::old('subject') !!}">
 					</div>
 				</div>
 			</div>
@@ -45,7 +45,7 @@
 					<label class="form-label">Bericht</label>
 					<span class="help">Een begeleidend bericht aan de ontvanger</span>
 					<div class="controls">
-						<textarea id="text-editor" name="message" class="form-control" rows="15" style="font-family:arial,verdana,san-serif;">{!! Input::old('message') !!}</textarea>
+						<textarea id="text-editor" name="message" class="form-control" rows="15" style="font-family:arial,verdana,san-serif;">{!! Request::old('message') !!}</textarea>
 					</div>
 				</div>
 			</div>

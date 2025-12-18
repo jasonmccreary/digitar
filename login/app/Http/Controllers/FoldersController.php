@@ -7,8 +7,8 @@ use App\Folder;
 use App\Folderright;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +18,7 @@ class FoldersController extends Controller
 {
     public function add()
     {
-        $input = Input::all();
+        $input = Request::all();
 
         $rules = [
             'mapname' => 'alpha_space',
@@ -35,7 +35,7 @@ class FoldersController extends Controller
         } else {
             $f = new Folder;
 
-            $check = $f->where('name', '=', Input::get('mapname'))->where('uid', '=', Auth::user()->id);
+            $check = $f->where('name', '=', Request::get('mapname'))->where('uid', '=', Auth::user()->id);
             if ($check->count() > 0) {
                 Alert::error('De map naam bestaat al.')->flash();
 
@@ -45,12 +45,12 @@ class FoldersController extends Controller
             $order = Folder::getAllUserFolders(true)->max('order') + 1;
 
             $f->uid = Auth::user()->id;
-            $f->name = Input::get('mapname');
-            $f->color = Input::get('color');
-            if (is_numeric(Input::get('parent'))) {
-                $pf = Folder::where('id', '=', Input::get('parent'));
+            $f->name = Request::get('mapname');
+            $f->color = Request::get('color');
+            if (is_numeric(Request::get('parent'))) {
+                $pf = Folder::where('id', '=', Request::get('parent'));
                 if ($pf->count() > 0) {
-                    $f->pid = Input::get('parent');
+                    $f->pid = Request::get('parent');
                     $pf = $pf->first();
                 } else {
                     unset($pf);
@@ -58,7 +58,7 @@ class FoldersController extends Controller
             } else {
                 $f->pid = null;
             }
-            if (Input::has('geboekt') || isset($pf) && $pf->bookedcheck == 1) {
+            if (Request::has('geboekt') || isset($pf) && $pf->bookedcheck == 1) {
                 $f->bookedcheck = 1;
             } else {
                 $f->bookedcheck = 0;
@@ -80,7 +80,7 @@ class FoldersController extends Controller
             'color' => 'required',
         ];
 
-        $v = Validator::make(Input::all(), $rules);
+        $v = Validator::make(Request::all(), $rules);
         if ($v->fails()) {
             foreach ($v->messages()->all() as $message) {
                 Alert::error($message)->flash();
@@ -88,7 +88,7 @@ class FoldersController extends Controller
                 return Redirect::back()->withInput();
             }
         } else {
-            if (Input::get('parent') == $id) {
+            if (Request::get('parent') == $id) {
                 Alert::error('De hoofdmap mag niet het zelfde zijn.')->flash();
 
                 return Redirect::back()->withInput();
@@ -96,12 +96,12 @@ class FoldersController extends Controller
             $folder = new Folder;
             $f = $folder->find($id);
 
-            $f->name = Input::get('mapname');
-            $f->color = Input::get('color');
-            if (is_numeric(Input::get('parent'))) {
-                $pf = $folder->where('id', '=', Input::get('parent'));
+            $f->name = Request::get('mapname');
+            $f->color = Request::get('color');
+            if (is_numeric(Request::get('parent'))) {
+                $pf = $folder->where('id', '=', Request::get('parent'));
                 if ($pf->count() > 0) {
-                    $f->pid = Input::get('parent');
+                    $f->pid = Request::get('parent');
                     $pf = $pf->first();
                 } else {
                     unset($pf);
@@ -109,7 +109,7 @@ class FoldersController extends Controller
             } else {
                 $f->pid = null;
             }
-            if (Input::has('geboekt') || isset($pf) && $pf->bookedcheck == 1) {
+            if (Request::has('geboekt') || isset($pf) && $pf->bookedcheck == 1) {
                 $f->bookedcheck = 1;
             } else {
                 $f->bookedcheck = 0;
@@ -125,7 +125,7 @@ class FoldersController extends Controller
 
     public function delete($id)
     {
-        if (Input::get('delete') == 'true') {
+        if (Request::get('delete') == 'true') {
             $sf = new Folder;
 
             $folder = $sf->find($id);
@@ -142,7 +142,7 @@ class FoldersController extends Controller
 
     public function deleteUser($uid)
     {
-        if (Input::get('delete') == 'true') {
+        if (Request::get('delete') == 'true') {
 
             foreach (Folder::where('uid', '=', $uid)->get() as $f) {
 

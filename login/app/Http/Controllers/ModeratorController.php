@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Usermods;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 
 class ModeratorController extends Controller
 {
     public static function edit($uid)
     {
 
-        // Alert::info(print_r(Input::get('mod'),true))->flash();
+        // Alert::info(print_r(Request::get('mod'),true))->flash();
         // return Redirect::back();
 
         $dd = [];
         $add = [];
 
-        if (is_array(Input::get('mod'))) {
-            foreach (Input::get('mod') as $modid => $val) {
+        if (is_array(Request::get('mod'))) {
+            foreach (Request::get('mod') as $modid => $val) {
                 $um = Usermods::where('modid', '=', $modid);
                 $um->where('uid', '=', $uid);
 

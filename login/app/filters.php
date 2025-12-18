@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Request;
+
 Validator::extend('alpha_space', function ($attr, $value) {
     return preg_match('/^[A-Za-z0-9_\- ]+$/', $value);
 });
@@ -137,7 +139,7 @@ Route::filter('guest', function () {
 */
 
 Route::filter('csrf', function () {
-    if (Session::token() != Input::get('_token')) {
+    if (Session::token() != Request::get('_token')) {
         throw new Illuminate\Session\TokenMismatchException;
     }
 });

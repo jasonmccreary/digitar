@@ -87,7 +87,7 @@ $aYears = Files::getYears();
             <span class="add-on"><span class="iconset top-search"></span></span>
             @if (Request::is('billing*'))
               <form method="POST" action="/billing/search" style="float:left;">
-                <input name="billing-search" value="{!! e(Input::get('search')) !!}" type="text" class="no-boarder" autocomplete="off" placeholder="Doorzoek facturatie" style="width:350px;">
+                <input name="billing-search" value="{!! e(Request::get('search')) !!}" type="text" class="no-boarder" autocomplete="off" placeholder="Doorzoek facturatie" style="width:350px;">
               </form>
             @else
               {{-- <form method="POST" action="/user/search" style="float:left;"> --}}

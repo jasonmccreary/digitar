@@ -9,7 +9,6 @@ use App\Messages;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
@@ -246,7 +245,7 @@ class FileController extends Controller
             return Redirect::back();
         }
 
-        $input = Input::all();
+        $input = Request::all();
 
         $rules = [
             'folder' => 'required',
@@ -281,11 +280,11 @@ class FileController extends Controller
 
             // $file = new Files();
             // $f = $file->find($id);
-            $f->fid = Input::get('folder');
-            $f->geboekt = Input::get('geboekt');
-            $f->name = Input::get('name');
-            $f->date = date('Y-m-d H:i:s', strtotime(Input::get('date')));
-            $f->note = Input::get('note');
+            $f->fid = Request::get('folder');
+            $f->geboekt = Request::get('geboekt');
+            $f->name = Request::get('name');
+            $f->date = date('Y-m-d H:i:s', strtotime(Request::get('date')));
+            $f->note = Request::get('note');
             $f->save();
 
         }
@@ -654,15 +653,15 @@ class FileController extends Controller
 
     public function upload()
     {
-        $input = Input::all();
-        $file = Input::file('file');
+        $input = Request::all();
+        $file = Request::file('file');
         // dd($file);
         if (! is_object($file)) {
             return response('Geen geldig bestands type.', 400);
         }
 
-        if (Input::get('userid')) {
-            Auth::loginUsingId(Input::get('userid'));
+        if (Request::get('userid')) {
+            Auth::loginUsingId(Request::get('userid'));
         }
 
         $v1 = Validator::make($input, ['file' => 'mimes:jpg,jpeg,png,pdf|max:10240']);
@@ -677,19 +676,19 @@ class FileController extends Controller
                 ->first();
 
             $destinationPath = '../../../clients/'.$organization->username.'/'.$client->username.'';
-            $filename = str_random(32).'.'.Input::file('file')->getClientOriginalExtension();
+            $filename = str_random(32).'.'.Request::file('file')->getClientOriginalExtension();
             while (File::exists($destinationPath.'/'.$filename)) {
-                $filename = str_random(32).'.'.Input::file('file')->getClientOriginalExtension();
+                $filename = str_random(32).'.'.Request::file('file')->getClientOriginalExtension();
             }
 
-            $upload_success = Input::file('file')->move($destinationPath, $filename);
+            $upload_success = Request::file('file')->move($destinationPath, $filename);
 
             // compress
 
             if ($upload_success) {
                 $compressPath = '../../../clients/'.$organization->username.'/'.$client->username.'/';
                 $tmpPath = '../tmp/';
-                $filenameTxt = str_replace(Input::file('file')->getClientOriginalExtension(), '.txt', $filename);
+                $filenameTxt = str_replace(Request::file('file')->getClientOriginalExtension(), '.txt', $filename);
 
                 $io = shell_exec("pdftotext '".$compressPath.$filename."' '".$tmpPath.$filenameTxt."'");
                 if (file_exists($tmpPath.$filenameTxt)) {
@@ -699,21 +698,21 @@ class FileController extends Controller
                     $fileContents = null;
                 }
 
-                if (in_array(Input::file('file')->getClientOriginalExtension(), ['png', 'jpg', 'jpeg'])) {
-                    $filename2 = str_replace(Input::file('file')->getClientOriginalExtension(), 'pdf', $filename);
+                if (in_array(Request::file('file')->getClientOriginalExtension(), ['png', 'jpg', 'jpeg'])) {
+                    $filename2 = str_replace(Request::file('file')->getClientOriginalExtension(), 'pdf', $filename);
                     exec('convert '.$compressPath.$filename.' '.$compressPath.$filename2.'');
                     unlink($compressPath.$filename);
                     $filename = $filename2;
                 }
 
-                if (Input::get('filename')) {
-                    $savefilename = Input::get('filename');
+                if (Request::get('filename')) {
+                    $savefilename = Request::get('filename');
                 } else {
                     $savefilename = $file->getClientOriginalName();
                 }
                 $newfile = $this->addFile($savefilename, $filename, $client->id, $fileContents);
 
-                $fidnf = (Input::get('fid') * 1);
+                $fidnf = (Request::get('fid') * 1);
                 if (is_numeric($fidnf) && $fidnf > 0) {
                     $newfile->fid = $fidnf;
                     $newfile->save();
@@ -751,12 +750,12 @@ class FileController extends Controller
                 ->first();
 
             $destinationPath = '../../../clients/'.$organization->username.'/'.$client->username.'';
-            $filename = str_random(32).'.'.Input::file('file')->getClientOriginalExtension();
+            $filename = str_random(32).'.'.Request::file('file')->getClientOriginalExtension();
             while (File::exists($destinationPath.'/'.$filename)) {
-                $filename = str_random(32).'.'.Input::file('file')->getClientOriginalExtension();
+                $filename = str_random(32).'.'.Request::file('file')->getClientOriginalExtension();
             }
 
-            $upload_success = Input::file('file')->move($destinationPath, $filename);
+            $upload_success = Request::file('file')->move($destinationPath, $filename);
 
             // compress
 
@@ -855,7 +854,7 @@ class FileController extends Controller
 
     public function sendmail()
     {
-        $input = Input::all();
+        $input = Request::all();
 
         $rules = [
             'to' => 'required|email',
@@ -879,15 +878,15 @@ class FileController extends Controller
             return Redirect::back()->withInput();
         } else {
 
-            Mail::queue('emails.files', Input::all(), function ($message) {
+            Mail::queue('emails.files', Request::all(), function ($message) {
 
                 $org = User::where('id', '=', Auth::user()->oid)->first();
                 $client = User::where('id', '=', Auth::user()->cid)->first();
 
                 $message->from($client->username.'@digitar.nu', $client->name);
-                $message->to(Input::get('to'))->subject(Input::get('subject'));
+                $message->to(Request::get('to'))->subject(Request::get('subject'));
 
-                foreach (Input::get('fileid') as $fileid => $filename) {
+                foreach (Request::get('fileid') as $fileid => $filename) {
                     $file = Files::getFileById($fileid);
 
                     $pathToFile = '/home/digitar/clients/'.$org->username.'/'.$client->username.'/'.$file->file;

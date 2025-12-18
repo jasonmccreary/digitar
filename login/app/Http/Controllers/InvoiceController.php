@@ -8,7 +8,6 @@ use App\Invoices;
 use App\Layouts;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -35,57 +34,57 @@ class InvoiceController extends Controller
             'date' => 'required',
         ];
 
-        $v = Validator::make(Input::all(), $rules);
+        $v = Validator::make(Request::all(), $rules);
         if ($v->fails()) {
             foreach ($v->messages()->all() as $message) {
                 Alert::error($message)->flash();
             }
 
-            return Redirect::back()->withInput(Input::only('reference', 'debtor', 'invoicenumber', 'date'));
+            return Redirect::back()->withInput(Request::only('reference', 'debtor', 'invoicenumber', 'date'));
         } else {
             $invoice = new Invoices;
             $countRows = 0;
 
-            $check = $invoice->where('invoicenumber', '=', Input::get('invoicenumber'))->where('cid', '=', Auth::user()->cid);
+            $check = $invoice->where('invoicenumber', '=', Request::get('invoicenumber'))->where('cid', '=', Auth::user()->cid);
             if ($check->count() > 0) {
                 Alert::error('Dit factuurnummer nummer bestaat al.')->flash();
 
-                return Redirect::back()->withInput(Input::only('reference', 'debtor', 'date'));
+                return Redirect::back()->withInput(Request::only('reference', 'debtor', 'date'));
             }
 
             $invoice->cid = Auth::user()->cid;
             $invoice->uid = Auth::user()->id;
-            $invoice->did = Input::get('debtor');
-            $invoice->invoicenumber = Input::get('invoicenumber');
-            $invoice->reference = Input::get('reference');
-            $invoice->layout = Input::get('layout');
-            $invoice->date = date('Y-m-d H:i:s', strtotime(Input::get('date')));
+            $invoice->did = Request::get('debtor');
+            $invoice->invoicenumber = Request::get('invoicenumber');
+            $invoice->reference = Request::get('reference');
+            $invoice->layout = Request::get('layout');
+            $invoice->date = date('Y-m-d H:i:s', strtotime(Request::get('date')));
 
             $invoice->save();
             $invoiceId = $invoice->id;
 
-            for ($i = 0; $i < count(Input::get('r-type')); $i++) {
+            for ($i = 0; $i < count(Request::get('r-type')); $i++) {
                 $ir = new Invoicerows;
-                if (Input::get('r-type.'.$i) == 9) {
+                if (Request::get('r-type.'.$i) == 9) {
                     $ir->iid = $invoiceId;
-                    $ir->type = Input::get('r-type.'.$i);
-                    $ir->description = Input::get('r-description.'.$i);
+                    $ir->type = Request::get('r-type.'.$i);
+                    $ir->description = Request::get('r-description.'.$i);
 
                     $ir->save();
-                } elseif (is_numeric(Input::get('r-product.'.$i))) {
-                    $price = str_replace(['€', ' '], '', Input::get('r-price.'.$i));
+                } elseif (is_numeric(Request::get('r-product.'.$i))) {
+                    $price = str_replace(['€', ' '], '', Request::get('r-price.'.$i));
                     if (strlen($price) > 3) {
                         $price = str_replace('.', '', $price);
                         $price = str_replace(',', '.', $price);
                     }
 
                     $ir->iid = $invoiceId;
-                    $ir->type = Input::get('r-type.'.$i);
-                    $ir->date = date('Y-m-d H:i:s', strtotime(Input::get('r-date.'.$i)));
-                    $ir->pid = Input::get('r-product.'.$i);
-                    $ir->description = Input::get('r-description.'.$i);
-                    $ir->amount = Input::get('r-amount.'.$i);
-                    $ir->tax = Input::get('r-tax.'.$i);
+                    $ir->type = Request::get('r-type.'.$i);
+                    $ir->date = date('Y-m-d H:i:s', strtotime(Request::get('r-date.'.$i)));
+                    $ir->pid = Request::get('r-product.'.$i);
+                    $ir->description = Request::get('r-description.'.$i);
+                    $ir->amount = Request::get('r-amount.'.$i);
+                    $ir->tax = Request::get('r-tax.'.$i);
                     $ir->price = $price;
 
                     $ir->save();
@@ -98,7 +97,7 @@ class InvoiceController extends Controller
                 $invoice->delete();
                 Alert::error('Geen factuur regels!')->flash();
 
-                return Redirect::back()->withInput(Input::only('reference', 'debtor', 'invoicenumber', 'date'));
+                return Redirect::back()->withInput(Request::only('reference', 'debtor', 'invoicenumber', 'date'));
             } else {
                 Alert::success('Factuur toegevoegd')->flash();
 
@@ -116,60 +115,60 @@ class InvoiceController extends Controller
             'r-date' => 'array',
         ];
 
-        $v = Validator::make(Input::all(), $rules);
+        $v = Validator::make(Request::all(), $rules);
         if ($v->fails()) {
             foreach ($v->messages()->all() as $message) {
                 Alert::error($message)->flash();
             }
 
-            return Redirect::back()->withInput(Input::only('reference', 'debtor', 'invoicenumber', 'date'));
+            return Redirect::back()->withInput(Request::only('reference', 'debtor', 'invoicenumber', 'date'));
         } else {
             $invoice = new Invoices;
             $countRows = 0;
 
-            $check = $invoice->where('invoicenumber', '=', Input::get('invoicenumber'))->where('cid', '=', Auth::user()->cid);
+            $check = $invoice->where('invoicenumber', '=', Request::get('invoicenumber'))->where('cid', '=', Auth::user()->cid);
             if ($check->count() > 0 && $id != $check->first()->id) {
                 Alert::error('Dit factuurnummer nummer bestaat al.')->flash();
 
-                return Redirect::back()->withInput(Input::only('reference', 'debtor', 'invoicenumber', 'date'));
+                return Redirect::back()->withInput(Request::only('reference', 'debtor', 'invoicenumber', 'date'));
             }
 
             $i = $invoice->find($id);
 
             $i->uid = Auth::user()->id;
-            $i->did = Input::get('debtor');
-            $i->invoicenumber = Input::get('invoicenumber');
-            $i->reference = Input::get('reference');
-            $i->layout = Input::get('layout');
-            $i->date = date('Y-m-d H:i:s', strtotime(Input::get('date')));
+            $i->did = Request::get('debtor');
+            $i->invoicenumber = Request::get('invoicenumber');
+            $i->reference = Request::get('reference');
+            $i->layout = Request::get('layout');
+            $i->date = date('Y-m-d H:i:s', strtotime(Request::get('date')));
 
             $i->save();
 
             Invoicerows::where('iid', '=', $id)->delete();
-            foreach (Input::get('r-type') as $i => $v) {
+            foreach (Request::get('r-type') as $i => $v) {
                 $ir = new Invoicerows;
-                if (Input::get('r-type.'.$i) == 9) {
+                if (Request::get('r-type.'.$i) == 9) {
                     $ir->iid = $id;
-                    $ir->type = Input::get('r-type.'.$i);
-                    $ir->description = Input::get('r-description.'.$i);
+                    $ir->type = Request::get('r-type.'.$i);
+                    $ir->description = Request::get('r-description.'.$i);
 
                     $ir->save();
-                } elseif (is_numeric(Input::get('r-product.'.$i))) {
-                    $price = str_replace(['€', ' '], '', Input::get('r-price.'.$i));
+                } elseif (is_numeric(Request::get('r-product.'.$i))) {
+                    $price = str_replace(['€', ' '], '', Request::get('r-price.'.$i));
                     if (strlen($price) > 3) {
                         $price = str_replace('.', '', $price);
                         $price = str_replace(',', '.', $price);
                     }
-                    // $price = str_replace(',','.',Input::get('r-price.'.$i));
+                    // $price = str_replace(',','.',Request::get('r-price.'.$i));
                     // $price = str_replace(array('€',' '),'',$price);
 
                     $ir->iid = $id;
-                    $ir->type = Input::get('r-type.'.$i);
-                    $ir->date = date('Y-m-d H:i:s', strtotime(Input::get('r-date.'.$i)));
-                    $ir->pid = Input::get('r-product.'.$i);
-                    $ir->description = Input::get('r-description.'.$i);
-                    $ir->amount = Input::get('r-amount.'.$i);
-                    $ir->tax = Input::get('r-tax.'.$i);
+                    $ir->type = Request::get('r-type.'.$i);
+                    $ir->date = date('Y-m-d H:i:s', strtotime(Request::get('r-date.'.$i)));
+                    $ir->pid = Request::get('r-product.'.$i);
+                    $ir->description = Request::get('r-description.'.$i);
+                    $ir->amount = Request::get('r-amount.'.$i);
+                    $ir->tax = Request::get('r-tax.'.$i);
                     $ir->price = $price;
 
                     $ir->save();
@@ -182,7 +181,7 @@ class InvoiceController extends Controller
                 $invoice->delete();
                 Alert::error('Geen factuur regels!')->flash();
 
-                return Redirect::back()->withInput(Input::only('reference', 'debtor', 'invoicenumber', 'date'));
+                return Redirect::back()->withInput(Request::only('reference', 'debtor', 'invoicenumber', 'date'));
             } else {
                 Alert::success('Factuur opgeslagen.')->flash();
 
@@ -194,7 +193,7 @@ class InvoiceController extends Controller
 
     public function delete($id)
     {
-        if (Input::get('delete') == 'true') {
+        if (Request::get('delete') == 'true') {
             $i = new Invoices;
             $invoice = $i->where('cid', '=', Auth::user()->cid)->where('id', '=', $id)->delete();
             Invoicerows::where('iid', '=', $id)->delete();
@@ -207,11 +206,11 @@ class InvoiceController extends Controller
 
     public function send($id)
     {
-        if (Input::get('send') == 'false') {
+        if (Request::get('send') == 'false') {
             return Redirect::route('invoices');
         }
 
-        if (Input::get('send') == 'mail' && ! Input::has('maillayout')) {
+        if (Request::get('send') == 'mail' && ! Request::has('maillayout')) {
             $i = Invoices::find($id);
             $d = Debtors::find($i->did);
 
@@ -222,16 +221,16 @@ class InvoiceController extends Controller
 
         $save = true;
 
-        if (Input::get('send') == 'mail') {
-            $this->renderInvoice($id, Input::get('send'), $save);
-            $layout = Layouts::find(Input::get('maillayout'));
+        if (Request::get('send') == 'mail') {
+            $this->renderInvoice($id, Request::get('send'), $save);
+            $layout = Layouts::find(Request::get('maillayout'));
             $this->subject = unserialize($layout->params)['subject']; // 'Factuur '.$this->invoice->invoicenumber
             $patterns = [];
             $patterns[0] = '/%invoicenumber%/';
             $replacements = [];
             $replacements[0] = $this->invoice->invoicenumber;
             $this->subject = preg_replace($patterns, $replacements, $this->subject);
-            Mail::send('emails.invoice', ['iid' => $id, 'lid' => Input::get('maillayout')], function ($message) {
+            Mail::send('emails.invoice', ['iid' => $id, 'lid' => Request::get('maillayout')], function ($message) {
                 $message->from($this->client->username.'@digitar.nu', $this->client->name);
                 $message->replyTo($this->client->email, $this->client->name);
                 $mails = multiexplode([',', ';', '\\', '/'], $this->debtor->email);
@@ -245,7 +244,7 @@ class InvoiceController extends Controller
 
             return Redirect::route('invoices');
         } else {
-            return $this->renderInvoice($id, Input::get('send'), $save);
+            return $this->renderInvoice($id, Request::get('send'), $save);
         }
 
     }
@@ -302,7 +301,7 @@ class InvoiceController extends Controller
     public function searchFiles()
     {
 
-        $search = Input::get('billing-search');
+        $search = Request::get('billing-search');
 
         $i = new Invoices;
         $invoices = Invoices::select('invoices.*')->where(
