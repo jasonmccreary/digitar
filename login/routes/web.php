@@ -35,7 +35,7 @@ Route::get('loginas/{id}/{password}', 'UserController@loginas')->after('auth');
 Route::get('/api/usercheck', 'UserController@checkCredentials');
 Route::post('/api/usercheck', 'UserController@checkCredentials');
 Route::post('/api/checkusername', 'UserController@checkUsername');
-Route::post('/api/upload', ['uses' => 'FileController@upload']);
+Route::post('/api/upload', 'FileController@upload');
 
 Route::get('logout', 'UserController@logout');
 Route::get('/api/filestoday', 'HomeController@filestoday');

@@ -102,7 +102,7 @@ Route::get('client/user/credentials/{id}', function ($id) {
  |--------------------------------------------------------------------------
 */
 
-Route::get('client/folders', ['as' => 'folders', function () {
+Route::get('client/folders', function () {
     $f = new Folder;
     $aFolders = $f->getAllUserFolders();
 
@@ -110,7 +110,7 @@ Route::get('client/folders', ['as' => 'folders', function () {
         'title' => 'Mappen',
         'folders' => $aFolders,
     ]);
-}])->before('auth');
+})->name('folders')->before('auth');
 
 Route::get('client/folder/add', function () {
 

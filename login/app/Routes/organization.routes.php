@@ -196,14 +196,14 @@ Route::post('organization/moderator/linkedit/{id}', 'ModeratorController@edit')-
  |--------------------------------------------------------------------------
 */
 
-Route::get('organization/folders', ['as' => 'folders', function () {
+Route::get('organization/folders', function () {
     $aFolders = Folder::where('uid', '=', Auth::user()->id)->whereNull('pid')->orderBy('order')->get();
 
     return view('organization.folders.overview', [
         'title' => 'Standaard mappen',
         'standardfolders' => $aFolders,
     ]);
-}])->before('auth');
+})->name('folders')->before('auth');
 
 Route::get('organization/folder/add', function () {
 

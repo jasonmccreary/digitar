@@ -59,7 +59,7 @@ Route::post('billing/debtor/delete/{id}', 'DebtorsController@delete')->before('a
  * ======================
  */
 
-Route::get('billing/invoices', ['as' => 'invoices', function () {
+Route::get('billing/invoices', function () {
     $invoices = new Invoices;
     $aInvoices = $invoices->where('cid', '=', Auth::user()->cid)->where('date', 'like', Session::get('year').'%')->orderBy('invoicenumber', 'ASC')->get();
 
@@ -67,7 +67,7 @@ Route::get('billing/invoices', ['as' => 'invoices', function () {
         'title' => 'Facturen',
         'invoices' => $aInvoices,
     ]);
-}])->before('auth');
+})->name('invoices')->before('auth');
 
 Route::get('billing/invoices/add', function () {
     return view('billing.invoices.add', [
@@ -188,11 +188,11 @@ Route::post('billing/product/delete/{id}', 'ProductsController@delete')->before(
  * ======================
  */
 
-Route::get('billing/settings/invoices', ['as' => 'settingsInvoices', function () {
+Route::get('billing/settings/invoices', function () {
     return view('billing.settings.invoice.overview', [
         'title' => 'Factuur layouts',
     ]);
-}])->before('auth');
+})->name('settingsInvoices')->before('auth');
 
 Route::get('billing/settings/invoice/add', function () {
     return view('billing.settings.invoice.add', [
@@ -221,11 +221,11 @@ Route::get('billing/settings/invoice/delete/{id}', function ($id) {
 })->before('auth');
 Route::post('billing/settings/invoice/delete/{id}', 'SettingsController@deleteInvoice')->before('auth');
 
-Route::get('billing/settings/mails', ['as' => 'settingsMails', function () {
+Route::get('billing/settings/mails', function () {
     return view('billing.settings.mail.overview', [
         'title' => 'Mail layouts',
     ]);
-}])->before('auth');
+})->name('settingsMails')->before('auth');
 
 Route::get('billing/settings/mail/add', function () {
     return view('billing.settings.mail.add', [
@@ -308,7 +308,7 @@ Route::get('billing/getproduct/{pid}', function ($pid) {
  * ======================
  */
 
-Route::any('billing/search', ['uses' => 'InvoiceController@searchFiles']);
+Route::any('billing/search', 'InvoiceController@searchFiles');
 
 /*
  * ======================
