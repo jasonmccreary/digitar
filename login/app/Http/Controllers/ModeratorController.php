@@ -1,6 +1,6 @@
 <?php
 
-class ModeratorController extends BaseController
+class ModeratorController extends Controller
 {
     public static function edit($uid)
     {

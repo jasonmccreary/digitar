@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 
-class SettingsController extends BaseController
+class SettingsController extends Controller
 {
     /*
      * ======================

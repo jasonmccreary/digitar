@@ -1,6 +1,6 @@
 <?php
 
-class CloudsController extends BaseController
+class CloudsController extends Controller
 {
     public function __construct()
     {

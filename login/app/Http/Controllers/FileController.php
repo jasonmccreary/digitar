@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Input;
 use Symfony\Component\Process\Process;
 
-class FileController extends BaseController
+class FileController extends Controller
 {
     private $fileurl;
 

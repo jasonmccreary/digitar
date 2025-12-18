@@ -9,4 +9,15 @@ use Illuminate\Routing\Controller as BaseController;
 abstract class Controller extends BaseController
 {
     use DispatchesCommands, ValidatesRequests;
+    /**
+     * Setup the layout used by the controller.
+     *
+     * @return void
+     */
+    protected function setupLayout()
+    {
+        if (! is_null($this->layout)) {
+            $this->layout = View::make($this->layout);
+        }
+    }
 }

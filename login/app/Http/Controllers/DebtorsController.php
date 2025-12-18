@@ -1,6 +1,6 @@
 <?php
 
-class DebtorsController extends BaseController
+class DebtorsController extends Controller
 {
     public function add()
     {

@@ -1,6 +1,6 @@
 <?php
 
-class FoldersController extends BaseController
+class FoldersController extends Controller
 {
     public function add()
     {

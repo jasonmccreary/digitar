@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 
-class ToolsController extends BaseController
+class ToolsController extends Controller
 {
     public function savePdfContents()
     {

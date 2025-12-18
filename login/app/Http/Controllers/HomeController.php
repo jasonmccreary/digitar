@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 
-class HomeController extends BaseController
+class HomeController extends Controller
 {
     public function getIndex()
     {
