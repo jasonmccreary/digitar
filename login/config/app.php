@@ -159,6 +159,7 @@ return [
     'aliases' => [
 
         'App' => 'Illuminate\Support\Facades\App',
+        'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => 'Illuminate\Support\Facades\Artisan',
         'Auth' => 'Illuminate\Support\Facades\Auth',
         'Blade' => 'Illuminate\Support\Facades\Blade',
