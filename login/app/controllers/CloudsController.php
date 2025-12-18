@@ -1,220 +1,227 @@
 <?php
 
-class CloudsController extends BaseController {
+class CloudsController extends BaseController
+{
+    public function __construct()
+    {
 
-	public function __construct() {
+        $this->beforeFilter('auth');
+        $this->beforeFilter('folders');
+    }
 
-		$this->beforeFilter('auth');
-		$this->beforeFilter('folders');
-	}
+    public function showFiles()
+    {
 
-	public function showFiles() {
+        View::share('fid', 'files');
+        $title = 'Uitwisseling bestanden';
 
-		View::share('fid','files');
-		$title = 'Uitwisseling bestanden';
+        $files = Cloud::select('*');
+        $files->where('cid', '=', Auth::user()->cid);
+        $files->orderBy('date', 'asc');
 
-		$files = Cloud::select('*');
-		$files->where('cid', '=', Auth::user()->cid);
-		$files->orderBy('date', 'asc');
+        return View::make('users.cloud', [
+            'title' => $title,
+            'files' => $files->get(),
+        ]);
 
-		return View::make('users.cloud', array(
-        	'title' => $title,
-        	'files' => $files->get()
-        ));
+    }
 
-	}
+    public static function addFile($name, $filename, $cid)
+    {
 
-	static public function addFile($name, $filename,$cid) {
+        $name = preg_replace('/\\.[^.\\s]{3,4}$/', '', $name);
 
-		$name = preg_replace("/\\.[^.\\s]{3,4}$/", "", $name);
+        $f = new Cloud;
+        $f->cid = $cid;
+        $f->fid = 0;
+        if (Session::has('prevuid.0')) {
+            $user = User::where('id', '=', Session::get('prevuid.0'))->first();
+            if ($user->rights > 2) {
+                $f->uid = Session::get('prevuid.0');
+            } else {
+                $f->uid = Auth::user()->id;
+            }
+        } else {
+            $f->uid = Auth::user()->id;
+        }
+        $f->date = date('Y-m-d H:i:s');
+        $f->file = $filename;
+        $f->name = $name;
+        $f->save();
 
-		$f = new Cloud();
-		$f->cid = $cid;
-		$f->fid = 0;
-		if (Session::has('prevuid.0')) {
-			$user = User::where('id','=',Session::get('prevuid.0'))->first();
-			if ($user->rights > 2) {
-				$f->uid = Session::get('prevuid.0');
-			}else{
-				$f->uid = Auth::user()->id;
-			}
-		}else{
-			$f->uid = Auth::user()->id;
-		}
-		$f->date = date('Y-m-d H:i:s');
-		$f->file = $filename;
-		$f->name = $name;
-		$f->save();
+    }
 
-	}
+    public function editFile($id)
+    {
 
-	public function editFile($id) {
+        if (Auth::user()->lookonly == 1) {
+            Alert::error('U mag geen wijzigingen doorvoeren.')->flash();
 
-		if (Auth::user()->lookonly == 1) {
-			Alert::error('U mag geen wijzigingen doorvoeren.')->flash();
-			return Redirect::back();
-		}
+            return Redirect::back();
+        }
 
-		$input = Input::all();
+        $input = Input::all();
 
-		$rules = array(
-			'name' => 'required',
-			'date' => 'after:1970|before:01-01-'.(date('Y')+22)
-		);
+        $rules = [
+            'name' => 'required',
+            'date' => 'after:1970|before:01-01-'.(date('Y') + 22),
+        ];
 
-		$v = Validator::make($input, $rules);
-		if ($v->fails()) {
-			foreach ($v->messages()->all() as $message) {
-				Alert::error($message)->flash();
-			}
-		}else{
+        $v = Validator::make($input, $rules);
+        if ($v->fails()) {
+            foreach ($v->messages()->all() as $message) {
+                Alert::error($message)->flash();
+            }
+        } else {
 
-			$file = new Cloud();
-			$f = $file->find($id);
-			$f->name = $input['name'];
-			$f->date = date('Y-m-d H:i:s', strtotime($input['date']));
-			$f->note = $input['note'];
-			$f->save();
+            $file = new Cloud;
+            $f = $file->find($id);
+            $f->name = $input['name'];
+            $f->date = date('Y-m-d H:i:s', strtotime($input['date']));
+            $f->note = $input['note'];
+            $f->save();
 
-		}
+        }
 
-		Alert::success('Uw wijzigingen zijn succesvol doorgevoerd.')->flash();
-		return Redirect::back();
+        Alert::success('Uw wijzigingen zijn succesvol doorgevoerd.')->flash();
 
-	}
+        return Redirect::back();
 
-	static public function deleteFile($fid) {
-		$f = new Cloud();
-		$f = $f
-			->where('id', '=', $fid)
-			->where('cid', '=', Auth::user()->cid);
+    }
 
-		$file = $f->first();
+    public static function deleteFile($fid)
+    {
+        $f = new Cloud;
+        $f = $f
+            ->where('id', '=', $fid)
+            ->where('cid', '=', Auth::user()->cid);
 
+        $file = $f->first();
 
-		$u = new User();
-		$organization = $u
-					->where('id', '=', Auth::user()->oid)
-					->first();
-		$client = $u
-					->where('id', '=', Auth::user()->cid)
-					->where('oid', '=', Auth::user()->oid)
-					->first();
+        $u = new User;
+        $organization = $u
+            ->where('id', '=', Auth::user()->oid)
+            ->first();
+        $client = $u
+            ->where('id', '=', Auth::user()->cid)
+            ->where('oid', '=', Auth::user()->oid)
+            ->first();
 
-		$fileurl = '../../../clients/'.$organization->username.'/'.$client->username.'/'.$file->file;
-		if (File::exists($fileurl)) {
-			unlink($fileurl);
-		}
+        $fileurl = '../../../clients/'.$organization->username.'/'.$client->username.'/'.$file->file;
+        if (File::exists($fileurl)) {
+            unlink($fileurl);
+        }
 
-		$f->delete();
-	}
+        $f->delete();
+    }
 
-	public function viewdetails($fid) {
+    public function viewdetails($fid)
+    {
 
-		$f = new Cloud();
-		$file = $f
-			->where('id', '=', $fid)
-			->where('cid', '=', Auth::user()->cid)
-			->first();
+        $f = new Cloud;
+        $file = $f
+            ->where('id', '=', $fid)
+            ->where('cid', '=', Auth::user()->cid)
+            ->first();
 
-		return View::make('users.viewdetails', array(
-        	'file' => $file
-        ));
-	}
+        return View::make('users.viewdetails', [
+            'file' => $file,
+        ]);
+    }
 
+    public function downloadFile($fid)
+    {
+        @ini_set('zlib.output_compression', 'Off');
 
-	public function downloadFile($fid) {
-		@ini_set('zlib.output_compression', 'Off');
+        $aFile = Cloud::where('id', '=', $fid)->first();
+        $file_path = FileController::getFolderPath().$aFile->file;
+        $path_parts = pathinfo($file_path);
+        $file_name = $path_parts['basename'];
+        $file_ext = $path_parts['extension'];
+        $file_path = FileController::getFolderPath().$aFile->file;
 
-		$aFile = Cloud::where('id', '=', $fid)->first();
-		$file_path  = FileController::getFolderPath() . $aFile->file;
-		$path_parts = pathinfo($file_path);
-		$file_name  = $path_parts['basename'];
-		$file_ext   = $path_parts['extension'];
-		$file_path  = FileController::getFolderPath() . $aFile->file;
+        $is_attachment = isset($_REQUEST['stream']) ? false : true;
 
-		$is_attachment = isset($_REQUEST['stream']) ? false : true;
+        if (is_file($file_path)) {
+            $file_size = filesize($file_path);
+            $file = @fopen($file_path, 'rb');
+            if ($file) {
 
-		if (is_file($file_path)) {
-			$file_size  = filesize($file_path);
-			$file = @fopen($file_path,"rb");
-			if ($file) {
+                header('Pragma: public');
+                header('Expires: -1');
+                header('Cache-Control: public, must-revalidate, post-check=0, pre-check=0');
+                header('Content-Disposition: attachment; filename="'.$aFile->name.'.'.$file_ext.'"');
 
-				header("Pragma: public");
-				header("Expires: -1");
-				header("Cache-Control: public, must-revalidate, post-check=0, pre-check=0");
-				header("Content-Disposition: attachment; filename=\"".$aFile->name.".".$file_ext."\"");
+                if ($is_attachment) {
+                    header('Content-Disposition: attachment; filename="'.$aFile->name.'.'.$file_ext.'"');
+                } else {
+                    header('Content-Disposition: inline;');
+                }
 
-		        if ($is_attachment)
-		                header("Content-Disposition: attachment; filename=\"".$aFile->name.".".$file_ext."\"");
-		        else
-		                header('Content-Disposition: inline;');
+                $ctype_default = 'application/octet-stream';
+                $content_types = [
+                    'exe' => 'application/octet-stream',
+                    'zip' => 'application/zip',
+                    'mp3' => 'audio/mpeg',
+                    'mpg' => 'video/mpeg',
+                    'avi' => 'video/x-msvideo',
+                ];
+                $ctype = isset($content_types[$file_ext]) ? $content_types[$file_ext] : $ctype_default;
+                header('Content-Type: '.$ctype);
 
+                if (isset($_SERVER['HTTP_RANGE'])) {
+                    [$size_unit, $range_orig] = explode('=', $_SERVER['HTTP_RANGE'], 2);
+                    if ($size_unit == 'bytes') {
+                        [$range, $extra_ranges] = explode(',', $range_orig, 2);
+                    } else {
+                        $range = '';
+                        header('HTTP/1.1 416 Requested Range Not Satisfiable');
+                        exit;
+                    }
+                } else {
+                    $range = '';
+                }
 
-		        $ctype_default = "application/octet-stream";
-		        $content_types = array(
-		                "exe" => "application/octet-stream",
-		                "zip" => "application/zip",
-		                "mp3" => "audio/mpeg",
-		                "mpg" => "video/mpeg",
-		                "avi" => "video/x-msvideo",
-		        );
-		        $ctype = isset($content_types[$file_ext]) ? $content_types[$file_ext] : $ctype_default;
-		        header("Content-Type: " . $ctype);
+                @[$seek_start, $seek_end] = explode('-', $range, 2);
 
-				if(isset($_SERVER['HTTP_RANGE'])) {
-					list($size_unit, $range_orig) = explode('=', $_SERVER['HTTP_RANGE'], 2);
-					if ($size_unit == 'bytes') {
-						list($range, $extra_ranges) = explode(',', $range_orig, 2);
-					}else{
-						$range = '';
-						header('HTTP/1.1 416 Requested Range Not Satisfiable');
-						exit;
-					}
-				}else{
-					$range = '';
-				}
+                $seek_end = (empty($seek_end)) ? ($file_size - 1) : min(abs(intval($seek_end)), ($file_size - 1));
+                $seek_start = (empty($seek_start) || $seek_end < abs(intval($seek_start))) ? 0 : max(abs(intval($seek_start)), 0);
 
-				@list($seek_start, $seek_end) = explode('-', $range, 2);
+                if ($seek_start > 0 || $seek_end < ($file_size - 1)) {
+                    header('HTTP/1.1 206 Partial Content');
+                    header('Content-Range: bytes '.$seek_start.'-'.$seek_end.'/'.$file_size);
+                    header('Content-Length: '.($seek_end - $seek_start + 1));
+                } else {
+                    header("Content-Length: $file_size");
+                }
 
-				$seek_end   = (empty($seek_end)) ? ($file_size - 1) : min(abs(intval($seek_end)),($file_size - 1));
-				$seek_start = (empty($seek_start) || $seek_end < abs(intval($seek_start))) ? 0 : max(abs(intval($seek_start)),0);
+                header('Accept-Ranges: bytes');
 
-				if ($seek_start > 0 || $seek_end < ($file_size - 1)) {
-					header('HTTP/1.1 206 Partial Content');
-					header('Content-Range: bytes '.$seek_start.'-'.$seek_end.'/'.$file_size);
-					header('Content-Length: '.($seek_end - $seek_start + 1));
-				}else
-				  header("Content-Length: $file_size");
+                set_time_limit(0);
+                fseek($file, $seek_start);
 
-				header('Accept-Ranges: bytes');
+                while (! feof($file)) {
+                    echo @fread($file, 1024 * 8);
+                    @ob_flush();
+                    flush();
+                    if (connection_status() != 0) {
+                        @fclose($file);
+                        exit;
+                    }
+                }
 
-				set_time_limit(0);
-				fseek($file, $seek_start);
-
-				while(!feof($file)) {
-					print(@fread($file, 1024*8));
-					@ob_flush();
-					flush();
-					if (connection_status()!=0) {
-						@fclose($file);
-						exit;
-					}
-				}
-
-				// file save was a success
-				@fclose($file);
-				exit;
-			}else{
-				// file couldn't be opened
-				header("HTTP/1.0 500 Internal Server Error");
-				exit;
-			}
-		}else{
-			// file does not exist
-			header("HTTP/1.0 404 Not Found");
-			exit;
-		}
-	}
-
+                // file save was a success
+                @fclose($file);
+                exit;
+            } else {
+                // file couldn't be opened
+                header('HTTP/1.0 500 Internal Server Error');
+                exit;
+            }
+        } else {
+            // file does not exist
+            header('HTTP/1.0 404 Not Found');
+            exit;
+        }
+    }
 }

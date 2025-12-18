@@ -1,167 +1,174 @@
 <?php
+
 use Carbon\Carbon;
 
-class ToolsController extends BaseController {
+class ToolsController extends BaseController
+{
+    public function savePdfContents()
+    {
 
+        $files1 = Files::whereNull('contents')
+            ->where('updated_at', '<', Carbon::today())->orderBy('ID', 'DESC');
+        $files = $files1->limit(1000)
+            ->get();
 
-	public function savePdfContents() {
+        $delete = 0;
+        $exec = 0;
 
-		$files1 = Files::whereNull('contents')
-			->where('updated_at', '<', Carbon::today())->orderBy('ID', 'DESC');
-		$files = $files1->limit(1000)
-			->get();
+        foreach ($files as $f) {
 
-			$delete = 0;
-			$exec = 0;
+            $client = User::find($f->cid);
+            if ($client !== null) {
+                $compressPath = '../../../clients/'.User::getUserUsername($client->oid).'/'.$client->username.'/';
+                $tmpPath = '../tmp/';
+                $filenameTxt = str_replace('.pdf', '', $f->file).'.txt';
 
-		foreach($files as $f) {
+                $io = shell_exec("pdftotext '".$compressPath.$f->file."' '".$tmpPath.$filenameTxt."'");
+                if (file_exists($tmpPath.$filenameTxt)) {
+                    $fileContents = @file_get_contents($tmpPath.$filenameTxt);
+                    unlink($tmpPath.$filenameTxt);
+                } else {
+                    $fileContents = '';
+                }
 
-			$client = User::find($f->cid);
-			if ($client !== NULL) {
-				$compressPath = '../../../clients/'.User::getUserUsername($client->oid).'/'.$client->username.'/';
-				$tmpPath = '../tmp/';
-				$filenameTxt = str_replace('.pdf','', $f->file).'.txt';
+                $f->contents = $fileContents;
+                $f->save();
+                $exec++;
+            } else {
+                $f->delete();
+                $delete++;
+            }
 
-				$io = shell_exec( "pdftotext '" . $compressPath.$f->file . "' '".$tmpPath.$filenameTxt."'" );
-				if (file_exists($tmpPath.$filenameTxt)) {
-					$fileContents = @file_get_contents($tmpPath.$filenameTxt);
-					unlink($tmpPath.$filenameTxt);
-				}else{
-					$fileContents = '';
-				}
+        }
 
-				$f->contents = $fileContents;
-				$f->save();
-				$exec++;
-			}else {
-				$f->delete();
-				$delete++;
-			}
-			
-		}
+        return View::make('admin.tools.savepdfcontents', [
+            'title' => 'Save PDF contents',
+            'exec' => $exec,
+            'amount' => $files1->count(),
+            'deleted' => $delete,
+        ]);
 
-		return View::make('admin.tools.savepdfcontents', array(
-			'title' => 'Save PDF contents',
-			'exec' => $exec,
-			'amount' => $files1->count(),
-			'deleted' => $delete
-		));
-		
-	}
+    }
 
-	public static function checkForwarders() {
-		
-		require_once(app_path().'/controllers/xmlapi.class.php');
+    public static function checkForwarders()
+    {
 
-		// api call to add ftp user and its home directory
-		$xmlapi = new xmlapi('31.7.4.236');
-		$xmlapi->password_auth('root','HOLME7OmsFNW');
-		$xmlapi->set_output('json');
-		$xmlapi->set_debug(0); 
+        require_once app_path().'/controllers/xmlapi.class.php';
 
-		$p['domain']    = 'digitar.nu'; 
-		$res = $xmlapi->api2_query('digitar', 'Email', 'listforwards', $p);
-		$result = json_decode($res);
-		dd($result);
-		foreach ($result->cpanelresult->data as $row) {
-			$user = explode('@',$row->dest);
-			$emails[$user[0]] = $row;
-		}
+        // api call to add ftp user and its home directory
+        $xmlapi = new xmlapi('31.7.4.236');
+        $xmlapi->password_auth('root', 'HOLME7OmsFNW');
+        $xmlapi->set_output('json');
+        $xmlapi->set_debug(0);
 
-		$u = new User(); $return = array();
-		foreach($u->where('rights','=',2)->get() as $user) {
-			if (!isset($emails[$user->username])) {
-				$return[] = $user;
-			}
-		}
+        $p['domain'] = 'digitar.nu';
+        $res = $xmlapi->api2_query('digitar', 'Email', 'listforwards', $p);
+        $result = json_decode($res);
+        dd($result);
+        foreach ($result->cpanelresult->data as $row) {
+            $user = explode('@', $row->dest);
+            $emails[$user[0]] = $row;
+        }
 
-		return $return;
-	}
+        $u = new User;
+        $return = [];
+        foreach ($u->where('rights', '=', 2)->get() as $user) {
+            if (! isset($emails[$user->username])) {
+                $return[] = $user;
+            }
+        }
 
-	public function createForwarder() {
+        return $return;
+    }
 
-		require_once(app_path().'/controllers/xmlapi.class.php');
+    public function createForwarder()
+    {
 
-		$xmlapi = new xmlapi('31.7.4.236');
-		$xmlapi->password_auth('root','HOLME7OmsFNW');
-		$xmlapi->set_output('json');
-		$xmlapi->set_debug(0);
+        require_once app_path().'/controllers/xmlapi.class.php';
 
-		$p['domain']    = 'digitar.nu'; 
-		$p['email']     = strtolower(Input::get('username')).'@digitar.nu';  
-		$p['fwdopt']    = 'pipe'; 
-		$p['pipefwd']   = '/home/digitar/crons/mailPipe.php'; 
-		$res = $xmlapi->api2_query('digitar', 'Email', 'addforward', $p);
+        $xmlapi = new xmlapi('31.7.4.236');
+        $xmlapi->password_auth('root', 'HOLME7OmsFNW');
+        $xmlapi->set_output('json');
+        $xmlapi->set_debug(0);
 
-		Alert::success('Een nieuwe forwarder is aangemaakt voor: '.Input::get('username'))->flash();
-		return Redirect::to('/admin/tools/forwardcheck');
-	}
+        $p['domain'] = 'digitar.nu';
+        $p['email'] = strtolower(Input::get('username')).'@digitar.nu';
+        $p['fwdopt'] = 'pipe';
+        $p['pipefwd'] = '/home/digitar/crons/mailPipe.php';
+        $res = $xmlapi->api2_query('digitar', 'Email', 'addforward', $p);
 
-	public static function checkFtp() {
-		
-		require_once(app_path().'/controllers/xmlapi.class.php');
+        Alert::success('Een nieuwe forwarder is aangemaakt voor: '.Input::get('username'))->flash();
 
-		// api call to add ftp user and its home directory
-		$xmlapi = new xmlapi('31.7.4.236');
-		$xmlapi->password_auth('root','HOLME7OmsFNW');
-		$xmlapi->set_output('json');
-		$xmlapi->set_debug(1); 
+        return Redirect::to('/admin/tools/forwardcheck');
+    }
 
-		$result = json_decode($xmlapi->listftp("digitar"));
-		foreach ($result->cpanelresult->data as $row) {
-			$ftps[$row->user] = $row;
-		}
+    public static function checkFtp()
+    {
 
-		$u = new User(); $return = array();
-		foreach($u->where('rights','=',2)->get() as $user) {
-			if (!isset($ftps[$user->username])) {
-				$return[] = $user;
-			}
-		}
+        require_once app_path().'/controllers/xmlapi.class.php';
 
-		return $return;
-	}
+        // api call to add ftp user and its home directory
+        $xmlapi = new xmlapi('31.7.4.236');
+        $xmlapi->password_auth('root', 'HOLME7OmsFNW');
+        $xmlapi->set_output('json');
+        $xmlapi->set_debug(1);
 
-	public function createFtp() {
+        $result = json_decode($xmlapi->listftp('digitar'));
+        foreach ($result->cpanelresult->data as $row) {
+            $ftps[$row->user] = $row;
+        }
 
-		require_once(app_path().'/controllers/xmlapi.class.php');
+        $u = new User;
+        $return = [];
+        foreach ($u->where('rights', '=', 2)->get() as $user) {
+            if (! isset($ftps[$user->username])) {
+                $return[] = $user;
+            }
+        }
 
-		$xmlapi = new xmlapi('31.7.4.236');
-		$xmlapi->password_auth('root','HOLME7OmsFNW');
-		$xmlapi->set_output('json');
-		$xmlapi->set_debug(1);
+        return $return;
+    }
 
+    public function createFtp()
+    {
 
-		$args = array( 
-		    'user'=>strtolower(Input::get('username')),
-		    'pass'=>Input::get('password'),
-		    'quota'=>0,
-		    'homedir'=>'clients/'.strtolower(Input::get('organization')).'/'.strtolower(Input::get('username')).'/unsorted'
-		);
-		$obj = $xmlapi->api2_query('digitar', 'Ftp', 'addftp', $args);
+        require_once app_path().'/controllers/xmlapi.class.php';
 
-		$obj = json_decode($obj);
-		if (isset($obj->cpanelresult->error)) {
-			Alert::error($obj->cpanelresult->error)->flash();
-		}else{
-			Alert::success('Een nieuw FTP account is aangemaakt voor: '.Input::get('username'))->flash();
-		}
+        $xmlapi = new xmlapi('31.7.4.236');
+        $xmlapi->password_auth('root', 'HOLME7OmsFNW');
+        $xmlapi->set_output('json');
+        $xmlapi->set_debug(1);
 
-		return Redirect::to('/admin/tools/ftpcheck');
-	}
+        $args = [
+            'user' => strtolower(Input::get('username')),
+            'pass' => Input::get('password'),
+            'quota' => 0,
+            'homedir' => 'clients/'.strtolower(Input::get('organization')).'/'.strtolower(Input::get('username')).'/unsorted',
+        ];
+        $obj = $xmlapi->api2_query('digitar', 'Ftp', 'addftp', $args);
 
-	public static function getUserDirSize($uid) {
-		$u = new User();
-		$user = $u->where('id','=',$uid)->first();
+        $obj = json_decode($obj);
+        if (isset($obj->cpanelresult->error)) {
+            Alert::error($obj->cpanelresult->error)->flash();
+        } else {
+            Alert::success('Een nieuw FTP account is aangemaakt voor: '.Input::get('username'))->flash();
+        }
 
-		$org = User::getUserUsername($user->oid);
-		$client = User::getUserUsername($user->cid);
+        return Redirect::to('/admin/tools/ftpcheck');
+    }
 
-		$f = '/home/digitar/clients/' . $org . '/' . $client;
-	    $io = shell_exec( 'du -hs ' . $f . ' --block-size=1024' );
-	    $size = substr ( $io, 0, strpos ( $io, "\t" ) );
+    public static function getUserDirSize($uid)
+    {
+        $u = new User;
+        $user = $u->where('id', '=', $uid)->first();
 
-	    return $size;
-	}
+        $org = User::getUserUsername($user->oid);
+        $client = User::getUserUsername($user->cid);
 
+        $f = '/home/digitar/clients/'.$org.'/'.$client;
+        $io = shell_exec('du -hs '.$f.' --block-size=1024');
+        $size = substr($io, 0, strpos($io, "\t"));
+
+        return $size;
+    }
 }

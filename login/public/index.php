@@ -3,16 +3,12 @@
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
- * @package  Laravel
  * @author   Taylor Otwell <taylorotwell@gmail.com>
  */
-
-
 if (empty($_SERVER['HTTPS']) && strpos($_SERVER['HTTP_HOST'], 'beta') === false) {
-	header('location: https://'.$_SERVER['HTTP_HOST']);
-	exit;
+    header('location: https://'.$_SERVER['HTTP_HOST']);
+    exit;
 }
-
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +50,6 @@ $app = require_once __DIR__.'/../bootstrap/start.php';
 |
 */
 
-setlocale(LC_TIME, "nl_NL");
+setlocale(LC_TIME, 'nl_NL');
 
 $app->run();

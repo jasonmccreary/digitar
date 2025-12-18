@@ -24,16 +24,16 @@ $app = new Illuminate\Foundation\Application;
 |
 */
 
-$env = $app->detectEnvironment(array(
+$env = $app->detectEnvironment([
 
-	'dev' => array('dev.digitar'),
-	'prod' => array('srv01.digitar.nu'),
+    'dev' => ['dev.digitar'],
+    'prod' => ['srv01.digitar.nu'],
 
-));
+]);
 
-//$env = $app->detectEnvironment(function() {
-    //if($_SERVER['REMOTE_ADDR'] == '95.97.177.214') { return 'debug'; }
-//});
+// $env = $app->detectEnvironment(function() {
+// if($_SERVER['REMOTE_ADDR'] == '95.97.177.214') { return 'debug'; }
+// });
 
 /*
 |--------------------------------------------------------------------------
@@ -62,33 +62,31 @@ $app->bindInstallPaths(require __DIR__.'/paths.php');
 $framework = $app['path.base'].'/vendor/laravel/framework/src';
 
 require $framework.'/Illuminate/Foundation/start.php';
-require  $app['path.base'].'/app/controllers/Encoding.php';
-
+require $app['path.base'].'/app/controllers/Encoding.php';
 
 /**
  * {? $old_section = "whatever" ?}
  */
-Blade::extend(function($value) {
+Blade::extend(function ($value) {
     return preg_replace('/\{\?(.+)\?\}/', '<?php ${1} ?>', $value);
 });
 
-
-Form::macro('select2', function($name, $list = [], $selected = null, $options = [], $disabled = []) {
-    $html = '<select name="' . $name . '"';
+Form::macro('select2', function ($name, $list = [], $selected = null, $options = [], $disabled = []) {
+    $html = '<select name="'.$name.'"';
     foreach ($options as $attribute => $value) {
-        $html .= ' ' . $attribute . '="' . $value . '"';
+        $html .= ' '.$attribute.'="'.$value.'"';
     }
     $html .= '">';
     foreach ($list as $value => $text) {
-        $html .= '<option value="' . $value . '"' .
-            ($value == $selected ? ' selected="selected"' : '') .
-            (in_array($value, $disabled) ? ' disabled="disabled"' : '') . '>' .
-            $text . '</option>';
+        $html .= '<option value="'.$value.'"'.
+            ($value == $selected ? ' selected="selected"' : '').
+            (in_array($value, $disabled) ? ' disabled="disabled"' : '').'>'.
+            $text.'</option>';
     }
     $html .= '</select>';
+
     return $html;
 });
-
 
 /*
 |--------------------------------------------------------------------------

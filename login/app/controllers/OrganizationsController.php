@@ -1,113 +1,109 @@
 <?php
 
-class OrganizationsController extends BaseController {
+class OrganizationsController extends BaseController
+{
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function add()
+    {
+        $input = Input::all();
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function add()
-	{
-		$input = Input::all();
+        $rules = [
+            'businessname' => 'required',
+            'address' => 'required',
+            'zipcode' => 'required',
+            'city' => 'required',
+            'tell' => 'required',
+            'email' => 'required|email',
+        ];
 
-		$rules = array(
-			'businessname' => 'required',
-			'address' => 'required',
-			'zipcode' => 'required',
-			'city' => 'required',
-			'tell' => 'required',
-			'email' => 'required|email'
-		);
+        $v = Validator::make($input, $rules);
+        if ($v->fails()) {
+            foreach ($v->messages()->all() as $message) {
+                Alert::error($message)->flash();
+            }
 
-		$v = Validator::make($input, $rules);
-		if ($v->fails()) 
-		{
-			foreach ($v->messages()->all() as $message) 
-			{
-				Alert::error($message)->flash();
-			}
-			return Redirect::to('/admin/organizations/add')->withInput();
-		}
-		else
-		{
-			$o = new Organizations();
-			$o->name = Input::get('businessname');
-			$o->address = Input::get('address');
-			$o->zipcode = Input::get('zipcode');
-			$o->city = Input::get('city');
-			$o->tell = Input::get('tell');
-			$o->email = Input::get('email');
-			$o->website = Input::get('website');
-			$o->save();
+            return Redirect::to('/admin/organizations/add')->withInput();
+        } else {
+            $o = new Organizations;
+            $o->name = Input::get('businessname');
+            $o->address = Input::get('address');
+            $o->zipcode = Input::get('zipcode');
+            $o->city = Input::get('city');
+            $o->tell = Input::get('tell');
+            $o->email = Input::get('email');
+            $o->website = Input::get('website');
+            $o->save();
 
-			Alert::success('De nieuwe organisatie is toegevoegd')->flash();
-			return Redirect::to('/admin/organizations');
-		}
-	}
+            Alert::success('De nieuwe organisatie is toegevoegd')->flash();
 
-	/**
-	 * Delete the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function delete($id)
-	{
-		if (Input::get('delete') == 'true') {
-			$organization = new Organizations();
-			$o = $organization->find($id);
-			$o->delete();
+            return Redirect::to('/admin/organizations');
+        }
+    }
 
-			Alert::success('Organizatie succesvol verwijderd')->flash();
-	    }
-	    return Redirect::to('/admin/organizations');
-	}
+    /**
+     * Delete the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function delete($id)
+    {
+        if (Input::get('delete') == 'true') {
+            $organization = new Organizations;
+            $o = $organization->find($id);
+            $o->delete();
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		$input = Input::all();
+            Alert::success('Organizatie succesvol verwijderd')->flash();
+        }
 
-		$rules = array(
-			'businessname' => 'required',
-			'address' => 'required',
-			'zipcode' => 'required',
-			'city' => 'required',
-			'tell' => 'required',
-			'email' => 'required|email'
-		);
+        return Redirect::to('/admin/organizations');
+    }
 
-		$v = Validator::make($input, $rules);
-		if ($v->fails()) 
-		{
-			foreach ($v->messages()->all() as $message) 
-			{
-				Alert::error($message)->flash();
-			}
-			return Redirect::to('/admin/organization/edit/'.$id)->withInput();
-		}
-		else
-		{
-			$organization = new Organizations();
-			$o = $organization->find($id);
-			$o->name = Input::get('businessname');
-			$o->address = Input::get('address');
-			$o->zipcode = Input::get('zipcode');
-			$o->city = Input::get('city');
-			$o->tell = Input::get('tell');
-			$o->email = Input::get('email');
-			$o->website = Input::get('website');
-			$o->save();
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        $input = Input::all();
 
-			Alert::success('Organizatie opgeslagen')->flash();
-	        return Redirect::to('/admin/organizations');
-	   	}
-	}
+        $rules = [
+            'businessname' => 'required',
+            'address' => 'required',
+            'zipcode' => 'required',
+            'city' => 'required',
+            'tell' => 'required',
+            'email' => 'required|email',
+        ];
 
+        $v = Validator::make($input, $rules);
+        if ($v->fails()) {
+            foreach ($v->messages()->all() as $message) {
+                Alert::error($message)->flash();
+            }
+
+            return Redirect::to('/admin/organization/edit/'.$id)->withInput();
+        } else {
+            $organization = new Organizations;
+            $o = $organization->find($id);
+            $o->name = Input::get('businessname');
+            $o->address = Input::get('address');
+            $o->zipcode = Input::get('zipcode');
+            $o->city = Input::get('city');
+            $o->tell = Input::get('tell');
+            $o->email = Input::get('email');
+            $o->website = Input::get('website');
+            $o->save();
+
+            Alert::success('Organizatie opgeslagen')->flash();
+
+            return Redirect::to('/admin/organizations');
+        }
+    }
 }

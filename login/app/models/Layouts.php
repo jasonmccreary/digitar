@@ -1,60 +1,64 @@
 <?php
 
-class Layouts extends Eloquent {
+class Layouts extends Eloquent
+{
+    public static function getInvoice($id = false)
+    {
+        $layout = Layouts::where('cid', '=', Auth::user()->cid)->where('type', '=', 'factuur');
 
+        if ($id) {
+            $layout->where('id', '=', $id);
+        }
 
-	static function getInvoice($id = false) {
-		$layout = Layouts::where('cid','=',Auth::user()->cid)->where('type','=','factuur');
-		
-		if ($id) {
-			$layout->where('id','=',$id);
-		}
+        return $layout;
+    }
 
-		return $layout;
-	}
+    public static function getInvoiceselect()
+    {
+        // $select[0] = ' - Selecteer layout -';
+        foreach (Layouts::getInvoice()->get() as $l) {
+            $select[$l->id] = $l->name;
+        }
 
-	static public function getInvoiceselect() {
-		// $select[0] = ' - Selecteer layout -';
-		foreach (Layouts::getInvoice()->get() as $l) {
-			$select[$l->id] = $l->name;
-		}
+        return $select;
+    }
 
-		return $select;
-	}
+    public static function getMail($id = false)
+    {
+        $layout = Layouts::where('cid', '=', Auth::user()->cid)->where('type', '=', 'mail');
 
-	static function getMail($id = false) {
-		$layout = Layouts::where('cid','=',Auth::user()->cid)->where('type','=','mail');
-		
-		if ($id) {
-			$layout->where('id','=',$id);
-		}
+        if ($id) {
+            $layout->where('id', '=', $id);
+        }
 
-		return $layout;
-	}
+        return $layout;
+    }
 
-	static public function getMailselect() {
-		$select = array();
-		foreach (Layouts::getMail()->get() as $l) {
-			$select[$l->id] = $l->name;
-		}
+    public static function getMailselect()
+    {
+        $select = [];
+        foreach (Layouts::getMail()->get() as $l) {
+            $select[$l->id] = $l->name;
+        }
 
-		return $select;
-	}
+        return $select;
+    }
 
-	static public function setUp($u) {
+    public static function setUp($u)
+    {
 
-		if ($u->cid < 1) {
-			$u->cid = $u->id;
-		} 
+        if ($u->cid < 1) {
+            $u->cid = $u->id;
+        }
 
-		if (Layouts::where('cid','=',$u->cid)->count() < 1) {
+        if (Layouts::where('cid', '=', $u->cid)->count() < 1) {
 
-			// setup mail layout
-			$layout = new Layouts();
-			$layout->cid = $u->cid;
-			$layout->type = 'mail';
-			$layout->name = 'Nieuwe Factuur';
-			$layout->code = 'Beste {{ $debtor->name}},<br />
+            // setup mail layout
+            $layout = new Layouts;
+            $layout->cid = $u->cid;
+            $layout->type = 'mail';
+            $layout->name = 'Nieuwe Factuur';
+            $layout->code = 'Beste {{ $debtor->name}},<br />
 <br />
 Er is een nieuwe factuur voor u aangemaakt voor de door u afgenomen diensten / producten.<br />
 <br />
@@ -70,12 +74,12 @@ Hopende u voldoende te hebben geïnformeerd, <br />
 Met vriendelijke groet,<br />
 <br />
 '.ucwords($u->name).'<br />';
-			$layout->params = serialize(array('subject' => 'Factuur'));
-			$layout->save();
+            $layout->params = serialize(['subject' => 'Factuur']);
+            $layout->save();
 
-			// setup invoice layout
-			$params['background'] = 'https://login.digitar.nu/uploads/demofactuurpapier.jpg';
-			$params['css'] = 'table {border-spacing:0; border-collapse: collapse;}
+            // setup invoice layout
+            $params['background'] = 'https://login.digitar.nu/uploads/demofactuurpapier.jpg';
+            $params['css'] = 'table {border-spacing:0; border-collapse: collapse;}
 ul {list-style-type: none; padding-left:0;}
 h2   { color:#1B1E24; font-size:20pt; font-weight:normal; line-height:1.2em; display: none; }
 h3   { color:#2D3139; font-size:13pt; font-weight:normal; margin-bottom: 0em}
@@ -108,11 +112,11 @@ table td.center             { text-align:center; }
 .logo                       { text-align: right; }
 .grey 						{ color:#888888;font-size:8pt;padding-top:0.5em; }';
 
-			$layout = new Layouts();
-			$layout->cid = $u->cid;
-			$layout->type = 'factuur';
-			$layout->name = 'Factuur';
-			$layout->code = '<div class="section">
+            $layout = new Layouts;
+            $layout->cid = $u->cid;
+            $layout->type = 'factuur';
+            $layout->name = 'Factuur';
+            $layout->code = '<div class="section">
 <div class="company-data">
   <ul>
     <li>{{ $toName }}</li>
@@ -195,34 +199,33 @@ table td.center             { text-align:center; }
 		</div>
 	</div>
 @endif';
-			if (isset($params)) { $layout->params = serialize($params); }
-			$layout->save();
+            if (isset($params)) {
+                $layout->params = serialize($params);
+            }
+            $layout->save();
 
-			$p = new Products();
-				$p->cid = $u->cid;
-				$p->ledger = '8000';
-				$p->productnumber = 'P0001';
-				$p->name = 'Demo';
-				$p->description = 'Demo product';
-				$p->price = 10;
-				$p->tax = 21;
-			$p->save();
+            $p = new Products;
+            $p->cid = $u->cid;
+            $p->ledger = '8000';
+            $p->productnumber = 'P0001';
+            $p->name = 'Demo';
+            $p->description = 'Demo product';
+            $p->price = 10;
+            $p->tax = 21;
+            $p->save();
 
-			$d = new Debtors();
-				$d->cid = $u->cid;
-				$d->uid = $u->id;
-				$d->debnumber = 'D00001';
-				$d->name = 'Demo debiteur';
-				$d->address = 'Straatnaam 1';
-				$d->zipcode = '1234 AB';
-				$d->city = 'Plaatsnaam';
-				$d->country = 'NL';
-				$d->payterm = '30';
-			$d->save();
-		}
+            $d = new Debtors;
+            $d->cid = $u->cid;
+            $d->uid = $u->id;
+            $d->debnumber = 'D00001';
+            $d->name = 'Demo debiteur';
+            $d->address = 'Straatnaam 1';
+            $d->zipcode = '1234 AB';
+            $d->city = 'Plaatsnaam';
+            $d->country = 'NL';
+            $d->payterm = '30';
+            $d->save();
+        }
 
-
-		
-		
-	}
+    }
 }

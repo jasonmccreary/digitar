@@ -1,304 +1,324 @@
 <?php
 
-class InvoiceController extends BaseController {
+class InvoiceController extends BaseController
+{
+    public $invoice;
 
-	public $invoice;
-	public $debtor;
-	public $client;
-	public $org;
-	private $subject;
+    public $debtor;
 
-	function add() {
-		$rules = array(
-			'debtor' => 'required|integer',
-			'invoicenumber' => 'required|alpha_space',
-			'date' => 'required'
-		);
+    public $client;
 
-		$v = Validator::make(Input::all(), $rules);
-		if ($v->fails()) {
-			foreach ($v->messages()->all() as $message) {
-				Alert::error($message)->flash();
-			}
-			return Redirect::back()->withInput(Input::only('reference','debtor','invoicenumber','date'));
-		}else{
-			$invoice = new Invoices();
-			$countRows = 0;
+    public $org;
 
-			$check = $invoice->where('invoicenumber', '=', Input::get('invoicenumber'))->where('cid', '=', Auth::user()->cid);
-			if ($check->count() > 0) {
-				Alert::error('Dit factuurnummer nummer bestaat al.')->flash();
-				return Redirect::back()->withInput(Input::only('reference','debtor','date'));
-			}
+    private $subject;
 
-			$invoice->cid = Auth::user()->cid;
-			$invoice->uid = Auth::user()->id;
-			$invoice->did = Input::get('debtor');
-			$invoice->invoicenumber = Input::get('invoicenumber');
-			$invoice->reference = Input::get('reference');
-			$invoice->layout = Input::get('layout');
-			$invoice->date = date('Y-m-d H:i:s', strtotime(Input::get('date')));
+    public function add()
+    {
+        $rules = [
+            'debtor' => 'required|integer',
+            'invoicenumber' => 'required|alpha_space',
+            'date' => 'required',
+        ];
 
-			$invoice->save();
-			$invoiceId = $invoice->id;
+        $v = Validator::make(Input::all(), $rules);
+        if ($v->fails()) {
+            foreach ($v->messages()->all() as $message) {
+                Alert::error($message)->flash();
+            }
 
-			for ($i=0; $i < count(Input::get('r-type')); $i++) {
-				$ir = new Invoicerows();
-				if (Input::get('r-type.'.$i) == 9) {
-					$ir->iid = $invoiceId;
-					$ir->type = Input::get('r-type.'.$i);
-					$ir->description = Input::get('r-description.'.$i);
+            return Redirect::back()->withInput(Input::only('reference', 'debtor', 'invoicenumber', 'date'));
+        } else {
+            $invoice = new Invoices;
+            $countRows = 0;
 
-					$ir->save();
-				}elseif(is_numeric(Input::get('r-product.'.$i))) {
-					$price = str_replace(array('€',' '),'',Input::get('r-price.'.$i));
-					if (strlen($price) > 3) {
-						$price = str_replace('.','',$price);
-						$price = str_replace(',','.',$price);
-					}
+            $check = $invoice->where('invoicenumber', '=', Input::get('invoicenumber'))->where('cid', '=', Auth::user()->cid);
+            if ($check->count() > 0) {
+                Alert::error('Dit factuurnummer nummer bestaat al.')->flash();
 
+                return Redirect::back()->withInput(Input::only('reference', 'debtor', 'date'));
+            }
 
-					$ir->iid = $invoiceId;
-					$ir->type = Input::get('r-type.'.$i);
-					$ir->date = date('Y-m-d H:i:s', strtotime(Input::get('r-date.'.$i)));
-					$ir->pid = Input::get('r-product.'.$i);
-					$ir->description = Input::get('r-description.'.$i);
-					$ir->amount = Input::get('r-amount.'.$i);
-					$ir->tax = Input::get('r-tax.'.$i);
-					$ir->price = $price;
+            $invoice->cid = Auth::user()->cid;
+            $invoice->uid = Auth::user()->id;
+            $invoice->did = Input::get('debtor');
+            $invoice->invoicenumber = Input::get('invoicenumber');
+            $invoice->reference = Input::get('reference');
+            $invoice->layout = Input::get('layout');
+            $invoice->date = date('Y-m-d H:i:s', strtotime(Input::get('date')));
 
-					$ir->save();
-				}
+            $invoice->save();
+            $invoiceId = $invoice->id;
 
-				$countRows++;
-			}
+            for ($i = 0; $i < count(Input::get('r-type')); $i++) {
+                $ir = new Invoicerows;
+                if (Input::get('r-type.'.$i) == 9) {
+                    $ir->iid = $invoiceId;
+                    $ir->type = Input::get('r-type.'.$i);
+                    $ir->description = Input::get('r-description.'.$i);
 
-			if ($countRows == 0) {
-				$invoice->delete();
-				Alert::error('Geen factuur regels!')->flash();
-				return Redirect::back()->withInput(Input::only('reference','debtor','invoicenumber','date'));
-			}else{
-				Alert::success('Factuur toegevoegd')->flash();
-				return Redirect::route('invoices');
-			}
-		}
-	}
+                    $ir->save();
+                } elseif (is_numeric(Input::get('r-product.'.$i))) {
+                    $price = str_replace(['€', ' '], '', Input::get('r-price.'.$i));
+                    if (strlen($price) > 3) {
+                        $price = str_replace('.', '', $price);
+                        $price = str_replace(',', '.', $price);
+                    }
 
-	function edit($id) {
-		$rules = array(
-			'debtor' => 'required|integer',
-			'invoicenumber' => 'required|alpha_space',
-			'date' => 'required',
-			'r-date' => 'array'
-		);
+                    $ir->iid = $invoiceId;
+                    $ir->type = Input::get('r-type.'.$i);
+                    $ir->date = date('Y-m-d H:i:s', strtotime(Input::get('r-date.'.$i)));
+                    $ir->pid = Input::get('r-product.'.$i);
+                    $ir->description = Input::get('r-description.'.$i);
+                    $ir->amount = Input::get('r-amount.'.$i);
+                    $ir->tax = Input::get('r-tax.'.$i);
+                    $ir->price = $price;
 
-		$v = Validator::make(Input::all(), $rules);
-		if ($v->fails()) {
-			foreach ($v->messages()->all() as $message) {
-				Alert::error($message)->flash();
-			}
-			return Redirect::back()->withInput(Input::only('reference','debtor','invoicenumber','date'));
-		}else{
-			$invoice = new Invoices();
-			$countRows = 0;
+                    $ir->save();
+                }
 
-			$check = $invoice->where('invoicenumber', '=', Input::get('invoicenumber'))->where('cid', '=', Auth::user()->cid);
-			if ($check->count() > 0 && $id != $check->first()->id) {
-				Alert::error('Dit factuurnummer nummer bestaat al.')->flash();
-				return Redirect::back()->withInput(Input::only('reference','debtor','invoicenumber','date'));
-			}
+                $countRows++;
+            }
 
-			$i = $invoice->find($id);
+            if ($countRows == 0) {
+                $invoice->delete();
+                Alert::error('Geen factuur regels!')->flash();
 
-			$i->uid = Auth::user()->id;
-			$i->did = Input::get('debtor');
-			$i->invoicenumber = Input::get('invoicenumber');
-			$i->reference = Input::get('reference');
-			$i->layout = Input::get('layout');
-			$i->date = date('Y-m-d H:i:s', strtotime(Input::get('date')));
+                return Redirect::back()->withInput(Input::only('reference', 'debtor', 'invoicenumber', 'date'));
+            } else {
+                Alert::success('Factuur toegevoegd')->flash();
 
-			$i->save();
+                return Redirect::route('invoices');
+            }
+        }
+    }
 
-			Invoicerows::where('iid','=',$id)->delete();
-			foreach (Input::get('r-type') as $i => $v) {
-				$ir = new Invoicerows();
-				if (Input::get('r-type.'.$i) == 9) {
-					$ir->iid = $id;
-					$ir->type = Input::get('r-type.'.$i);
-					$ir->description = Input::get('r-description.'.$i);
+    public function edit($id)
+    {
+        $rules = [
+            'debtor' => 'required|integer',
+            'invoicenumber' => 'required|alpha_space',
+            'date' => 'required',
+            'r-date' => 'array',
+        ];
 
-					$ir->save();
-				}elseif(is_numeric(Input::get('r-product.'.$i))) {
-					$price = str_replace(array('€',' '),'',Input::get('r-price.'.$i));
-					if (strlen($price) > 3) {
-						$price = str_replace('.','',$price);
-						$price = str_replace(',','.',$price);
-					}
-					// $price = str_replace(',','.',Input::get('r-price.'.$i));
-					// $price = str_replace(array('€',' '),'',$price);
+        $v = Validator::make(Input::all(), $rules);
+        if ($v->fails()) {
+            foreach ($v->messages()->all() as $message) {
+                Alert::error($message)->flash();
+            }
 
-					$ir->iid = $id;
-					$ir->type = Input::get('r-type.'.$i);
-					$ir->date = date('Y-m-d H:i:s', strtotime(Input::get('r-date.'.$i)));
-					$ir->pid = Input::get('r-product.'.$i);
-					$ir->description = Input::get('r-description.'.$i);
-					$ir->amount = Input::get('r-amount.'.$i);
-					$ir->tax = Input::get('r-tax.'.$i);
-					$ir->price = $price;
+            return Redirect::back()->withInput(Input::only('reference', 'debtor', 'invoicenumber', 'date'));
+        } else {
+            $invoice = new Invoices;
+            $countRows = 0;
 
-					$ir->save();
-				}
+            $check = $invoice->where('invoicenumber', '=', Input::get('invoicenumber'))->where('cid', '=', Auth::user()->cid);
+            if ($check->count() > 0 && $id != $check->first()->id) {
+                Alert::error('Dit factuurnummer nummer bestaat al.')->flash();
 
-				$countRows++;
-			}
+                return Redirect::back()->withInput(Input::only('reference', 'debtor', 'invoicenumber', 'date'));
+            }
 
-			if ($countRows == 0) {
-				$invoice->delete();
-				Alert::error('Geen factuur regels!')->flash();
-				return Redirect::back()->withInput(Input::only('reference','debtor','invoicenumber','date'));
-			}else{
-				Alert::success('Factuur opgeslagen.')->flash();
-				return Redirect::route('invoices');
-				// return Redirect::back();
-			}
-		}
-	}
+            $i = $invoice->find($id);
 
-	function delete($id) {
-		if (Input::get('delete') == 'true') {
-			$i = new Invoices();
-			$invoice = $i->where('cid','=',Auth::user()->cid)->where('id','=',$id)->delete();
-			Invoicerows::where('iid','=',$id)->delete();
+            $i->uid = Auth::user()->id;
+            $i->did = Input::get('debtor');
+            $i->invoicenumber = Input::get('invoicenumber');
+            $i->reference = Input::get('reference');
+            $i->layout = Input::get('layout');
+            $i->date = date('Y-m-d H:i:s', strtotime(Input::get('date')));
 
-			Alert::success('Factuur verwijderd!')->flash();
-		}
-		return Redirect::route('invoices');
-	}
+            $i->save();
 
-	function send($id) {
-		if (Input::get('send') == 'false') { return Redirect::route('invoices'); }
+            Invoicerows::where('iid', '=', $id)->delete();
+            foreach (Input::get('r-type') as $i => $v) {
+                $ir = new Invoicerows;
+                if (Input::get('r-type.'.$i) == 9) {
+                    $ir->iid = $id;
+                    $ir->type = Input::get('r-type.'.$i);
+                    $ir->description = Input::get('r-description.'.$i);
 
-		if (Input::get('send') == 'mail' && !Input::has('maillayout')) {
-			$i = Invoices::find($id);
-			$d = Debtors::find($i->did);
+                    $ir->save();
+                } elseif (is_numeric(Input::get('r-product.'.$i))) {
+                    $price = str_replace(['€', ' '], '', Input::get('r-price.'.$i));
+                    if (strlen($price) > 3) {
+                        $price = str_replace('.', '', $price);
+                        $price = str_replace(',', '.', $price);
+                    }
+                    // $price = str_replace(',','.',Input::get('r-price.'.$i));
+                    // $price = str_replace(array('€',' '),'',$price);
 
-			return View::make('billing.invoices.sendto', array(
-	        	'title' => 'Factuur versturen naar: '.$d->email
-	        ));
-		}
+                    $ir->iid = $id;
+                    $ir->type = Input::get('r-type.'.$i);
+                    $ir->date = date('Y-m-d H:i:s', strtotime(Input::get('r-date.'.$i)));
+                    $ir->pid = Input::get('r-product.'.$i);
+                    $ir->description = Input::get('r-description.'.$i);
+                    $ir->amount = Input::get('r-amount.'.$i);
+                    $ir->tax = Input::get('r-tax.'.$i);
+                    $ir->price = $price;
 
-		$save = true;
+                    $ir->save();
+                }
 
-		if (Input::get('send') == 'mail') {
-			$this->renderInvoice($id,Input::get('send'),$save);
-			$layout = Layouts::find(Input::get('maillayout'));
-			$this->subject = unserialize($layout->params)['subject']; // 'Factuur '.$this->invoice->invoicenumber
-			$patterns = array();
-			$patterns[0] = '/%invoicenumber%/';
-			$replacements = array();
-			$replacements[0] = $this->invoice->invoicenumber;
-			$this->subject = preg_replace($patterns, $replacements, $this->subject);
-			Mail::send('emails.invoice', array('iid'=>$id,'lid'=>Input::get('maillayout')), function($message) {
-			    $message->from($this->client->username.'@digitar.nu', $this->client->name);
-			    $message->replyTo($this->client->email,$this->client->name);
-			    $mails = multiexplode(array(",",";","\\","/"), $this->debtor->email);
-			    $message->to($mails)->subject($this->subject);
+                $countRows++;
+            }
 
-			    $pathToFile = '/home/digitar/clients/'.$this->org->username.'/'.$this->client->username.'/'.$this->invoice->invoicenumber.'.pdf';
-			    $message->attach($pathToFile);
-			});
+            if ($countRows == 0) {
+                $invoice->delete();
+                Alert::error('Geen factuur regels!')->flash();
 
-			Alert::success('De factuur is verstuurd!')->flash();
-			return Redirect::route('invoices');
-		}else{
-			return $this->renderInvoice($id,Input::get('send'),$save);
-		}
+                return Redirect::back()->withInput(Input::only('reference', 'debtor', 'invoicenumber', 'date'));
+            } else {
+                Alert::success('Factuur opgeslagen.')->flash();
 
-	}
+                return Redirect::route('invoices');
+                // return Redirect::back();
+            }
+        }
+    }
 
-	function renderInvoice($id,$view = 'view', $save = false) {
-		$this->invoice = Invoices::where('id','=',$id)->where('cid','=',Auth::user()->cid)->first();
-		$this->debtor = Debtors::where('id','=',$this->invoice->did)->first();
+    public function delete($id)
+    {
+        if (Input::get('delete') == 'true') {
+            $i = new Invoices;
+            $invoice = $i->where('cid', '=', Auth::user()->cid)->where('id', '=', $id)->delete();
+            Invoicerows::where('iid', '=', $id)->delete();
 
-		$this->org = User::find(Auth::user()->oid);
-	    $this->client = User::find(Auth::user()->cid);
+            Alert::success('Factuur verwijderd!')->flash();
+        }
 
-		$param['id'] = $this->invoice->id;
-		$param['lid'] = $this->invoice->layout;
-		if ($view == 'print') { $param['print'] = true; }
-		define("DOMPDF_ENABLE_PHP", true);
-		define("DOMPDF_ENABLE_HTML5PARSER", true);
+        return Redirect::route('invoices');
+    }
 
-		$oPdf = PDF::loadView('billing.pdf', $param)->setPaper('a4');
+    public function send($id)
+    {
+        if (Input::get('send') == 'false') {
+            return Redirect::route('invoices');
+        }
 
-		if ($save == true) {
-			$filePath = '/home/digitar/clients/'.$this->org->username.'/'.$this->client->username.'/'.$this->invoice->invoicenumber.'.pdf';
-			$oPdf->save($filePath);
+        if (Input::get('send') == 'mail' && ! Input::has('maillayout')) {
+            $i = Invoices::find($id);
+            $d = Debtors::find($i->did);
 
-			if (!file_exists($filePath)) {
-				FileController::addFile('Factuur '.$this->invoice->invoicenumber,$this->invoice->invoicenumber.'.pdf',Auth::user()->cid);
-			}
+            return View::make('billing.invoices.sendto', [
+                'title' => 'Factuur versturen naar: '.$d->email,
+            ]);
+        }
 
-			$this->invoice->status = 1;
-			$this->invoice->save();
-		}
+        $save = true;
 
-		switch ($view) {
-			case 'view':
-				return $oPdf->stream($this->invoice->invoicenumber.'.pdf');
-				break;
+        if (Input::get('send') == 'mail') {
+            $this->renderInvoice($id, Input::get('send'), $save);
+            $layout = Layouts::find(Input::get('maillayout'));
+            $this->subject = unserialize($layout->params)['subject']; // 'Factuur '.$this->invoice->invoicenumber
+            $patterns = [];
+            $patterns[0] = '/%invoicenumber%/';
+            $replacements = [];
+            $replacements[0] = $this->invoice->invoicenumber;
+            $this->subject = preg_replace($patterns, $replacements, $this->subject);
+            Mail::send('emails.invoice', ['iid' => $id, 'lid' => Input::get('maillayout')], function ($message) {
+                $message->from($this->client->username.'@digitar.nu', $this->client->name);
+                $message->replyTo($this->client->email, $this->client->name);
+                $mails = multiexplode([',', ';', '\\', '/'], $this->debtor->email);
+                $message->to($mails)->subject($this->subject);
 
-			case 'download':
-				return $oPdf->download($this->invoice->invoicenumber.'.pdf');
-				break;
+                $pathToFile = '/home/digitar/clients/'.$this->org->username.'/'.$this->client->username.'/'.$this->invoice->invoicenumber.'.pdf';
+                $message->attach($pathToFile);
+            });
 
-			case 'print':
-				return $oPdf->download($this->invoice->invoicenumber.'.pdf');
-				break;
+            Alert::success('De factuur is verstuurd!')->flash();
 
-			default:
-				return Redirect::route('invoices');
-				break;
-		}
-	}
+            return Redirect::route('invoices');
+        } else {
+            return $this->renderInvoice($id, Input::get('send'), $save);
+        }
 
-	public function searchFiles() {
+    }
 
-		$search = Input::get('billing-search');
+    public function renderInvoice($id, $view = 'view', $save = false)
+    {
+        $this->invoice = Invoices::where('id', '=', $id)->where('cid', '=', Auth::user()->cid)->first();
+        $this->debtor = Debtors::where('id', '=', $this->invoice->did)->first();
 
-		$i = new Invoices();
-		$invoices = Invoices::select('invoices.*')->where(
-			'invoices.cid', '=', Auth::user()->cid
-		)->where(
-			'invoices.invoicenumber', 'LIKE', '%'.$search.'%'
-		)->orWhere(
-			'invoices.cid', '=', Auth::user()->cid
-		)->where(
-			'invoices.date', 'LIKE', '%'.$search.'%'
-		)->orWhere(
-			'invoices.cid', '=', Auth::user()->cid
-		)->where(
-			'debtors.name', 'LIKE', '%'.$search.'%'
-		)->join('debtors', 'debtors.id', '=', 'invoices.did')->get();
+        $this->org = User::find(Auth::user()->oid);
+        $this->client = User::find(Auth::user()->cid);
 
-		// echo '<pre>';
-		// dd(DB::getQueryLog());
-		// dd($invoices);
+        $param['id'] = $this->invoice->id;
+        $param['lid'] = $this->invoice->layout;
+        if ($view == 'print') {
+            $param['print'] = true;
+        }
+        define('DOMPDF_ENABLE_PHP', true);
+        define('DOMPDF_ENABLE_HTML5PARSER', true);
 
-		if (Request::is('*ajax*')) {
-			return View::make('billing.ajax.search', array(
-	        	'title' => 'Zoeken naar: '.$search,
-	        	'invoices' => $invoices
-	        ));
-	    }else{
-	    	return View::make('billing.search', array(
-	        	'title' => 'Zoeken naar: '.$search,
-	        	'invoices' => $invoices
-	        ));
-	    }
+        $oPdf = PDF::loadView('billing.pdf', $param)->setPaper('a4');
 
-	}
+        if ($save == true) {
+            $filePath = '/home/digitar/clients/'.$this->org->username.'/'.$this->client->username.'/'.$this->invoice->invoicenumber.'.pdf';
+            $oPdf->save($filePath);
 
+            if (! file_exists($filePath)) {
+                FileController::addFile('Factuur '.$this->invoice->invoicenumber, $this->invoice->invoicenumber.'.pdf', Auth::user()->cid);
+            }
+
+            $this->invoice->status = 1;
+            $this->invoice->save();
+        }
+
+        switch ($view) {
+            case 'view':
+                return $oPdf->stream($this->invoice->invoicenumber.'.pdf');
+                break;
+
+            case 'download':
+                return $oPdf->download($this->invoice->invoicenumber.'.pdf');
+                break;
+
+            case 'print':
+                return $oPdf->download($this->invoice->invoicenumber.'.pdf');
+                break;
+
+            default:
+                return Redirect::route('invoices');
+                break;
+        }
+    }
+
+    public function searchFiles()
+    {
+
+        $search = Input::get('billing-search');
+
+        $i = new Invoices;
+        $invoices = Invoices::select('invoices.*')->where(
+            'invoices.cid', '=', Auth::user()->cid
+        )->where(
+            'invoices.invoicenumber', 'LIKE', '%'.$search.'%'
+        )->orWhere(
+            'invoices.cid', '=', Auth::user()->cid
+        )->where(
+            'invoices.date', 'LIKE', '%'.$search.'%'
+        )->orWhere(
+            'invoices.cid', '=', Auth::user()->cid
+        )->where(
+            'debtors.name', 'LIKE', '%'.$search.'%'
+        )->join('debtors', 'debtors.id', '=', 'invoices.did')->get();
+
+        // echo '<pre>';
+        // dd(DB::getQueryLog());
+        // dd($invoices);
+
+        if (Request::is('*ajax*')) {
+            return View::make('billing.ajax.search', [
+                'title' => 'Zoeken naar: '.$search,
+                'invoices' => $invoices,
+            ]);
+        } else {
+            return View::make('billing.search', [
+                'title' => 'Zoeken naar: '.$search,
+                'invoices' => $invoices,
+            ]);
+        }
+
+    }
 }
-
-?>

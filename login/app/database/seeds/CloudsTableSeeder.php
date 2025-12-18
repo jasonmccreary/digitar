@@ -1,18 +1,17 @@
 <?php
 
-class CloudsTableSeeder extends Seeder {
+class CloudsTableSeeder extends Seeder
+{
+    public function run()
+    {
+        // Uncomment the below to wipe the table clean before populating
+        // DB::table('clouds')->truncate();
 
-	public function run()
-	{
-		// Uncomment the below to wipe the table clean before populating
-		// DB::table('clouds')->truncate();
+        $clouds = [
 
-		$clouds = array(
+        ];
 
-		);
-
-		// Uncomment the below to run the seeder
-		// DB::table('clouds')->insert($clouds);
-	}
-
+        // Uncomment the below to run the seeder
+        // DB::table('clouds')->insert($clouds);
+    }
 }

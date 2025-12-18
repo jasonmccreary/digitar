@@ -1,4 +1,5 @@
 <?php
+
 // ******************************************************************************
 // A reversible password encryption routine by:
 // Copyright 2003-2009 by A J Marston <http://www.tonymarston.net>
@@ -10,23 +11,26 @@
 // Use mb_substr() if it is available (for multibyte characters).
 // ******************************************************************************
 
-class encryption {
+class encryption
+{
+    public $scramble1;     // 1st string of ASCII characters
 
-    var $scramble1;     // 1st string of ASCII characters
-    var $scramble2;     // 2nd string of ASCII characters
+    public $scramble2;     // 2nd string of ASCII characters
 
-    var $errors;        // array of error messages
-    var $adj;           // 1st adjustment value (optional)
-    var $mod;           // 2nd adjustment value (optional)
-    
-    var $eKey    		= 'dirkjanheinen';
+    public $errors;        // array of error messages
+
+    public $adj;           // 1st adjustment value (optional)
+
+    public $mod;           // 2nd adjustment value (optional)
+
+    public $eKey = 'dirkjanheinen';
 
     // ****************************************************************************
     // class constructor
     // ****************************************************************************
-    function __construct ()
+    public function __construct()
     {
-        $this->errors = array();
+        $this->errors = [];
 
         // Each of these two strings must contain the same characters, but in a different order.
         // Use only printable characters from the ASCII table.
@@ -35,7 +39,7 @@ class encryption {
         $this->scramble1 = '! #$%&()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~';
         $this->scramble2 = 'f^jAE]okIOzU[2&q1{3`h5w_794p@6s8?BgP>dFV=m D<TcS%Ze|r:lGK/uCy.Jx)HiQ!#$~(;Lt-R}Ma,NvW+Ynb*0X';
 
-        if (strlen($this->scramble1) <> strlen($this->scramble2)) {
+        if (strlen($this->scramble1) != strlen($this->scramble2)) {
             trigger_error('** SCRAMBLE1 is not same length as SCRAMBLE2 **', E_USER_ERROR);
         } // if
 
@@ -45,17 +49,20 @@ class encryption {
     } // constructor
 
     // ****************************************************************************
-    function decrypt ($source)
+    public function decrypt($source)
     // decrypt string into its original form
     {
-        $this->errors = array();
+        $this->errors = [];
 
         // convert $key into a sequence of numbers
         $fudgefactor = $this->_convertKey($this->eKey);
-        if ($this->errors) return;
+        if ($this->errors) {
+            return;
+        }
 
         if (empty($source)) {
             $this->errors[] = 'No value has been supplied for decryption';
+
             return;
         } // if
 
@@ -74,15 +81,16 @@ class encryption {
             $num2 = strpos($this->scramble2, $char2);
             if ($num2 === false) {
                 $this->errors[] = "Source string contains an invalid character ($char2)";
+
                 return;
             } // if
 
             // get an adjustment value using $fudgefactor
-            $adj     = $this->_applyFudgeFactor($fudgefactor);
+            $adj = $this->_applyFudgeFactor($fudgefactor);
 
             $factor1 = $factor2 + $adj;                 // accumulate in $factor1
-            $num1    = $num2 - round($factor1);         // generate offset for $scramble1
-            $num1    = $this->_checkRange($num1);       // check range
+            $num1 = $num2 - round($factor1);         // generate offset for $scramble1
+            $num1 = $this->_checkRange($num1);       // check range
             $factor2 = $factor1 + $num2;                // accumulate in $factor2
 
             // extract (multibyte) character from $scramble1
@@ -95,7 +103,7 @@ class encryption {
             // append to $target string
             $target .= $char1;
 
-            //echo "char1=$char1, num1=$num1, adj= $adj, factor1= $factor1, num2=$num2, char2=$char2, factor2= $factor2<br />\n";
+            // echo "char1=$char1, num1=$num1, adj= $adj, factor1= $factor1, num2=$num2, char2=$char2, factor2= $factor2<br />\n";
 
         } // for
 
@@ -104,17 +112,20 @@ class encryption {
     } // decrypt
 
     // ****************************************************************************
-    function encrypt ($source, $sourcelen = 0)
+    public function encrypt($source, $sourcelen = 0)
     // encrypt string into a garbled form
     {
-        $this->errors = array();
+        $this->errors = [];
 
         // convert $key into a sequence of numbers
         $fudgefactor = $this->_convertKey($this->eKey);
-        if ($this->errors) return;
+        if ($this->errors) {
+            return;
+        }
 
         if (empty($source)) {
             $this->errors[] = 'No value has been supplied for encryption';
+
             return;
         } // if
 
@@ -136,15 +147,16 @@ class encryption {
             $num1 = strpos($this->scramble1, $char1);
             if ($num1 === false) {
                 $this->errors[] = "Source string contains an invalid character ($char1)";
+
                 return;
             } // if
 
             // get an adjustment value using $fudgefactor
-            $adj     = $this->_applyFudgeFactor($fudgefactor);
+            $adj = $this->_applyFudgeFactor($fudgefactor);
 
             $factor1 = $factor2 + $adj;             // accumulate in $factor1
-            $num2    = round($factor1) + $num1;     // generate offset for $scramble2
-            $num2    = $this->_checkRange($num2);   // check range
+            $num2 = round($factor1) + $num1;     // generate offset for $scramble2
+            $num2 = $this->_checkRange($num2);   // check range
             $factor2 = $factor1 + $num2;            // accumulate in $factor2
 
             // extract (multibyte) character from $scramble2
@@ -157,7 +169,7 @@ class encryption {
             // append to $target string
             $target .= $char2;
 
-            //echo "char1=$char1, num1=$num1, adj= $adj, factor1= $factor1, num2=$num2, char2=$char2, factor2= $factor2<br />\n";
+            // echo "char1=$char1, num1=$num1, adj= $adj, factor1= $factor1, num2=$num2, char2=$char2, factor2= $factor2<br />\n";
 
         } // for
 
@@ -166,7 +178,7 @@ class encryption {
     } // encrypt
 
     // ****************************************************************************
-    function getAdjustment ()
+    public function getAdjustment()
     // return the adjustment value
     {
         return $this->adj;
@@ -174,7 +186,7 @@ class encryption {
     } // setAdjustment
 
     // ****************************************************************************
-    function getModulus ()
+    public function getModulus()
     // return the modulus value
     {
         return $this->mod;
@@ -182,25 +194,25 @@ class encryption {
     } // setModulus
 
     // ****************************************************************************
-    function setAdjustment ($adj)
+    public function setAdjustment($adj)
     // set the adjustment value
     {
-        $this->adj = (float)$adj;
+        $this->adj = (float) $adj;
 
     } // setAdjustment
 
     // ****************************************************************************
-    function setModulus ($mod)
+    public function setModulus($mod)
     // set the modulus value
     {
-        $this->mod = (int)abs($mod);    // must be a positive whole number
+        $this->mod = (int) abs($mod);    // must be a positive whole number
 
     } // setModulus
 
     // ****************************************************************************
     // private methods
     // ****************************************************************************
-    function _applyFudgeFactor (&$fudgefactor)
+    public function _applyFudgeFactor(&$fudgefactor)
     // return an adjustment value  based on the contents of $fudgefactor
     // NOTE: $fudgefactor is passed by reference so that it can be modified
     {
@@ -208,7 +220,7 @@ class encryption {
         $fudge = $fudge + $this->adj;           // add in adjustment value
         $fudgefactor[] = $fudge;                // put it back at end of array
 
-        if (!empty($this->mod)) {               // if modifier has been supplied
+        if (! empty($this->mod)) {               // if modifier has been supplied
             if ($fudge % $this->mod == 0) {     // if it is divisible by modifier
                 $fudge = $fudge * -1;           // make it negative
             } // if
@@ -219,7 +231,7 @@ class encryption {
     } // _applyFudgeFactor
 
     // ****************************************************************************
-    function _checkRange ($num)
+    public function _checkRange($num)
     // check that $num points to an entry in $this->scramble1
     {
         $num = round($num);         // round up to nearest whole number
@@ -238,11 +250,12 @@ class encryption {
     } // _checkRange
 
     // ****************************************************************************
-    function _convertKey ($key)
+    public function _convertKey($key)
     // convert $key into an array of numbers
     {
         if (empty($this->eKey)) {
             $this->errors[] = 'No value has been supplied for the encryption key';
+
             return;
         } // if
 
@@ -262,6 +275,7 @@ class encryption {
 
             if ($num === false) {
                 $this->errors[] = "Key contains an invalid character ($char)";
+
                 return;
             } // if
 
@@ -275,8 +289,6 @@ class encryption {
 
     } // _convertKey
 
-// ****************************************************************************
+    // ****************************************************************************
 } // end encryption_class
 // ****************************************************************************
-
-?>

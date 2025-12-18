@@ -11,14 +11,14 @@
 |
 */
 
-ClassLoader::addDirectories(array(
+ClassLoader::addDirectories([
 
-	app_path().'/commands',
-	app_path().'/controllers',
-	app_path().'/models',
-	app_path().'/database/seeds',
+    app_path().'/commands',
+    app_path().'/controllers',
+    app_path().'/models',
+    app_path().'/database/seeds',
 
-));
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -46,14 +46,12 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 |
 */
 
+App::error(function (Exception $exception, $code) {
+    if (strpos(Request::url(), 'login.php')) {
+        return Redirect::to('/');
+    }
 
-App::error(function(Exception $exception, $code)
-{
-	if (strpos(Request::url(), 'login.php')) {
-		return Redirect::to('/');
-	}
-
-	$count = Session::get('error_count', 0);
+    $count = Session::get('error_count', 0);
     Session::put('error_count', ++$count);
 
     $data = [
@@ -64,33 +62,30 @@ App::error(function(Exception $exception, $code)
         'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
         'ip' => Request::getClientIp(),
         'count' => $count,
-        'code' => $code
+        'code' => $code,
     ];
 
+    Log::error($exception, $data);
+    if (App::environment('prod') && Config::get('app.debug') !== true) {
+        View::share('errorpage', true);
 
-	Log::error($exception, $data);
-	if (App::environment('prod') && Config::get('app.debug') !== true) {
-		View::share('errorpage', true);
+        switch ($code) {
+            case 403:
+                return Response::view('errors.403', [], 403);
 
-		switch ($code)
-	    {
-	        case 403:
-	            return Response::view('errors.403', array(), 403);
+            case 404:
+                return Response::view('errors.404', [], 404);
 
-	        case 404:
-	            return Response::view('errors.404', array(), 404);
+            case 500:
+                return Response::view('errors.500', [], 500);
 
-	        case 500:
-	            return Response::view('errors.500', array(), 500);
-
-	        default:
-	            return Response::view('errors.default', array(), $code);
-	    }
-	}//elseif (App::environment('debug')) {
-		//Config::set('app.debug', true);
-	//}
+            default:
+                return Response::view('errors.default', [], $code);
+        }
+    }// elseif (App::environment('debug')) {
+    // Config::set('app.debug', true);
+    // }
 });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -103,9 +98,8 @@ App::error(function(Exception $exception, $code)
 |
 */
 
-App::down(function()
-{
-	return Response::make("Be right back!", 503);
+App::down(function () {
+    return Response::make('Be right back!', 503);
 });
 
 /*
@@ -121,4 +115,3 @@ App::down(function()
 
 require app_path().'/functions.php';
 require app_path().'/filters.php';
-

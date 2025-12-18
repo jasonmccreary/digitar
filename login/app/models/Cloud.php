@@ -1,7 +1,8 @@
 <?php
 
-class Cloud extends Eloquent {
-	protected $guarded = array();
+class Cloud extends Eloquent
+{
+    protected $guarded = [];
 
-	public static $rules = array();
+    public static $rules = [];
 }
