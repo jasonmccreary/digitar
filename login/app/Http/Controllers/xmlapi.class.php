@@ -1,108 +1,108 @@
 <?php
 
 /**
-* cPanel XMLAPI Client Class
-*
-* This class allows for easy interaction with cPanel's XML-API allow functions within the XML-API to be called
-* by calling funcions within this class
-*
-* LICENSE:
-*
-* Copyright (c) 2012, cPanel, Inc.
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without modification, are permitted provided
-* that the following conditions are met:
-*
-* * Redistributions of source code must retain the above copyright notice, this list of conditions and the
-*   following disclaimer.
-* * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
-*   following disclaimer in the documentation and/or other materials provided with the distribution.
-* * Neither the name of the cPanel, Inc. nor the names of its contributors may be used to endorse or promote
-*   products derived from this software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-* ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-* POSSIBILITY OF SUCH DAMAGE.
-*
-* Version: 1.0.13
-* Last updated: 19 November 2012
-*
-* Changes
-*
-* 1.0.13:
-* Tidy
-*
-* 1.0.12:
-* github#2 - [Bugfix]: typo related to environment variable XMLAPI_USE_SSL
-*
-* 1.0.11:
-* [Feature]: Remove value requirement for park()'s 'topdomain' argument
-*  (Case 51116)
-*
-* 1.0.10:
-* github#1 - [Bugfix]: setresellerpackagelimits() does not properly prepare
-*  input arguments for query (Case 51076)
-*
-* 1.0.9:
-* added input argument to servicestatus method which allows single service
-*  filtering (Case 50804)
-*
-* 1.0.8:
-* correct unpark bug as reported by Randall Kent
-*
-* 1.0.7:
-* Corrected typo for setrellerlimits where xml_query incorrectly called xml-api's setresellerips
-*
-* 1.0.6:
-* Changed 'user' URL parameter for API1/2 calls to 'cpanel_xmlapi_user'/'cpanel_jsonapi_user' to resolve conflicts with API2 functions that use 'user' as a parameter
-* Relocated exmaple script to Example subdirectory
-* Modified example scripts to take remote server IP and root password from environment variables REMOTE_HOST and REMOTE_PASSWORD, respectively
-* Created subdirectory Tests for PHPUnit tests
-* Add PHPUnit test BasicParseTest.php
-*
-* 1.0.5:
-* fix bug where api1_query and api2_query would not return JSON data
-*
-* 1.0.4:
-* set_port will now convert non-int values to ints
-*
-* 1.0.3:
-* Fixed issue with set_auth_type using incorrect logic for determining acceptable auth types
-* Suppress non-UTF8 encoding when using curl
-*
-* 1.0.2:
-* Increased curl buffer size to 128kb from 16kb
-* Fix double encoding issue in terminateresellers()
-*
-* 1.0.1:
-* Fixed use of wrong variable name in curl error checking
-* adjust park() to use api2 rather than API1
-*
-* 1.0
-* Added in 11.25 functions
-* Changed the constructor to allow for either the "DEFINE" config setting method or using parameters
-* Removed used of the gui setting
-* Added fopen support
-* Added auto detection for fopen or curl (uses curl by default)
-* Added ability to return in multiple formats: associative array, simplexml, xml, json
-* Added PHP Documentor documentation for all necessary functions
-* Changed submission from GET to POST
-*
-*
-* @copyright 2012 cPanel, Inc
-* @license http://sdk.cpanel.net/license/bsd.html
-*
-* @version 1.0.13
-*
-* @link http://twiki.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/XmlApi
-* @since File available since release 0.1
-**/
+ * cPanel XMLAPI Client Class
+ *
+ * This class allows for easy interaction with cPanel's XML-API allow functions within the XML-API to be called
+ * by calling funcions within this class
+ *
+ * LICENSE:
+ *
+ * Copyright (c) 2012, cPanel, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided
+ * that the following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice, this list of conditions and the
+ *   following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+ *   following disclaimer in the documentation and/or other materials provided with the distribution.
+ * * Neither the name of the cPanel, Inc. nor the names of its contributors may be used to endorse or promote
+ *   products derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+ * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Version: 1.0.13
+ * Last updated: 19 November 2012
+ *
+ * Changes
+ *
+ * 1.0.13:
+ * Tidy
+ *
+ * 1.0.12:
+ * github#2 - [Bugfix]: typo related to environment variable XMLAPI_USE_SSL
+ *
+ * 1.0.11:
+ * [Feature]: Remove value requirement for park()'s 'topdomain' argument
+ *  (Case 51116)
+ *
+ * 1.0.10:
+ * github#1 - [Bugfix]: setresellerpackagelimits() does not properly prepare
+ *  input arguments for query (Case 51076)
+ *
+ * 1.0.9:
+ * added input argument to servicestatus method which allows single service
+ *  filtering (Case 50804)
+ *
+ * 1.0.8:
+ * correct unpark bug as reported by Randall Kent
+ *
+ * 1.0.7:
+ * Corrected typo for setrellerlimits where xml_query incorrectly called xml-api's setresellerips
+ *
+ * 1.0.6:
+ * Changed 'user' URL parameter for API1/2 calls to 'cpanel_xmlapi_user'/'cpanel_jsonapi_user' to resolve conflicts with API2 functions that use 'user' as a parameter
+ * Relocated exmaple script to Example subdirectory
+ * Modified example scripts to take remote server IP and root password from environment variables REMOTE_HOST and REMOTE_PASSWORD, respectively
+ * Created subdirectory Tests for PHPUnit tests
+ * Add PHPUnit test BasicParseTest.php
+ *
+ * 1.0.5:
+ * fix bug where api1_query and api2_query would not return JSON data
+ *
+ * 1.0.4:
+ * set_port will now convert non-int values to ints
+ *
+ * 1.0.3:
+ * Fixed issue with set_auth_type using incorrect logic for determining acceptable auth types
+ * Suppress non-UTF8 encoding when using curl
+ *
+ * 1.0.2:
+ * Increased curl buffer size to 128kb from 16kb
+ * Fix double encoding issue in terminateresellers()
+ *
+ * 1.0.1:
+ * Fixed use of wrong variable name in curl error checking
+ * adjust park() to use api2 rather than API1
+ *
+ * 1.0
+ * Added in 11.25 functions
+ * Changed the constructor to allow for either the "DEFINE" config setting method or using parameters
+ * Removed used of the gui setting
+ * Added fopen support
+ * Added auto detection for fopen or curl (uses curl by default)
+ * Added ability to return in multiple formats: associative array, simplexml, xml, json
+ * Added PHP Documentor documentation for all necessary functions
+ * Changed submission from GET to POST
+ *
+ *
+ * @copyright 2012 cPanel, Inc
+ * @license http://sdk.cpanel.net/license/bsd.html
+ *
+ * @version 1.0.13
+ *
+ * @link http://twiki.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/XmlApi
+ * @since File available since release 0.1
+ **/
 
 /**
  * The base XML-API class
