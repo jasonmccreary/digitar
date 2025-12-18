@@ -7,9 +7,10 @@
     ],
     "license": "MIT",
     "require": {
-        "laravel/framework": "4.2.*",
+        "laravel/framework": "5.0.*",
         "prologue/alerts": "dev-master",
-        "way/generators": "dev-master"
+        "way/generators": "dev-master",
+        "laravelcollective/html": "~5.0"
     },
     "autoload": {
         "classmap": [
@@ -28,16 +29,19 @@
             "php artisan optimize"
         ],
         "post-create-project-cmd": [
+            "php -r \"copy('.env.example', '.env');\"",
             "php artisan key:generate"
         ]
     },
     "config": {
         "preferred-install": "dist"
     },
-    "minimum-stability": "dev",
     "autoload-dev": {
         "classmap": [
             "tests/TestCase.php"
         ]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
     }
 }
