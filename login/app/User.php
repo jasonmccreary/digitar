@@ -1,7 +1,10 @@
 <?php
 
-use Illuminate\Auth\Reminders\RemindableInterface;
-use Illuminate\Auth\UserInterface;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Auth\Authenticatable;
+
 
 class User extends Eloquent implements RemindableInterface, UserInterface
 {
@@ -18,6 +21,8 @@ class User extends Eloquent implements RemindableInterface, UserInterface
      * @var array
      */
     protected $hidden = ['password'];
+
+    protected $fillable = ['name', 'email', 'password'];
 
     /**
      * Get the unique identifier for the user.
