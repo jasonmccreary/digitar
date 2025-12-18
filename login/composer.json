@@ -7,9 +7,10 @@
     ],
     "license": "MIT",
     "require": {
-        "laravel/framework": "5.0.*",
+        "laravel/framework": "5.1.*",
         "prologue/alerts": "dev-master",
-        "laravelcollective/html": "~5.0"
+        "laravelcollective/html": "5.1.*",
+        "php": ">=5.5.9"
     },
     "autoload": {
         "classmap": [
@@ -24,10 +25,11 @@
     },
     "scripts": {
         "post-install-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postInstall",
             "php artisan optimize"
         ],
         "post-update-cmd": [
-            "php artisan clear-compiled",
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan optimize"
         ],
         "post-create-project-cmd": [
