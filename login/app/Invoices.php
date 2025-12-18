@@ -96,6 +96,6 @@ class Invoices extends Model
 
     public function debtor()
     {
-        return $this->belongsTo('App\Debtors', 'did', 'id');
+        return $this->belongsTo(\App\Debtors::class, 'did', 'id');
     }
 }

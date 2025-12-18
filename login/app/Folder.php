@@ -62,6 +62,6 @@ class Folder extends Model
 
     public function rights()
     {
-        return $this->belongsTo('App\Folderright', 'id', 'fid');
+        return $this->belongsTo(\App\Folderright::class, 'id', 'fid');
     }
 }
