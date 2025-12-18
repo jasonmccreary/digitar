@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 class CloudsTableSeeder extends Seeder
 {
     public function run()

@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 class FolderrightsTableSeeder extends Seeder
 {
     public function run()

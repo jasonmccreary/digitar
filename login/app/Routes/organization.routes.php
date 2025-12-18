@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\FoldersController;
+use App\Http\Controllers\ModeratorController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
 Route::get('organization/superlogin', function () {
     $u = new User;
 
@@ -7,7 +12,7 @@ Route::get('organization/superlogin', function () {
         'superlogin' => 'true',
     ]);
 })->before('auth');
-Route::post('organization/supersearch', 'UserController@supersearch')->before('auth');
+Route::post('organization/supersearch', [UserController::class, 'supersearch'])->before('auth');
 
 Route::get('organization', function () {
     return redirect('/organization/clients');
@@ -42,7 +47,7 @@ Route::get('organization/client/add', function () {
 })->before('auth');
 Route::post('organization/client/add', [
     'before' => 'auth',
-    'uses' => 'UserController@addClient',
+    'uses' => [UserController::class, 'addClient'],
 ]);
 /*
  |--------------------------------------------------------------------------
@@ -62,7 +67,7 @@ Route::get('organization/client/edit/{id}', function ($id) {
         'sfolders' => $sfolders,
     ]);
 })->before('auth')->before('user');
-Route::post('organization/client/edit/{id}', 'UserController@editClient')->before('auth');
+Route::post('organization/client/edit/{id}', [UserController::class, 'editClient'])->before('auth');
 /*
  |--------------------------------------------------------------------------
  |	Delete a Client
@@ -77,7 +82,7 @@ Route::get('organization/client/delete/{id}', function ($id) {
         'user' => $user,
     ]);
 })->before('auth|user');
-Route::post('organization/client/delete/{id}', 'UserController@deleteClient')->before('auth');
+Route::post('organization/client/delete/{id}', [UserController::class, 'deleteClient'])->before('auth');
 
 /*
  |--------------------------------------------------------------------------
@@ -111,7 +116,7 @@ Route::get('organization/moderator/add', function () {
 })->before('auth');
 Route::post('organization/moderator/add', [
     'before' => 'auth',
-    'uses' => 'UserController@addModerator',
+    'uses' => [UserController::class, 'addModerator'],
 ]);
 /*
  |--------------------------------------------------------------------------
@@ -128,7 +133,7 @@ Route::get('organization/moderator/edit/{id}', function ($id) {
         'user' => $user,
     ]);
 })->before('auth|user');
-Route::post('organization/moderator/edit/{id}', 'UserController@editModerator')->before('auth');
+Route::post('organization/moderator/edit/{id}', [UserController::class, 'editModerator'])->before('auth');
 /*
  |--------------------------------------------------------------------------
  |	Delete a moderator
@@ -143,7 +148,7 @@ Route::get('organization/moderator/delete/{id}', function ($id) {
         'user' => $user,
     ]);
 })->before('auth|user');
-Route::post('organization/moderator/delete/{id}', 'UserController@deleteModerator')->before('auth');
+Route::post('organization/moderator/delete/{id}', [UserController::class, 'deleteModerator'])->before('auth');
 /*
  |--------------------------------------------------------------------------
  |	Link user to a moderator
@@ -167,7 +172,7 @@ Route::get('organization/moderator/link', function () {
         'sfolders' => $sfolders,
     ]);
 })->before('auth|user');
-Route::post('organization/moderator/edit/{id}', 'UserController@editModerator')->before('auth');
+Route::post('organization/moderator/edit/{id}', [UserController::class, 'editModerator'])->before('auth');
 /*
  |--------------------------------------------------------------------------
  |	Edit a moderator
@@ -188,7 +193,7 @@ Route::get('organization/moderator/linkedit/{id}', function ($id) {
         'mods' => $mods,
     ]);
 })->before('auth|user');
-Route::post('organization/moderator/linkedit/{id}', 'ModeratorController@edit')->before('auth');
+Route::post('organization/moderator/linkedit/{id}', [ModeratorController::class, 'edit'])->before('auth');
 
 /*
  |--------------------------------------------------------------------------
@@ -196,14 +201,14 @@ Route::post('organization/moderator/linkedit/{id}', 'ModeratorController@edit')-
  |--------------------------------------------------------------------------
 */
 
-Route::get('organization/folders', ['as' => 'folders', function () {
+Route::get('organization/folders', function () {
     $aFolders = Folder::where('uid', '=', Auth::user()->id)->whereNull('pid')->orderBy('order')->get();
 
     return view('organization.folders.overview', [
         'title' => 'Standaard mappen',
         'standardfolders' => $aFolders,
     ]);
-}])->before('auth');
+})->name('folders')->before('auth');
 
 Route::get('organization/folder/add', function () {
 
@@ -217,7 +222,7 @@ Route::get('organization/folder/add', function () {
         'folders' => $aFolders,
     ]);
 })->before('auth');
-Route::post('organization/folder/add', 'FoldersController@add')->before('auth');
+Route::post('organization/folder/add', [FoldersController::class, 'add'])->before('auth');
 
 Route::get('organization/folder/edit/{id}', function ($id) {
     $aFolders['-'] = 'Geen';
@@ -233,16 +238,16 @@ Route::get('organization/folder/edit/{id}', function ($id) {
         'folders' => $aFolders,
     ]);
 })->before('auth');
-Route::post('organization/folder/edit/{id}', 'FoldersController@edit')->before('auth');
+Route::post('organization/folder/edit/{id}', [FoldersController::class, 'edit'])->before('auth');
 
 Route::get('organization/folder/delete/{id}', function ($id) {
     return view('organization.folders.delete', [
         'title' => 'Standaard map verwijderen',
     ]);
 })->before('auth');
-Route::post('organization/folder/delete/{id}', 'FoldersController@delete')->before('auth');
+Route::post('organization/folder/delete/{id}', [FoldersController::class, 'delete'])->before('auth');
 
-Route::any('organization/folder/sort', 'FoldersController@sort')->before('auth');
+Route::any('organization/folder/sort', [FoldersController::class, 'sort'])->before('auth');
 
 /*
  |--------------------------------------------------------------------------

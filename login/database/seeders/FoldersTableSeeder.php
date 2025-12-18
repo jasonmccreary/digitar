@@ -1,5 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
+use Illuminate\Support\Facades\DB;
+
 class FoldersTableSeeder extends Seeder
 {
     public function run()
