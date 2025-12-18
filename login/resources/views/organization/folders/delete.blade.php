@@ -1,0 +1,11 @@
+@extends('master')
+
+@section('content')
+
+	{!! Form::open() !!}
+		<h4>Weet u zeker dat u deze map wilt verwijderen? Als er bestanden zijn die gebruikers in deze map hebben staan kunt u de map niet verwijderen!</h4>
+		<button name="delete" value="true" class="btn btn-danger btn-cons">Verwijderen</button>
+		<button name="delete" value="false" class="btn btn-success btn-cons">Behouden</button>
+	{!! Form::close() !!}
+
+@endsection

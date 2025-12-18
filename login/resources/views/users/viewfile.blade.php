@@ -1,0 +1,195 @@
+
+
+	<div class="row" style="margin:0;">
+
+		<div class="col-md-3 editFileSection" style="padding:0;position:absolute;height:100%;left:0;">
+			<div class="grid simple" style="position:relative;height:100%;">
+				<div class="grid-tools" style="display:none;">
+					<a class="btn btn-default btn-small tip" title="Verstuur als bijlage" data-placement="left" href="/user/file/send/{!! $file['id'] !!}"><i class="fa fa-envelope"></i></a>
+				</div>
+				<div class="grid-title no-border">
+					<h3>Eigenschappen</h3>
+				</div>
+				<div class="grid-body no-border">
+					@if(Auth::user()->lookonly == 0)
+					<form id="form_traditional_validation" class="viewfileform" action="/user/file/edit/{!! $file['id'] !!}" method="post">
+					@endif
+
+					<div class="form-group">
+						<label class="form-label">Naam</label>
+						<div class="input-with-icon right">
+							<i class=""></i>
+							<input type="text" name="name" id="form1Amount" value="{!! $file['name'] !!}" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="form-label">Datum</label>
+						<br/>
+						<div class="input-append success date no-padding" style="width:100%;">
+		                    <input type="text" name="date" value="{!! simple_date($file['date']) !!}" class="form-control">
+		                	<span class="add-on" style="margin-left:-36px;"><span class="arrow"></span><i class="fa fa-th"></i></span>
+		                </div>
+					</div>
+					<div class="form-group">
+						<label class="form-label">Map</label>
+						<select id="folderSelect" style="width:100%;" name="folder">
+						<option value="0" @if($file['fid'] == '0') selected @endif>Onverwerkt</option>
+						@foreach($aFolders as $folder)
+						<?php
+				          $subfolders = Folder::getSubfolders($folder->id);
+				        ?>
+							<option value="{!! $folder->id !!}" @if($file['fid'] == $folder->id) selected @endif>{!! $folder->name !!}</option>
+							@foreach($subfolders as $sf)
+			                  <option value="{!! $sf->id !!}" @if($file['fid'] == $sf->id) selected @endif > &nbsp;&nbsp; - {!! $sf->name !!}</option>
+			                @endforeach
+						@endforeach
+						</select>
+					</div>
+
+					<div class="form-group" id="geboektcheck" @if(Folder::where('id', '=', $file['fid'])->where('bookedcheck', '=', '1')->count() == 0 || !Session::has('highrank')) style="display:none;" @endif>
+						<p><div class="checkbox check-info">
+                      		<input id="checkbox4" type="checkbox" name="geboekt" value="1" @if($file['geboekt'] == '1') checked="checked" @endif >
+                      		<label for="checkbox4" style="padding-left: 25px;">Geboekt </label>
+                    	</div></p>
+					</div>
+
+					@if(trim($file['note']) == '' && Auth::user()->lookonly == 0)
+					<p>
+						<a href="#note" class="addNote">Notitie toevoegen</a>
+					</p>
+					<div class="form-group noteArea" style="display:none;">
+						<label class="form-label">Notitie</label>
+						<div class="input-with-icon right">
+							<textarea name="note" rows="6" class="form-control">{!! $file['note'] !!}</textarea>
+						</div>
+					</div>
+					@else
+					<div class="form-group">
+						<label class="form-label">Notitie</label>
+						<div class="input-with-icon right">
+							<textarea name="note" rows="6" class="form-control scroller scrollbar-hidden" style="font-size:12px;height:220px !important;" data-height="220px">{!! trim(strip_tags($file['note'])) !!}</textarea>
+						</div>
+					</div>
+					@endif
+
+					<div style="position:absolute;bottom:0;left:0;width:100%;">
+					<div class="form-group">
+						<div class="pull-left" style="margin-left: 10px;">
+						@if(Auth::user()->lookonly == 0)
+						  <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Opslaan</button>
+						@endif
+						</div>
+						<div class="pull-right">
+						  <button type="button" class="btn btn-danger btn-cons .close-file-modal" data-dismiss="modal">Sluiten</button>
+						</div>
+					</div>
+					</div>
+					@if(Auth::user()->lookonly == 0)
+					</form>
+					@endif
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-9 closeFile" style="padding:0;background:#fff;text-align:center;margin:0;display:none;">
+			<button type="button" class="btn btn-danger btn-small btn-cons" data-dismiss="modal" style="margin: 5px auto;">Sluiten</button>
+		</div>
+
+		<div class="col-md-9 viewfile">
+			<iframe class="iframeview" src="/user/loadfile/{!! $file['id'] !!}" width="100%" height="90%" style="border:none;float:right;background:#111;text-align:center;"> </iframe>
+		</div>
+		<div class="col-md-9 switchviewer" style="padding:0;height:100%;margin-left:25%;background:#121212;text-align:center;color:#ddd;">
+			Andere viewer
+		</div>
+
+		<script type="text/javascript">
+		var fileID = '{!! $file['id'] !!}';
+		var viewstate = 1;
+
+			@if(Auth::user()->lookonly == 0)
+				$("select").select2();
+
+				$('.date').datepicker({
+			  		format: "dd-mm-yyyy",
+					autoclose: true,
+					todayHighlight: true
+			   	});
+		   	@endif
+
+		   	$('a').tooltip();
+
+		   	$('.switchviewer').on('click', function() {
+		   		if (viewstate == 1) {
+		   			$(this).prev().find('.iframeview').attr('src','/user/loadfile/{!! $file['id'] !!}/plain');
+		   			viewstate = 2;
+		   		}else {
+		   			$(this).prev().find('.iframeview').attr('src','/user/loadfile/{!! $file['id'] !!}');
+		   			viewstate = 1;
+		   		}
+		   	});
+
+		   	$('.scroller').each(function () {
+	        	var h = $(this).attr('data-height');
+		        $(this).scrollbar({
+		            ignoreMobile:true
+		        });
+		        $('.scroll-element.scroll-x').remove();
+		        if(h != null  || h !=""){
+		            if($(this).parent('.scroll-wrapper').length > 0)
+		                $(this).parent().css('max-height',h);
+		            else
+		                $(this).css('max-height',h);
+		        }
+	    	});
+
+			$('.addNote').click(function(e) {
+
+				e.preventDefault();
+				$('.noteArea').slideDown('fast');
+				$(this).parent().slideUp('fast');
+				return false;
+			});
+
+		   	$('select').on('change',function() {
+		   		var thissa = $(this);
+		   		$.get('/user/geboektchecker/'+$(this).val(), function( data ) {
+		   			if (data == true) {
+		   				thissa.closest('form').find('#checkbox4').attr('value', '1');
+		   				thissa.closest('form').find('#geboektcheck').slideDown('fast');
+		   			}else{
+		   				// $('#checkbox4').removeAttr('value');
+		   				thissa.closest('form').find('#geboektcheck').slideUp('fast');
+		   			}
+		   		});
+		   	});
+
+		   	@if(Auth::user()->lookonly == 1)
+		   		$('.editFileSection input, .editFileSection select, .editFileSection textarea').each(function() {
+		   			$(this).attr("disabled","disabled");
+		   		});
+		   	@endif
+
+
+		   	function scaleUi() {
+			    if ($(window).width() < 975) {
+					$('.editFileSection').hide();
+					$('.closeFile').show();
+					$('iframe').css('height',($(window).innerHeight()-70)+'px');
+				}else{
+					$('.closeFile').hide();
+					$('.editFileSection').show();
+					$('iframe').css('height',($(window).innerHeight()-70)+'px');
+				}
+			};
+			scaleUi();
+
+			var resizeTimer;
+			$(window).resize(function() {
+			    clearTimeout(resizeTimer);
+			    resizeTimer = setTimeout(scaleUi, 300);
+			});
+
+
+		</script>
+
+	</div>
