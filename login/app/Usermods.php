@@ -1,6 +1,8 @@
 <?php
 
-class Usermods extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Usermods extends Model
 {
     public static function getModNames($uid)
     {

@@ -1,6 +1,8 @@
 <?php
 
-class Files extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Files extends Model
 {
     public static function getNumUnsorted($cid)
     {

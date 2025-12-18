@@ -1,6 +1,8 @@
 <?php
 
-class Cloud extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Cloud extends Model
 {
     protected $guarded = [];
 

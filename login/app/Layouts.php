@@ -1,6 +1,8 @@
 <?php
 
-class Layouts extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Layouts extends Model
 {
     public static function getInvoice($id = false)
     {

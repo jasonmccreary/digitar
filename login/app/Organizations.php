@@ -1,3 +1,5 @@
 <?php
 
-class Organizations extends Eloquent {}
+use Illuminate\Database\Eloquent\Model;
+
+class Organizations extends Model {}

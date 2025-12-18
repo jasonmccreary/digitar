@@ -1,6 +1,8 @@
 <?php
 
-class Products extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Products extends Model
 {
     public static function newProdNumber()
     {

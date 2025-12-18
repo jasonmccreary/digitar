@@ -1,6 +1,8 @@
 <?php
 
-class Debtors extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Debtors extends Model
 {
     public static function newDebNumber()
     {

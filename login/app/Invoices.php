@@ -1,6 +1,8 @@
 <?php
 
-class Invoices extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Invoices extends Model
 {
     public static function newInvoiceNumber()
     {

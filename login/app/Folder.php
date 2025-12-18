@@ -1,6 +1,8 @@
 <?php
 
-class Folder extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Folder extends Model
 {
     protected $guarded = [];
 

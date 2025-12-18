@@ -1,6 +1,8 @@
 <?php
 
-class Invoicerows extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Invoicerows extends Model
 {
     public function product()
     {

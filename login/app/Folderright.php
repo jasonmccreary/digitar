@@ -1,6 +1,8 @@
 <?php
 
-class Folderright extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Folderright extends Model
 {
     protected $guarded = [];
 
