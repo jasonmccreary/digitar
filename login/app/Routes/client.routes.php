@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\FoldersController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
 Route::get('client', function () {
     return redirect('/client/users');
 })->before('auth');
@@ -33,7 +37,7 @@ Route::get('client/user/add', function () {
 })->before('auth');
 Route::post('client/user/add', [
     'before' => 'auth',
-    'uses' => 'UserController@addUser',
+    'uses' => [UserController::class, 'addUser'],
 ]);
 /*
  |--------------------------------------------------------------------------
@@ -52,7 +56,7 @@ Route::get('client/user/edit/{id}', function ($id) {
         'sfolders' => $sfolders,
     ]);
 })->before('auth|user');
-Route::post('client/user/edit/{id}', 'UserController@editUser')->before('auth');
+Route::post('client/user/edit/{id}', [UserController::class, 'editUser'])->before('auth');
 /*
  |--------------------------------------------------------------------------
  |	Delete a User
@@ -67,7 +71,7 @@ Route::get('client/user/delete/{id}', function ($id) {
         'user' => $user,
     ]);
 })->before('auth|user');
-Route::post('client/user/delete/{id}', 'UserController@deleteUser')->before('auth');
+Route::post('client/user/delete/{id}', [UserController::class, 'deleteUser'])->before('auth');
 
 /*
  |--------------------------------------------------------------------------
@@ -127,7 +131,7 @@ Route::get('client/folder/add', function () {
         'folders' => $aFolders,
     ]);
 })->before('auth');
-Route::post('client/folder/add', 'FoldersController@add')->before('auth');
+Route::post('client/folder/add', [FoldersController::class, 'add'])->before('auth');
 
 Route::get('client/folder/edit/{id}', function ($id) {
     $folder = Folder::where('uid', '=', Auth::user()->id)->where('id', '=', $id)->first();
@@ -143,7 +147,7 @@ Route::get('client/folder/edit/{id}', function ($id) {
         'folders' => $aFolders,
     ]);
 })->before('auth|folder');
-Route::post('client/folder/edit/{id}', 'FoldersController@edit')->before('auth');
+Route::post('client/folder/edit/{id}', [FoldersController::class, 'edit'])->before('auth');
 
 Route::get('client/folder/delete/{id}', function ($id) {
     if (Files::where('fid', '=', $id)->count() > 1) {
@@ -156,4 +160,4 @@ Route::get('client/folder/delete/{id}', function ($id) {
         ]);
     }
 })->before('auth|folder');
-Route::post('client/folder/delete/{id}', 'FoldersController@delete')->before('auth');
+Route::post('client/folder/delete/{id}', [FoldersController::class, 'delete'])->before('auth');

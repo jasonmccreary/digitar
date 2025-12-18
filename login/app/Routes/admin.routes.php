@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\OrganizationsController;
+use App\Http\Controllers\ToolsController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
 
 Route::get('admin', function () {
@@ -13,7 +17,7 @@ Route::get('admin/superlogin', function () {
         'superlogin' => 'true',
     ]);
 })->before('auth');
-Route::post('admin/supersearch', 'UserController@supersearch')->before('auth');
+Route::post('admin/supersearch', [UserController::class, 'supersearch'])->before('auth');
 
 Route::get('admin/organizations', function () {
     $o = new Organizations;
@@ -31,7 +35,7 @@ Route::get('admin/organizations', function () {
 Route::get('admin/organizations/add', function () {
     return view('admin.organizations.add')->with('title', 'Organisatie toevoegen');
 })->before('auth');
-Route::post('admin/organizations/add', 'OrganizationsController@add')->before('auth');
+Route::post('admin/organizations/add', [OrganizationsController::class, 'add'])->before('auth');
 /*
  |--------------------------------------------------------------------------
  |	Edit a organization
@@ -46,7 +50,7 @@ Route::get('admin/organization/edit/{id}', function ($id) {
         'organization' => $org,
     ]);
 })->before('auth');
-Route::post('admin/organization/edit/{id}', 'OrganizationsController@edit')->before('auth');
+Route::post('admin/organization/edit/{id}', [OrganizationsController::class, 'edit'])->before('auth');
 /*
  |--------------------------------------------------------------------------
  |	Delete a organization
@@ -61,7 +65,7 @@ Route::get('admin/organization/delete/{id}', function ($id) {
         'organization' => $org,
     ]);
 })->before('auth');
-Route::post('admin/organization/delete/{id}', 'OrganizationsController@delete')->before('auth');
+Route::post('admin/organization/delete/{id}', [OrganizationsController::class, 'delete'])->before('auth');
 
 Route::get('admin/users', function () {
     $users = new User;
@@ -105,7 +109,7 @@ Route::get('admin/user/add', function () {
 })->before('auth');
 Route::post('admin/user/add', [
     'before' => 'auth',
-    'uses' => 'UserController@addOrganization',
+    'uses' => [UserController::class, 'addOrganization'],
 ]);
 /*
  |--------------------------------------------------------------------------
@@ -126,7 +130,7 @@ Route::get('admin/user/edit/{id}', function ($id) {
         'organizations' => $organizations,
     ]);
 })->before('auth|user');
-Route::post('admin/user/edit/{id}', 'UserController@editAdmin')->before('auth');
+Route::post('admin/user/edit/{id}', [UserController::class, 'editAdmin'])->before('auth');
 /*
  |--------------------------------------------------------------------------
  |	Delete a administrator
@@ -141,7 +145,7 @@ Route::get('admin/user/delete/{id}', function ($id) {
         'user' => $user,
     ]);
 })->before('auth|user');
-Route::post('admin/user/delete/{id}', 'UserController@deleteAdmin')->before('auth');
+Route::post('admin/user/delete/{id}', [UserController::class, 'deleteAdmin'])->before('auth');
 
 /*
  |--------------------------------------------------------------------------
@@ -322,7 +326,7 @@ Route::get('admin/tools/forwardcheck', function () {
 })->before('auth');
 Route::post('admin/tools/forwardcheck', [
     'before' => 'auth',
-    'uses' => 'ToolsController@createForwarder',
+    'uses' => [ToolsController::class, 'createForwarder'],
 ]);
 
 Route::get('admin/tools/ftpcheck', function () {
@@ -335,7 +339,7 @@ Route::get('admin/tools/ftpcheck', function () {
 })->before('auth');
 Route::post('admin/tools/ftpcheck', [
     'before' => 'auth',
-    'uses' => 'ToolsController@createFtp',
+    'uses' => [ToolsController::class, 'createFtp'],
 ]);
 
 Route::get('admin/tools/getpdfcontents', function () {
@@ -346,4 +350,4 @@ Route::get('admin/tools/getpdfcontents', function () {
     ]);
 
 })->before('auth');
-Route::post('admin/tools/getpdfcontents', 'ToolsController@savePdfContents')->before('auth');
+Route::post('admin/tools/getpdfcontents', [ToolsController::class, 'savePdfContents'])->before('auth');

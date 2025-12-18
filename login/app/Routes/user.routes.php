@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\CloudsController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\FoldersController;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 
 Route::get('user', function () {
@@ -10,11 +14,11 @@ Route::get('user', function () {
     return redirect('/user/folder/inbox');
 })->before('auth');
 
-Route::get('user/folder/{fid}', 'FileController@showFiles');
-Route::get('user/folder/{fid}/{ajax}', 'FileController@showFiles');
-Route::get('user/ongeboekt/ajax', 'FileController@getOngeboekt');
-Route::any('user/search/{search}', 'FileController@showFiles');
-Route::any('user/search/{search}/ajax/', 'FileController@searchFiles');
+Route::get('user/folder/{fid}', [FileController::class, 'showFiles']);
+Route::get('user/folder/{fid}/{ajax}', [FileController::class, 'showFiles']);
+Route::get('user/ongeboekt/ajax', [FileController::class, 'getOngeboekt']);
+Route::any('user/search/{search}', [FileController::class, 'showFiles']);
+Route::any('user/search/{search}/ajax/', [FileController::class, 'searchFiles']);
 
 Route::get('user/upload', ['before' => 'auth|folders', 'uses' => function () {
     return view('users.upload', [
@@ -25,11 +29,11 @@ Route::get('user/ajax/messages', ['before' => 'auth', 'uses' => function () {
     return view('users.ajax.messages');
 }]);
 
-Route::get('user/files', 'CloudsController@showFiles');
+Route::get('user/files', [CloudsController::class, 'showFiles']);
 
-Route::post('user/upload/post', 'FileController@upload');
-Route::post('user/file/edit/{id}', 'FileController@editFile');
-Route::post('user/file/editdetails/{id}', 'CloudsController@editFile');
+Route::post('user/upload/post', [FileController::class, 'upload']);
+Route::post('user/file/edit/{id}', [FileController::class, 'editFile']);
+Route::post('user/file/editdetails/{id}', [CloudsController::class, 'editFile']);
 
 Route::post('user/files/bulk', ['before' => 'auth|folders', 'uses' => function () {
     if (is_array(Request::get('fileid'))) {
@@ -102,7 +106,7 @@ Route::get('user/files/bulk', ['before' => 'auth|folders', 'uses' => function ()
         return redirect('/user/folder/inbox');
     }
 }]);
-Route::post('user/sendmail', 'FileController@sendmail');
+Route::post('user/sendmail', [FileController::class, 'sendmail']);
 
 Route::post('user/files/download', ['before' => 'auth|folders', 'uses' => function () {
     if (is_array(Request::get('fileid'))) {
@@ -147,15 +151,15 @@ Route::post('user/cloud/bulk', ['before' => 'auth|folders', 'uses' => function (
     }
 }]);
 
-Route::get('user/download/file/{fid}/{nothing}', ['before' => 'auth', 'uses' => 'CloudsController@downloadFile']);
+Route::get('user/download/file/{fid}/{nothing}', ['before' => 'auth', 'uses' => [CloudsController::class, 'downloadFile']]);
 
-Route::get('user/viewfile/{fid}', 'FileController@viewfile');
-Route::get('user/viewdetails/{fid}', 'CloudsController@viewdetails');
-Route::get('user/loadpdf/{fid}', 'FileController@loadpdf');
-Route::get('user/loadfile/{fid}/{viewer}', 'FileController@loadfile');
-Route::get('user/loadfile/{fid}', 'FileController@loadfile');
-Route::get('user/loadfile/', 'FileController@loadfile');
-Route::get('user/geboektchecker/{fid}', 'FoldersController@geboektcheck');
+Route::get('user/viewfile/{fid}', [FileController::class, 'viewfile']);
+Route::get('user/viewdetails/{fid}', [CloudsController::class, 'viewdetails']);
+Route::get('user/loadpdf/{fid}', [FileController::class, 'loadpdf']);
+Route::get('user/loadfile/{fid}/{viewer}', [FileController::class, 'loadfile']);
+Route::get('user/loadfile/{fid}', [FileController::class, 'loadfile']);
+Route::get('user/loadfile/', [FileController::class, 'loadfile']);
+Route::get('user/geboektchecker/{fid}', [FoldersController::class, 'geboektcheck']);
 Route::get('user/year/{year}', function ($year) {
     Session::put('year', $year);
 
