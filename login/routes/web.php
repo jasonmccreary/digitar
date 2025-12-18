@@ -66,4 +66,4 @@ Route::get('403', function () {
 });
 
 $pgcount = Session::get('pgcount') + 1;
-Session::set('pgcount', $pgcount);
+Session::put('pgcount', $pgcount);
