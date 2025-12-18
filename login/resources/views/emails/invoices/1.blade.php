@@ -21,7 +21,7 @@ if ($layout->count() > 0) {
 	</head>
 	<body>
 		<div>
-			Beste {!! $d->contact or $d->name !!},<br />
+			Beste {!! $d->contact ?? $d->name !!},<br />
 			<br />
 			In de bijlage vind u de factuur voor de door u afgenomen producten of diensten.<br />
 			<br />
