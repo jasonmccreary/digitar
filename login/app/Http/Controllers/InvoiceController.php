@@ -8,7 +8,6 @@ use App\Invoices;
 use App\Layouts;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
