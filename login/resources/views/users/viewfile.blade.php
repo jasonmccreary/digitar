@@ -5,28 +5,28 @@
 		<div class="col-md-3 editFileSection" style="padding:0;position:absolute;height:100%;left:0;">
 			<div class="grid simple" style="position:relative;height:100%;">
 				<div class="grid-tools" style="display:none;">
-					<a class="btn btn-default btn-small tip" title="Verstuur als bijlage" data-placement="left" href="/user/file/send/{{ $file['id'] }}"><i class="fa fa-envelope"></i></a>
+					<a class="btn btn-default btn-small tip" title="Verstuur als bijlage" data-placement="left" href="/user/file/send/{!! $file['id'] !!}"><i class="fa fa-envelope"></i></a>
 				</div>
 				<div class="grid-title no-border">
 					<h3>Eigenschappen</h3>
 				</div>
 				<div class="grid-body no-border">
 					@if(Auth::user()->lookonly == 0)
-					<form id="form_traditional_validation" class="viewfileform" action="/user/file/edit/{{ $file['id'] }}" method="post">
+					<form id="form_traditional_validation" class="viewfileform" action="/user/file/edit/{!! $file['id'] !!}" method="post">
 					@endif
 
 					<div class="form-group">
 						<label class="form-label">Naam</label>
 						<div class="input-with-icon right">
 							<i class=""></i>
-							<input type="text" name="name" id="form1Amount" value="{{ $file['name'] }}" class="form-control">
+							<input type="text" name="name" id="form1Amount" value="{!! $file['name'] !!}" class="form-control">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="form-label">Datum</label>
 						<br/>
 						<div class="input-append success date no-padding" style="width:100%;">
-		                    <input type="text" name="date" value="{{ simple_date($file['date']) }}" class="form-control">
+		                    <input type="text" name="date" value="{!! simple_date($file['date']) !!}" class="form-control">
 		                	<span class="add-on" style="margin-left:-36px;"><span class="arrow"></span><i class="fa fa-th"></i></span>
 		                </div>
 					</div>
@@ -38,9 +38,9 @@
 						<?php
 				          $subfolders = Folder::getSubfolders($folder->id);
 				        ?>
-							<option value="{{ $folder->id }}" @if($file['fid'] == $folder->id) selected @endif>{{ $folder->name }}</option>
+							<option value="{!! $folder->id !!}" @if($file['fid'] == $folder->id) selected @endif>{!! $folder->name !!}</option>
 							@foreach($subfolders as $sf)
-			                  <option value="{{ $sf->id }}" @if($file['fid'] == $sf->id) selected @endif > &nbsp;&nbsp; - {{ $sf->name }}</option>
+			                  <option value="{!! $sf->id !!}" @if($file['fid'] == $sf->id) selected @endif > &nbsp;&nbsp; - {!! $sf->name !!}</option>
 			                @endforeach
 						@endforeach
 						</select>
@@ -60,14 +60,14 @@
 					<div class="form-group noteArea" style="display:none;">
 						<label class="form-label">Notitie</label>
 						<div class="input-with-icon right">
-							<textarea name="note" rows="6" class="form-control">{{ $file['note'] }}</textarea>
+							<textarea name="note" rows="6" class="form-control">{!! $file['note'] !!}</textarea>
 						</div>
 					</div>
 					@else
 					<div class="form-group">
 						<label class="form-label">Notitie</label>
 						<div class="input-with-icon right">
-							<textarea name="note" rows="6" class="form-control scroller scrollbar-hidden" style="font-size:12px;height:220px !important;" data-height="220px">{{ trim(strip_tags($file['note'])) }}</textarea>
+							<textarea name="note" rows="6" class="form-control scroller scrollbar-hidden" style="font-size:12px;height:220px !important;" data-height="220px">{!! trim(strip_tags($file['note'])) !!}</textarea>
 						</div>
 					</div>
 					@endif
@@ -96,14 +96,14 @@
 		</div>
 
 		<div class="col-md-9 viewfile">
-			<iframe class="iframeview" src="/user/loadfile/{{ $file['id'] }}" width="100%" height="90%" style="border:none;float:right;background:#111;text-align:center;"> </iframe>
+			<iframe class="iframeview" src="/user/loadfile/{!! $file['id'] !!}" width="100%" height="90%" style="border:none;float:right;background:#111;text-align:center;"> </iframe>
 		</div>
 		<div class="col-md-9 switchviewer" style="padding:0;height:100%;margin-left:25%;background:#121212;text-align:center;color:#ddd;">
 			Andere viewer
 		</div>
 
 		<script type="text/javascript">
-		var fileID = '{{ $file['id'] }}';
+		var fileID = '{!! $file['id'] !!}';
 		var viewstate = 1;
 
 			@if(Auth::user()->lookonly == 0)
@@ -120,10 +120,10 @@
 
 		   	$('.switchviewer').on('click', function() {
 		   		if (viewstate == 1) {
-		   			$(this).prev().find('.iframeview').attr('src','/user/loadfile/{{ $file['id'] }}/plain');
+		   			$(this).prev().find('.iframeview').attr('src','/user/loadfile/{!! $file['id'] !!}/plain');
 		   			viewstate = 2;
 		   		}else {
-		   			$(this).prev().find('.iframeview').attr('src','/user/loadfile/{{ $file['id'] }}');
+		   			$(this).prev().find('.iframeview').attr('src','/user/loadfile/{!! $file['id'] !!}');
 		   			viewstate = 1;
 		   		}
 		   	});

@@ -13,10 +13,10 @@
 		<tbody>
 			@foreach($users as $u)
 				<tr>
-					<td>{{ $u->name }}</td>
-					<td>{{ Usermods::getModNames($u->id) }}</td>
+					<td>{!! $u->name !!}</td>
+					<td>{!! Usermods::getModNames($u->id) !!}</td>
 					<td>
-						<a href="/organization/moderator/linkedit/{{ $u->id }}" class="btn btn-white btn-xs btn-mini" title="Bewerken"><i class="fa fa-pencil"></i></a>
+						<a href="/organization/moderator/linkedit/{!! $u->id !!}" class="btn btn-white btn-xs btn-mini" title="Bewerken"><i class="fa fa-pencil"></i></a>
 					</td>
 				</tr>
 			@endforeach

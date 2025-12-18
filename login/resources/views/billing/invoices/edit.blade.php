@@ -12,7 +12,7 @@
 	.invoicerow-placeholder { height: 47px; }
 	.form-control[readonly] { cursor: auto; background-color: #fff; }
 </style>
-{{ Form::open(array('class' => 'invoice')) }}
+{!! Form::open(array('class' => 'invoice')) !!}
 
 <div class="grid simple">
 	<div class="grid-body">
@@ -26,7 +26,7 @@
 						<select id="selectDebtor" style="width:100%;" name="debtor">
 							<option disabled selected="">- Maak een keuze -</option>
 							@foreach(Debtors::where('cid','=',Auth::user()->cid)->get() as $debtor)
-								<option value="{{ $debtor->id }}" @if(Input::old('debtor') == $debtor->id) selected @elseif($i->did == $debtor->id) selected @endif>{{ $debtor->debnumber }} {{ $debtor->name }}</option>
+								<option value="{!! $debtor->id !!}" @if(Input::old('debtor') == $debtor->id) selected @elseif($i->did == $debtor->id) selected @endif>{!! $debtor->debnumber !!} {!! $debtor->name !!}</option>
 							@endforeach
 						</select>
 					</div>
@@ -42,14 +42,14 @@
 						<div class="row form-row">
 							<div class="col-md-12 form-group">
 								<label class="form-label">Factuurnummer</label>
-								{{ Form::text('invoicenumber', (strlen(Input::old('invoicenumber')) > 0 ? Input::old('invoicenumber') : $i->invoicenumber), array('class' => 'form-control')) }}
+								{!! Form::text('invoicenumber', (strlen(Input::old('invoicenumber')) > 0 ? Input::old('invoicenumber') : $i->invoicenumber), array('class' => 'form-control')) !!}
 							</div>
 						</div>
 						<div class="row form-row">
 							<div class="col-md-12 form-group">
 								<label class="form-label">Factuur datum</label>
 								<div class="input-append success date no-padding" style="width:100%;">
-				                    <input type="text" name="date" value="{{ simple_date((strlen(Input::old('date')) > 0 ? Input::old('date') : $i->date)) }}" class="form-control">
+				                    <input type="text" name="date" value="{!! simple_date((strlen(Input::old('date')) > 0 ? Input::old('date') : $i->date)) !!}" class="form-control">
 				                	<span class="add-on" style="margin-left:-36px;"><span class="arrow"></span><i class="fa fa-th"></i></span>
 				                </div>
 				            </div>
@@ -57,13 +57,13 @@
 			            <div class="row form-row">
 							<div class="col-md-12 form-group">
 								<label class="form-label">Referentie</label>
-								{{ Form::text('reference', (strlen(Input::old('reference')) > 0 ? Input::old('reference') : $i->reference), array('class' => 'form-control')) }}
+								{!! Form::text('reference', (strlen(Input::old('reference')) > 0 ? Input::old('reference') : $i->reference), array('class' => 'form-control')) !!}
 							</div>
 						</div>
 						<div class="row form-row">
 							<div class="col-md-12 form-group">
 								<label class="form-label">Layout</label>
-								{{ Form::select2('layout', Layouts::getInvoiceselect(), $i->layout, array('style' => 'width:100%;'),array(0)) }}
+								{!! Form::select2('layout', Layouts::getInvoiceselect(), $i->layout, array('style' => 'width:100%;'),array(0)) !!}
 							</div>
 						</div>
 					</div>
@@ -105,10 +105,10 @@
 					<div class="row form-row">
 						<input type="hidden" name="r-type" value="1" />
 						<div class="col-md-1 form-group">
-							<input type="text" name="r-date" class="form-control input-sm date" value="{{ simple_date(date('Y-m-d')) }}" />
+							<input type="text" name="r-date" class="form-control input-sm date" value="{!! simple_date(date('Y-m-d')) !!}" />
 						</div>
 						<div class="col-md-2 form-group sm-select">
-							{{ Form::select2('r-product', Products::getDropdown(), '0', array('class' => 'product-select leave', 'style' => 'width:100%;'),array(0)) }}
+							{!! Form::select2('r-product', Products::getDropdown(), '0', array('class' => 'product-select leave', 'style' => 'width:100%;'),array(0)) !!}
 						</div>
 						<div class="col-md-1 form-group">
 							<input type="text" name="r-amount" class="form-control input-sm amount auto" data-v-min="-999.99" data-v-max="999.99" data-a-dec="." data-a-sep="," value="1" />
@@ -150,25 +150,25 @@
 							<div class="row form-row">
 								<input type="hidden" name="r-type" value="1" />
 								<div class="col-md-1 form-group">
-									<input type="text" name="r-date" class="form-control input-sm date" value="{{ simple_date($ir->date) }}" />
+									<input type="text" name="r-date" class="form-control input-sm date" value="{!! simple_date($ir->date) !!}" />
 								</div>
 								<div class="col-md-2 form-group sm-select">
-									{{ Form::select2('r-product', Products::getDropdown(), $ir->pid, array('class' => 'product-select', 'style' => 'width:100%;'),array(0)) }}
+									{!! Form::select2('r-product', Products::getDropdown(), $ir->pid, array('class' => 'product-select', 'style' => 'width:100%;'),array(0)) !!}
 								</div>
 								<div class="col-md-1 form-group">
-									<input type="text" name="r-amount" class="form-control input-sm amount auto" data-v-min="-999.99" data-v-max="999.99" data-a-sep="," data-a-dec="." value="{{ $ir->amount }}" />
+									<input type="text" name="r-amount" class="form-control input-sm amount auto" data-v-min="-999.99" data-v-max="999.99" data-a-sep="," data-a-dec="." value="{!! $ir->amount !!}" />
 								</div>
 								<div class="col-md-4 form-group">
-									<input type="text" name="r-description" class="form-control input-sm description" value="{{ htmlspecialchars($ir->description) }}" />
+									<input type="text" name="r-description" class="form-control input-sm description" value="{!! htmlspecialchars($ir->description) !!}" />
 								</div>
 								<div class="col-md-1 form-group">
-									<input type="text" name="r-tax" class="form-control input-sm tax auto" data-v-min="0" data-v-max="99" data-a-sep="." data-a-dec="," value="{{ $ir->tax }}" />
+									<input type="text" name="r-tax" class="form-control input-sm tax auto" data-v-min="0" data-v-max="99" data-a-sep="." data-a-dec="," value="{!! $ir->tax !!}" />
 								</div>
 								<div class="col-md-1 form-group">
-									<input type="text" name="r-price" class="form-control input-sm price auto" data-a-sep="." data-a-dec="," data-a-sign="€ " value="{{ $ir->price }}" />
+									<input type="text" name="r-price" class="form-control input-sm price auto" data-a-sep="." data-a-dec="," data-a-sign="€ " value="{!! $ir->price !!}" />
 								</div>
 								<div class="col-md-1 form-group">
-									<input type="text" class="form-control input-sm total auto" data-a-sep="." data-a-dec="," data-a-sign="€ " readonly="true" value="{{ ($ir->amount * $ir->price) }}" tabindex="-1" />
+									<input type="text" class="form-control input-sm total auto" data-a-sep="." data-a-dec="," data-a-sign="€ " readonly="true" value="{!! ($ir->amount * $ir->price) !!}" tabindex="-1" />
 								</div>
 								<div class="col-md-1 form-group" style="text-align:right;">
 									<label class="form-label" style="line-height:37px;"><a class="btn btn-white btn-xs btn-mini handle"><i class="fa fa-arrows-v"></i></a></label>
@@ -179,7 +179,7 @@
 							<div class="row form-row">
 								<input type="hidden" name="r-type" value="9" />
 								<div class="col-md-11 form-group">
-									<input type="text" name="r-description" class="form-control" value="{{ htmlspecialchars($ir->description) }}" />
+									<input type="text" name="r-description" class="form-control" value="{!! htmlspecialchars($ir->description) !!}" />
 								</div>
 								<div class="col-md-1 form-group" style="text-align:right;">
 									<label class="form-label" style="line-height:37px;"><a class="btn btn-white btn-xs btn-mini handle"><i class="fa fa-arrows-v"></i></a></label>
@@ -205,7 +205,7 @@
 
 	</div>
 </div>
-{{ Form::close() }}
+{!! Form::close() !!}
 <div class="grid simple">
 	<div class="grid-body">
 

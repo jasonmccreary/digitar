@@ -33,14 +33,14 @@
 			<tr>
 				@if(!is_numeric($fid) && Auth::user()->lookonly == 0) 
 		      	<td class="v-align-middle"><div class="checkbox check-default">
-		          	<input type="checkbox" value="{{ $file->name }}" name="fileid[{{ $file->id }}]" id="checkbox{{ $file->id }}">
-		          	<label for="checkbox{{ $file->id }}"></label>
+		          	<input type="checkbox" value="{!! $file->name !!}" name="fileid[{!! $file->id !!}]" id="checkbox{!! $file->id !!}">
+		          	<label for="checkbox{!! $file->id !!}"></label>
 		        </div></td>
 		        @endif
 		        <td>
-		        	<a class="btn btn-info btn-mini" href="/user/download/file/{{ $file->id }}/{{ str_replace(' ', '-', $file->name) }}.{{ strtolower(getFileType($file->file)) }}" target="_blank"> Download </a>
-		        	<a class="btn btn-default btn-mini" href="/user/viewdetails/{{ $file->id }}" data-toggle="modal" data-target="#myModal{{ $file->id }}"> Details </a>
-		        	<div class="modal fade" id="myModal{{ $file->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		        	<a class="btn btn-info btn-mini" href="/user/download/file/{!! $file->id !!}/{!! str_replace(' ', '-', $file->name) !!}.{!! strtolower(getFileType($file->file)) !!}" target="_blank"> Download </a>
+		        	<a class="btn btn-default btn-mini" href="/user/viewdetails/{!! $file->id !!}" data-toggle="modal" data-target="#myModal{!! $file->id !!}"> Details </a>
+		        	<div class="modal fade" id="myModal{!! $file->id !!}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					    <div class="modal-dialog form-block">
 					        <div class="modal-content" style="border-radius:0;">
 					            <div class="modal-body" style="background:none;padding:0;">
@@ -50,11 +50,11 @@
 					    </div>
 					</div>
 		        </td>
-		      	<td class="v-align-middle">{{ $file->name }}</td>
-		      	<td>{{ getFileType($file->file) }}</td>
-		      	<td><span class="muted">{{ User::getUserName($file->uid) }}</span>
+		      	<td class="v-align-middle">{!! $file->name !!}</td>
+		      	<td>{!! getFileType($file->file) !!}</td>
+		      	<td><span class="muted">{!! User::getUserName($file->uid) !!}</span>
 		      	</td>
-		      	<td class="v-align-middle"><span style="display:none;">{{ strtotime($file->date) }}</span>{{ nice_date($file->date) }}</td>
+		      	<td class="v-align-middle"><span style="display:none;">{!! strtotime($file->date) !!}</span>{!! nice_date($file->date) !!}</td>
         	</tr>
 	@endforeach
 		</tbody>

@@ -18,16 +18,16 @@
 		<tbody>
 			@foreach($organizations as $org)
 				<tr>
-					<td>{{ $org->name }}</td>
-					<td>{{ $org->address }}</td>
-					<td>{{ $org->zipcode }}</td>
-					<td>{{ $org->city }}</td>
-					<td>{{ $org->tell }}</td>
-					<td>{{ $org->email }}</td>
-					<td>{{ $org->website }}</td>
+					<td>{!! $org->name !!}</td>
+					<td>{!! $org->address !!}</td>
+					<td>{!! $org->zipcode !!}</td>
+					<td>{!! $org->city !!}</td>
+					<td>{!! $org->tell !!}</td>
+					<td>{!! $org->email !!}</td>
+					<td>{!! $org->website !!}</td>
 					<td>
-						<a href="/admin/organization/edit/{{ $org->id }}" class="btn btn-white btn-xs btn-mini" title="Bewerken"><i class="fa fa-pencil"></i></a>
-						<a href="/admin/organization/delete/{{ $org->id }}" class="btn btn-white btn-xs btn-mini" title="Verwijderen"><i class="fa fa-trash-o"></i></a>
+						<a href="/admin/organization/edit/{!! $org->id !!}" class="btn btn-white btn-xs btn-mini" title="Bewerken"><i class="fa fa-pencil"></i></a>
+						<a href="/admin/organization/delete/{!! $org->id !!}" class="btn btn-white btn-xs btn-mini" title="Verwijderen"><i class="fa fa-trash-o"></i></a>
 					</td>
 				</tr>
 			@endforeach

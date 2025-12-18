@@ -9,21 +9,21 @@
 				</div>
 				<div class="grid-body no-border">
 					@if(Auth::user()->lookonly == 0)
-					<form id="form_traditional_validation" action="/user/file/editdetails/{{ $file['id'] }}" method="post">
+					<form id="form_traditional_validation" action="/user/file/editdetails/{!! $file['id'] !!}" method="post">
 					@endif
 
 					<div class="form-group">
 						<label class="form-label">Naam</label>
 						<div class="input-with-icon right">
 							<i class=""></i>
-							<input type="text" name="name" id="form1Amount" value="{{ $file['name'] }}" class="form-control">
+							<input type="text" name="name" id="form1Amount" value="{!! $file['name'] !!}" class="form-control">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="form-label">Datum</label>
 						<br/>
 						<div class="input-append success date no-padding" style="width:100%;">
-		                    <input type="text" name="date" value="{{ simple_date($file['date']) }}" class="form-control">
+		                    <input type="text" name="date" value="{!! simple_date($file['date']) !!}" class="form-control">
 		                	<span class="add-on" style="margin-left:-36px;"><span class="arrow"></span><i class="fa fa-th"></i></span>
 		                </div>
 					</div>
@@ -45,7 +45,7 @@
 					@endif
 						<label class="form-label">Notitie</label>
 						<div class="input-with-icon right">
-							<textarea name="note" rows="6" class="form-control">{{ $file['note'] }}</textarea>
+							<textarea name="note" rows="6" class="form-control">{!! $file['note'] !!}</textarea>
 						</div>
 					</div>
 

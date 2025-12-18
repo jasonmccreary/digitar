@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
 <div class="content">
   	<div class="page-title">
-    	<h3>Zoeken naar: {{ Input::get('search') }}</h3>
+    	<h3>Zoeken naar: {!! Input::get('search') !!}</h3>
   	</div>
 
   	<div class="row-fluid">
@@ -25,8 +25,8 @@
 						@if($file->fid == 0 || (is_object($oFolder) && $oFolder->rights()->where('uid','=',Auth::user()->id)->count() > 0))
 							<tr>
 						        <td>
-						        	<a class="btn btn-info btn-mini" href="/user/viewfile/{{ $file->id }}" data-toggle="modal" data-target="#myModal{{ $file->id }}"> Bekijk </a>
-						        	<div class="modal fade" id="myModal{{ $file->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						        	<a class="btn btn-info btn-mini" href="/user/viewfile/{!! $file->id !!}" data-toggle="modal" data-target="#myModal{!! $file->id !!}"> Bekijk </a>
+						        	<div class="modal fade" id="myModal{!! $file->id !!}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 									    <div class="modal-dialog form-block" style="width:95%;">
 									        <div class="modal-content" style="border-radius:0;">
 									            <div class="modal-body" style="background:none;padding:0;">
@@ -36,9 +36,9 @@
 									    </div>
 									</div>
 						        </td>
-						      	<td class="v-align-middle">{{ $file->name }}</td>
-						      	<td><span class="muted">{{ User::getUserName($file->uid) }}</span></td>
-						      	<td class="v-align-middle"><span style="display:none;">{{ strtotime($file->date) }}</span>{{ nice_date($file->date) }}</td>
+						      	<td class="v-align-middle">{!! $file->name !!}</td>
+						      	<td><span class="muted">{!! User::getUserName($file->uid) !!}</span></td>
+						      	<td class="v-align-middle"><span style="display:none;">{!! strtotime($file->date) !!}</span>{!! nice_date($file->date) !!}</td>
 					    	</tr>
 					    @endif
 					@endforeach

@@ -152,7 +152,7 @@
 									<div class="editable-text">
 										<span class="text_container">
 											<multiline>
-									            Beste {{ $name }},<br />
+									            Beste {!! $name !!},<br />
 										    </multiline>
 										</span>
 									</div>
@@ -168,11 +168,11 @@
 										<span class="text_container">
 											<multiline>
 											    <p>
-											        Er is een account voor u aangemaakt door {{ $client }}. U kunt inloggen met de onderstaande gegevens om uw bestanden te bekijken.
+											        Er is een account voor u aangemaakt door {!! $client !!}. U kunt inloggen met de onderstaande gegevens om uw bestanden te bekijken.
 											    </p>
 											    <p>
-											        Gebruikersnaam: {{ $username }}<br />
-											        Wachtwoord: {{ Crypt::decrypt($password) }}
+											        Gebruikersnaam: {!! $username !!}<br />
+											        Wachtwoord: {!! Crypt::decrypt($password) !!}
 											    </p>
 										    </multiline>
 										</span>

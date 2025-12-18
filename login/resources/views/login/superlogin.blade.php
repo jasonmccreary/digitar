@@ -38,7 +38,7 @@
 
 
 
-{{ HTML::script('assets/plugins/jquery-1.8.3.min.js') }}
+{!! HTML::script('assets/plugins/jquery-1.8.3.min.js') !!}
 <script type="text/javascript">
 	$( document ).ready(function() {
 		var $selected = 0;

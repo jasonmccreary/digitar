@@ -15,13 +15,13 @@
 			<div class="col-md-2">
 				<div class="grid simple horizontal green">
 					<div class="grid-title no-border text-center">
-						<h4>{{ $lay->name }}</h4>
+						<h4>{!! $lay->name !!}</h4>
 						<div class="pull-right">
 							<div class="btn-group"> 
 								<a class="btn btn-white btn-mini dropdown-toggle" data-toggle="dropdown" href="#"> <span class="no-margin caret"></span> </a>
 								<ul class="dropdown-menu">
-									<li><a href="/billing/settings/mail/edit/{{ $lay->id }}"><i class="fa fa-pencil"></i> Bewerken</a></li>
-									<li><a href="/billing/settings/mail/delete/{{ $lay->id }}" class="red"><i class="fa fa-trash-o"></i> Verwijderen</a></li>
+									<li><a href="/billing/settings/mail/edit/{!! $lay->id !!}"><i class="fa fa-pencil"></i> Bewerken</a></li>
+									<li><a href="/billing/settings/mail/delete/{!! $lay->id !!}" class="red"><i class="fa fa-trash-o"></i> Verwijderen</a></li>
 								</ul>
 							</div>
 						</div>

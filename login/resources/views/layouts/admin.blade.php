@@ -6,7 +6,7 @@ $aYears = Files::getYears();
 <!-- BEGIN MOBILE SEARCH BAR -->
 <div class="mobile-search">
   {{-- <form method="POST" action="/user/search"> --}}
-    <input name="search" value="{{ getSearchVal() }}" type="text" class="no-boarder search" autocomplete="off" placeholder="Doorzoek archief">
+    <input name="search" value="{!! getSearchVal() !!}" type="text" class="no-boarder search" autocomplete="off" placeholder="Doorzoek archief">
   {{-- </form> --}}
 </div>
 <!-- END MOBILE SEARCH BAR -->
@@ -44,17 +44,17 @@ $aYears = Files::getYears();
           {{-- start years dropdown --}}
           <li class="quicklinks">
             <a data-toggle="dropdown" class="dropdown-toggle pull-right" href="#" id="user-years" style="background:transparent;padding:2px 0 0 0 !important;">
-              <span style="color:#fff;font-size:15px;float:left;">{{ Session::get('year') }}</span>
+              <span style="color:#fff;font-size:15px;float:left;">{!! Session::get('year') !!}</span>
               <div class="iconset top-down-arrow" style="display:inline-block;float:left;margin:6px 5px 2px 10px;"></div>
             </a>
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user-years">
               @if(count($aYears) > 0)
                 @foreach($aYears as $f)
-                  <li><a href="/user/year/{{ $f->year }}" style="font-size:15px;text-align:center;">{{ $f->year }}</a></li>
+                  <li><a href="/user/year/{!! $f->year !!}" style="font-size:15px;text-align:center;">{!! $f->year !!}</a></li>
                   <li class="divider"></li>
                 @endforeach
               @else
-                <li><a href="/user/year/{{ Session::get('year') }}" style="font-size:15px;text-align:center;">{{ Session::get('year') }}</a></li>
+                <li><a href="/user/year/{!! Session::get('year') !!}" style="font-size:15px;text-align:center;">{!! Session::get('year') !!}</a></li>
               @endif
             </ul>
           </li>
@@ -68,7 +68,7 @@ $aYears = Files::getYears();
         </ul>
       </div>
       <!-- END MOBILE HEADER -->
-      <div class="organisation-title hide-phone" style="font-size:24px;color:#fff;text-align:center;line-height:60px;height:60px;overflow: hidden;">{{ User::getOrganizationName() }}</div>
+      <div class="organisation-title hide-phone" style="font-size:24px;color:#fff;text-align:center;line-height:60px;height:60px;overflow: hidden;">{!! User::getOrganizationName() !!}</div>
     </div>
     <!-- END NAVIGATION HEADER -->
     <!-- BEGIN CONTENT HEADER -->
@@ -87,11 +87,11 @@ $aYears = Files::getYears();
             <span class="add-on"><span class="iconset top-search"></span></span>
             @if (Request::is('billing*'))
               <form method="POST" action="/billing/search" style="float:left;">
-                <input name="billing-search" value="{{ e(Input::get('search')) }}" type="text" class="no-boarder" autocomplete="off" placeholder="Doorzoek facturatie" style="width:350px;">
+                <input name="billing-search" value="{!! e(Input::get('search')) !!}" type="text" class="no-boarder" autocomplete="off" placeholder="Doorzoek facturatie" style="width:350px;">
               </form>
             @else
               {{-- <form method="POST" action="/user/search" style="float:left;"> --}}
-                <input name="search" value="{{ getSearchVal() }}" type="text" class="no-boarder" autocomplete="off" placeholder="Doorzoek archief" style="width:350px;">
+                <input name="search" value="{!! getSearchVal() !!}" type="text" class="no-boarder" autocomplete="off" placeholder="Doorzoek archief" style="width:350px;">
               {{-- </form> --}}
             @endif
           </li>
@@ -106,17 +106,17 @@ $aYears = Files::getYears();
           {{-- start years dropdown --}}
           <li class="quicklinks">
             <a data-toggle="dropdown" class="dropdown-toggle pull-right" href="#" id="user-years" style="padding:2px 0 0 0 !important;">
-              <span class="bold" style="color:#1b1e24;font-size:15px;float:left;">{{ Session::get('year') }}</span>
+              <span class="bold" style="color:#1b1e24;font-size:15px;float:left;">{!! Session::get('year') !!}</span>
               <div class="iconset top-down-arrow" style="display:inline-block;float:left;margin:6px 10px;"></div>
             </a>
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user-years">
               @if(count($aYears) > 0)
                 @foreach($aYears as $f)
-                  <li><a href="/user/year/{{ $f->year }}" style="font-size:15px;text-align:center;">{{ $f->year }}</a></li>
+                  <li><a href="/user/year/{!! $f->year !!}" style="font-size:15px;text-align:center;">{!! $f->year !!}</a></li>
                   <li class="divider"></li>
                 @endforeach
               @else
-                <li><a href="/user/year/{{ Session::get('year') }}" style="font-size:15px;text-align:center;">{{ Session::get('year') }}</a></li>
+                <li><a href="/user/year/{!! Session::get('year') !!}" style="font-size:15px;text-align:center;">{!! Session::get('year') !!}</a></li>
               @endif
             </ul>
           </li>
@@ -159,9 +159,9 @@ $aYears = Files::getYears();
       @if(User::getOrganizationName() != User::getClientName())
       <div class="user-info-wrapper">
         <div class="user-info">
-          <div class="greeting" style="font-weight:600;">{{ User::getClientName() }}</div>
+          <div class="greeting" style="font-weight:600;">{!! User::getClientName() !!}</div>
           @if(User::getClientName() != User::getUserName(Auth::user()->id))
-          <div class="username" style="font-weight:200;">{{ User::getUserName(Auth::user()->id) }}</div>
+          <div class="username" style="font-weight:200;">{!! User::getUserName(Auth::user()->id) !!}</div>
           @endif
         </div>
       </div>
@@ -197,11 +197,11 @@ $aYears = Files::getYears();
   ?>
   <div class="footer-widget">
     <div class="progress transparent progress-small no-radius no-margin">
-      <div data-percentage="{{ $percentage }}%" class="progress-bar progress-bar-success animate-progress-bar"></div>
+      <div data-percentage="{!! $percentage !!}%" class="progress-bar progress-bar-success animate-progress-bar"></div>
     </div>
     <div class="pull-right">
-      <div class="details-status tip" title="{{ $size }} mb data in gebruik" data-placement="left">
-        <span data-animation-duration="560" data-value="{{ $percentage }}" class="animate-number"></span>%
+      <div class="details-status tip" title="{!! $size !!} mb data in gebruik" data-placement="left">
+        <span data-animation-duration="560" data-value="{!! $percentage !!}" class="animate-number"></span>%
       </div>
       <a href="/help" class="circle tip" title="Veel gestelde vragen &amp; uitleg" data-placement="left"> 
         <i class="fa fa-question"></i>
@@ -216,7 +216,7 @@ $aYears = Files::getYears();
     <div class="content">
       @if(isset($title) && strlen($title) > 0)
       <div class="page-title">
-        <h3>{{ $title or 'home' }}</h3>
+        <h3>{!! $title or 'home' !!}</h3>
       </div>
       @endif
 

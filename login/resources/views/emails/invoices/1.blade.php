@@ -21,13 +21,13 @@ if ($layout->count() > 0) {
 	</head>
 	<body>
 		<div>
-			Beste {{ $d->contact or $d->name }},<br />
+			Beste {!! $d->contact or $d->name !!},<br />
 			<br />
 			In de bijlage vind u de factuur voor de door u afgenomen producten of diensten.<br />
 			<br />
 			<br />
 			Met vriendelijke groeten,<br />
-			{{ User::getUserName($i->cid) }}
+			{!! User::getUserName($i->cid) !!}
 		</div>
 	</body>
 </html>

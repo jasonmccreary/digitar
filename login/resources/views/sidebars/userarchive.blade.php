@@ -17,7 +17,7 @@
               <span class="title">Onverwerkt</span>
               @if(Files::getNumUnsorted(Auth::user()->cid) > 0) 
                 <span class="selected"></span> 
-                <span class="badge badge-important pull-right">{{ Files::getNumUnsorted(Auth::user()->cid) }}</span>
+                <span class="badge badge-important pull-right">{!! Files::getNumUnsorted(Auth::user()->cid) !!}</span>
               @endif
             </a>
           </li>
@@ -35,17 +35,17 @@
       @foreach($aFolders as $folder)
         <?php $subfolders = Folder::getSubfolders($folder->id); ?>
         <li>
-          <a href="/user/folder/{{ $folder->id }}">
-            <i><div class="folder-circle" style="border-color:{{ $folder->color }};"></div></i>   
-            <span class="title">{{ $folder->name }}</span>
+          <a href="/user/folder/{!! $folder->id !!}">
+            <i><div class="folder-circle" style="border-color:{!! $folder->color !!};"></div></i>   
+            <span class="title">{!! $folder->name !!}</span>
             @if(count($subfolders) > 0)<span class="arrow"></span>@endif
           </a>
           @if(count($subfolders) > 0)
             <ul class="sub-menu">
               @foreach($subfolders as $sf)
-                <li><a href="/user/folder/{{ $sf->id }}">
-                    <div class="folder-circle" style="border-color:{{ $sf->color }};"></div>            
-                    {{ $sf->name }}
+                <li><a href="/user/folder/{!! $sf->id !!}">
+                    <div class="folder-circle" style="border-color:{!! $sf->color !!};"></div>            
+                    {!! $sf->name !!}
                 </a></li>        
               @endforeach
             </ul>

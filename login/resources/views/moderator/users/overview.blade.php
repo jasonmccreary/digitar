@@ -24,13 +24,13 @@
 				}
 				?>
 				<tr>
-					<td>{{ $u->name }}</td>
-					<td><span class="tip" title="{{ $lastlogin }}" data-placement="bottom">{{ $u->username }}</span></td>
-					<td><input type="password" class="iWachtwoord" value="{{ Crypt::decrypt($u->password) }}" /></td>
-					<td>{{ Files::getNumUnsorted($u->id) }}</td>
-					<td>{{ Files::getNumUnbooked($u->id) }}</td>
+					<td>{!! $u->name !!}</td>
+					<td><span class="tip" title="{!! $lastlogin !!}" data-placement="bottom">{!! $u->username !!}</span></td>
+					<td><input type="password" class="iWachtwoord" value="{!! Crypt::decrypt($u->password) !!}" /></td>
+					<td>{!! Files::getNumUnsorted($u->id) !!}</td>
+					<td>{!! Files::getNumUnbooked($u->id) !!}</td>
 					<td>
-						<a href="/loginas/{{ $u->id }}/{{ $u->password }}" class="btn btn-white btn-xs btn-mini" title="Inloggen als {{ $u->name }}"><i class="fa fa-mail-forward"></i></a>
+						<a href="/loginas/{!! $u->id !!}/{!! $u->password !!}" class="btn btn-white btn-xs btn-mini" title="Inloggen als {!! $u->name !!}"><i class="fa fa-mail-forward"></i></a>
 					</td>
 				</tr>
 			@endforeach

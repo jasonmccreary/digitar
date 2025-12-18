@@ -13,8 +13,8 @@
 							<?php $u = User::getFirstUser($c->oid,$c->id); if(!is_object($u)) {die();} ?>
 							<tr>
 								<td style="padding:0 !important;">
-									<a href="/loginas/{{ $u->id }}/{{ $u->password }}" tabindex="{{ $ind }}" style="display:block;color:#444;padding:15px 32px;font-size:1.6em;">
-										<i class="fa fa-mail-forward" style="color:#aaa;margin-right:20px;"></i> {{ $c->name }} <small style="color:#aaa;font-size:.6em;">{{ $u->name }}</small>
+									<a href="/loginas/{!! $u->id !!}/{!! $u->password !!}" tabindex="{!! $ind !!}" style="display:block;color:#444;padding:15px 32px;font-size:1.6em;">
+										<i class="fa fa-mail-forward" style="color:#aaa;margin-right:20px;"></i> {!! $c->name !!} <small style="color:#aaa;font-size:.6em;">{!! $u->name !!}</small>
 									</a>
 								</td>
 							</tr>
@@ -23,8 +23,8 @@
 							@foreach(User::getAllUsers($c->oid,$c->id, $username) as $u)
 								<tr>
 									<td style="padding:0 !important;">
-										<a href="/loginas/{{ $u->id }}/{{ $u->password }}" tabindex="{{ $ind }}" style="display:block;color:#444;padding:15px 32px;font-size:1.6em;">
-											<i class="fa fa-mail-forward" style="color:#aaa;margin-right:20px;"></i> {{ $c->name }} <small style="color:#aaa;font-size:.6em;">{{ $u->name }}</small>
+										<a href="/loginas/{!! $u->id !!}/{!! $u->password !!}" tabindex="{!! $ind !!}" style="display:block;color:#444;padding:15px 32px;font-size:1.6em;">
+											<i class="fa fa-mail-forward" style="color:#aaa;margin-right:20px;"></i> {!! $c->name !!} <small style="color:#aaa;font-size:.6em;">{!! $u->name !!}</small>
 										</a>
 									</td>
 								</tr>

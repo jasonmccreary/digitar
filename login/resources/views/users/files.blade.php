@@ -5,7 +5,7 @@
 	<form method="post" action="/user/files/bulk">
 	<div class="content">
 	<div class="page-title">
-		<h3 id="foldertitle" fid="{{ $fid }}">{{ $title }}</h3>
+		<h3 id="foldertitle" fid="{!! $fid !!}">{!! $title !!}</h3>
 	</div>
 	<div class="row-fluid">
 	<div class="span12">
@@ -42,9 +42,9 @@
 							<option value="0" selected>Onverwerkt</option>
 							@foreach($aFolders as $folder)
 								<?php $subfolders = Folder::getSubfolders($folder->id); ?>
-								<option value="{{ $folder->id }}">{{ $folder->name }}</option>
+								<option value="{!! $folder->id !!}">{!! $folder->name !!}</option>
 								@foreach($subfolders as $sf)
-				                  <option value="{{ $sf->id }}" > &nbsp;&nbsp; - {{ $sf->name }}</option>
+				                  <option value="{!! $sf->id !!}" > &nbsp;&nbsp; - {!! $sf->name !!}</option>
 				                @endforeach
 							@endforeach
 						</select>
@@ -67,7 +67,7 @@
 	    </div>
 	</div>
 
-	<table class="table table-hover table-condensed fileTable" id="fileTable" url="{{ Request::path() }}">
+	<table class="table table-hover table-condensed fileTable" id="fileTable" url="{!! Request::path() !!}">
 		<thead>
         	<tr>
 	          	<th style="width:4%"></th>

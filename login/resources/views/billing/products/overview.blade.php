@@ -15,16 +15,16 @@
 		<tbody>
 			@foreach($products as $p)
 				<tr>
-					<td>{{ $p->productnumber }}</td>
-					<td>{{ $p->name }}</td>
-					<td>{{ euro($p->price) }}</td>
-					<td>{{ $p->ledger }}</td>
+					<td>{!! $p->productnumber !!}</td>
+					<td>{!! $p->name !!}</td>
+					<td>{!! euro($p->price) !!}</td>
+					<td>{!! $p->ledger !!}</td>
 					<td>
 						<div class="btn-group"> 
 							<a class="btn btn-white btn-mini dropdown-toggle" data-toggle="dropdown" href="#"> Acties <span class="caret"></span> </a>
 							<ul class="dropdown-menu">									
-								<li><a href="/billing/product/edit/{{ $p->id }}"><i class="fa fa-pencil"></i> Bewerken</a></li>
-								<li><a href="/billing/product/delete/{{ $p->id }}" class="red"><i class="fa fa-trash-o"></i> Verwijderen</a></li>
+								<li><a href="/billing/product/edit/{!! $p->id !!}"><i class="fa fa-pencil"></i> Bewerken</a></li>
+								<li><a href="/billing/product/delete/{!! $p->id !!}" class="red"><i class="fa fa-trash-o"></i> Verwijderen</a></li>
 							</ul>
 						</div>
 					</td>

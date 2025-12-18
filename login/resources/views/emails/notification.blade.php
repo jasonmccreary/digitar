@@ -129,7 +129,7 @@
 									<div class="editable-text">
 										<span class="text_container">
 											<multiline>
-												{{ date('l j F Y') }}
+												{!! date('l j F Y') !!}
 											</multiline>
 										</span>
 									</div>
@@ -160,7 +160,7 @@
 								<td mc:edit="text003" align="left" class="center_content text_color_282828" style="color: #282828; font-size: 14px; font-weight: 900; font-family: lato, Helvetica, sans-serif; mso-line-height-rule: exactly;">
 									<div class="editable-text">
 										<span class="text_container">
-											<multiline>Beste {{ $name }},</multiline>
+											<multiline>Beste {!! $name !!},</multiline>
 										</span>
 									</div>
 								</td>
@@ -174,7 +174,7 @@
 									<div class="editable-text" style="line-height: 2;">
 										<span class="text_container">
 											@if($count > 1) 
-												<multiline>Er zijn vandaag {{ $count }} nieuwe documenten in uw Digitar geplaatst.</multiline>
+												<multiline>Er zijn vandaag {!! $count !!} nieuwe documenten in uw Digitar geplaatst.</multiline>
 											@else
 												<multiline>Er is vandaag een nieuw document in uw Digitar geplaatst.</multiline>
 											@endif
@@ -218,21 +218,21 @@
 												<td mc:edit="text007" align="left" class="text_color_282828" style="padding-top: 5px; padding-bottom: 5px;padding-right: 5px;padding-left: 5px;color: #282828; font-size: 12px; font-weight: 400; font-style: italic; font-family: 'Open Sans', Helvetica, sans-serif; mso-line-height-rule: exactly;">
 													<div class="editable-text">
 														<span class="text_container">
-															<multiline>{{ $file['folder'] }}</multiline>
+															<multiline>{!! $file['folder'] !!}</multiline>
 														</span>
 													</div>
 												</td>
 												<td mc:edit="text007" align="left" class="text_color_282828" style="padding-top: 5px; padding-bottom: 5px;padding-right: 5px;padding-left: 5px;color: #282828; font-size: 12px; font-weight: 400; font-style: italic; font-family: 'Open Sans', Helvetica, sans-serif; mso-line-height-rule: exactly;">
 													<div class="editable-text">
 														<span class="text_container">
-															<multiline>{{ $file['file'] }}</multiline>
+															<multiline>{!! $file['file'] !!}</multiline>
 														</span>
 													</div>
 												</td>
 												<td mc:edit="text007" align="left" class="text_color_282828" style="padding-top: 5px; padding-bottom: 5px;padding-right: 5px;padding-left: 5px;color: #282828; font-size: 12px; font-weight: 400; font-style: italic; font-family: 'Open Sans', Helvetica, sans-serif; mso-line-height-rule: exactly;">
 													<div class="editable-text">
 														<span class="text_container">
-															<multiline>{{ $file['by'] }}</multiline>
+															<multiline>{!! $file['by'] !!}</multiline>
 														</span>
 													</div>
 												</td>

@@ -42,7 +42,7 @@
 		}
 	</style>
 
-	{{ Form::open(array('files'=>true)) }}
+	{!! Form::open(array('files'=>true)) !!}
 	{? $param = unserialize($layout->params); ?}
 
 	<div class="row">
@@ -50,16 +50,16 @@
 			<div class="row form-row">
 				<div class="col-md-6 form-group">
 					<label class="form-label">Layout naam</label>
-					{{ Form::text('name', $layout->name, array('class'=>'form-control', 'maxlength'=>'150')) }}
+					{!! Form::text('name', $layout->name, array('class'=>'form-control', 'maxlength'=>'150')) !!}
 				</div>
 				<div class="col-md-6 form-group">
 					<label class="form-label">Briefpapier</label>
 					<br />
 					<div class="fileUpload btn btn-small btn-primary">
 						<span>Briefpapier uploaden</span>
-						{{ Form::file('file','',array('id'=>'','class'=>'upload')) }}
+						{!! Form::file('file','',array('id'=>'','class'=>'upload')) !!}
 					</div>
-					<div class="fileName"><a href="javascript:;" onclick="window.open('{{ $param['background'] }}', 'Layout bekijken', 'width=820,height=850,scrollbars=yes,toolbar=no,location=no'); return false" class="imagehover" data-img="{{ $param['background'] or '' }}">{{ $param['background'] or '' }}</a></div>
+					<div class="fileName"><a href="javascript:;" onclick="window.open('{!! $param['background'] !!}', 'Layout bekijken', 'width=820,height=850,scrollbars=yes,toolbar=no,location=no'); return false" class="imagehover" data-img="{!! $param['background'] or '' !!}">{!! $param['background'] or '' !!}</a></div>
 				</div>
 			</div>
 		</div>
@@ -68,7 +68,7 @@
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Layout code</label>
-					<textarea id="code" name="code">{{ $layout->code }}</textarea>
+					<textarea id="code" name="code">{!! $layout->code !!}</textarea>
 				</div>
 			</div>
 		</div>
@@ -77,7 +77,7 @@
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Layout css</label>
-					<textarea id="code2" name="css">{{ $param['css'] or '' }}</textarea>
+					<textarea id="code2" name="css">{!! $param['css'] or '' !!}</textarea>
 				</div>
 			</div>
 		</div>
@@ -87,6 +87,6 @@
 		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
 	</div>
 
-	{{ Form::close() }}
+	{!! Form::close() !!}
 
 @endsection

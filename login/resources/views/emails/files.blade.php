@@ -6,7 +6,7 @@
 	<body>
 		<div>
 			@if(Input::has('message'))
-				{{ Input::get('message') }}
+				{!! Input::get('message') !!}
 			@endif
 		</div>
 	</body>

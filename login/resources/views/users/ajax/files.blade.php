@@ -45,9 +45,9 @@
 							<option value="0" selected>Onverwerkt</option>
 							@foreach($aFolders as $folder)
 								<?php $subfolders = Folder::getSubfolders($folder->id); ?>
-								<option value="{{ $folder->id }}">{{ $folder->name }}</option>
+								<option value="{!! $folder->id !!}">{!! $folder->name !!}</option>
 								@foreach($subfolders as $sf)
-				                  <option value="{{ $sf->id }}" > &nbsp;&nbsp; - {{ $sf->name }}</option>
+				                  <option value="{!! $sf->id !!}" > &nbsp;&nbsp; - {!! $sf->name !!}</option>
 				                @endforeach
 							@endforeach
 						</select>
@@ -106,16 +106,16 @@
 		@endif
 				@if(!is_numeric($fid) && Auth::user()->lookonly == 0)
 		      	<td class="v-align-middle hide-phone"><div class="checkbox check-default">
-		          	<input type="checkbox" value="{{ $file->name }}" name="fileid[{{ $file->id }}]" id="checkbox{{ $file->id }}">
-		          	<label for="checkbox{{ $file->id }}"></label>
+		          	<input type="checkbox" value="{!! $file->name !!}" name="fileid[{!! $file->id !!}]" id="checkbox{!! $file->id !!}">
+		          	<label for="checkbox{!! $file->id !!}"></label>
 		        </div></td>
 		        @endif
 		        <td>
 		        	@if(is_numeric($fid) && Auth::user()->lookonly == 0)
-		        		<input type="checkbox" value="{{ $file->name }}" name="fileid[{{ $file->id }}]" style="display:none;">
+		        		<input type="checkbox" value="{!! $file->name !!}" name="fileid[{!! $file->id !!}]" style="display:none;">
 		        	@endif
-		        	<a class="btn btn-info btn-mini" href="/user/viewfile/{{ $file->id }}" data-toggle="modal" data-target="#myModal{{ $file->id }}"> Bekijk </a>
-		        	<div class="modal" id="myModal{{ $file->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		        	<a class="btn btn-info btn-mini" href="/user/viewfile/{!! $file->id !!}" data-toggle="modal" data-target="#myModal{!! $file->id !!}"> Bekijk </a>
+		        	<div class="modal" id="myModal{!! $file->id !!}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					    <div class="modal-dialog form-block" style="width:95%;">
 					        <div class="modal-content" style="border-radius:0;">
 					            <div class="modal-body" style="background:none;padding:0;">
@@ -125,9 +125,9 @@
 					    </div>
 					</div>
 		        </td>
-		      	<td class="v-align-middle">{{ $file->name }}</td>
-		      	<td class="hidden-phone"><span class="muted">{{ User::getUserName($file->uid) }}</span></td>
-		      	<td class="v-align-middle"><span style="display:none;">{{ strtotime($file->date) }}</span>{{ nice_date($file->date) }}</td>
+		      	<td class="v-align-middle">{!! $file->name !!}</td>
+		      	<td class="hidden-phone"><span class="muted">{!! User::getUserName($file->uid) !!}</span></td>
+		      	<td class="v-align-middle"><span style="display:none;">{!! strtotime($file->date) !!}</span>{!! nice_date($file->date) !!}</td>
         	</tr>
 	@endforeach
 		</tbody>

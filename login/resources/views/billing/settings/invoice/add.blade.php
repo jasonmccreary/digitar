@@ -33,21 +33,21 @@
 		}
 	</style>
 
-	{{ Form::open(array('files'=>true)) }}
+	{!! Form::open(array('files'=>true)) !!}
 
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row form-row">
 				<div class="col-md-6 form-group">
 					<label class="form-label">Layout naam</label>
-					{{ Form::text('name', '', array('class'=>'form-control', 'maxlength'=>'150')) }}
+					{!! Form::text('name', '', array('class'=>'form-control', 'maxlength'=>'150')) !!}
 				</div>
 				<div class="col-md-6 form-group">
 					<label class="form-label">Briefpapier</label>
 					<br />
 					<div class="fileUpload btn btn-small btn-primary">
 						<span>Briefpapier uploaden</span>
-						{{ Form::file('file','',array('id'=>'','class'=>'upload')) }}
+						{!! Form::file('file','',array('id'=>'','class'=>'upload')) !!}
 					</div>
 					<div class="fileName"></div>
 				</div>
@@ -77,6 +77,6 @@
 		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
 	</div>
 
-	{{ Form::close() }}
+	{!! Form::close() !!}
 
 @endsection

@@ -11,7 +11,7 @@
 				@foreach(Alert::get('error') as $alert)
 
 					Messenger().post({
-					 	message: '{{ $alert }}',
+					 	message: '{!! $alert !!}',
 					 	type: 'error',
 					    showCloseButton: true
 					});
@@ -21,7 +21,7 @@
 				@foreach(Alert::get('success') as $alert)
 
 					Messenger().post({
-					 	message: '{{ $alert }}',
+					 	message: '{!! $alert !!}',
 					 	type: 'success',
 					    showCloseButton: true
 					});
@@ -31,7 +31,7 @@
 				@foreach(Alert::get('warning') as $alert)
 
 					Messenger().post({
-					 	message: '{{ $alert }}',
+					 	message: '{!! $alert !!}',
 					 	type: 'info',
 					    showCloseButton: true
 					});
@@ -41,7 +41,7 @@
 				@foreach(Alert::get('info') as $alert)
 
 					Messenger().post({
-					 	message: '{{ $alert }}',
+					 	message: '{!! $alert !!}',
 					 	type: 'info',
 					    showCloseButton: true
 					});

@@ -9,8 +9,8 @@
 		<ul>
 		@foreach($filesArray as $id => $file) 
 			<li>
-				{{ $file }}
-				<input type="hidden" name="fileid[{{ $id }}]" value="{{ $file }}" />
+				{!! $file !!}
+				<input type="hidden" name="fileid[{!! $id !!}]" value="{!! $file !!}" />
 			</li>			
 		@endforeach
 		</ul>

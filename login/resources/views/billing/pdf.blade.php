@@ -148,9 +148,9 @@ if ($layout->count() > 0) {
   <div class="section">
     <div class="company-data">
       <ul>
-        <li>{{ $toName }}</li>
-        <li>{{ $toAddress }}</li>
-        <li>{{ $toZipcode }} &nbsp; {{ $toCity }}</li>
+        <li>{!! $toName !!}</li>
+        <li>{!! $toAddress !!}</li>
+        <li>{!! $toZipcode !!} &nbsp; {!! $toCity !!}</li>
       </ul>
     </div>
   </div>
@@ -161,9 +161,9 @@ if ($layout->count() > 0) {
 
     <table width="100%" style="margin:1.5em 0 3em 0;">
       <tr>
-        <td class="center">Klantnummer: {{ $toNumber }}</td>
-        <td class="center">Factuurnummer: {{ $invoicenumber }}</td>
-        <td class="center">Factuurdatum: {{ nice_date($date) }}</td>
+        <td class="center">Klantnummer: {!! $toNumber !!}</td>
+        <td class="center">Factuurnummer: {!! $invoicenumber !!}</td>
+        <td class="center">Factuurdatum: {!! nice_date($date) !!}</td>
       </tr>
     </table>
 
@@ -183,18 +183,18 @@ if ($layout->count() > 0) {
           @foreach(Invoicerows::where('iid','=',$id)->get() as $ir)
             @if($ir->type == 9)
               <tr>
-                <td colspan="6">{{ nl2br($ir->description) }}</td>
+                <td colspan="6">{!! nl2br($ir->description) !!}</td>
               </tr>
             @else
               <tr>
-                <td class="left">{{ simple_date($ir->date) }}</td>
-                <td class="center">{{ $ir->amount }}</td>
-                <td class="left">{{ $ir->description }}</td>
+                <td class="left">{!! simple_date($ir->date) !!}</td>
+                <td class="center">{!! $ir->amount !!}</td>
+                <td class="left">{!! $ir->description !!}</td>
                 <td class="right">
-                    <span class="tax">{{ $ir->tax }}%</span>
+                    <span class="tax">{!! $ir->tax !!}%</span>
                 </td>
-                <td class="right">{{ euro($ir->price) }}</td>
-                <td class="right">{{ euro($ir->amount * $ir->price) }}</td>
+                <td class="right">{!! euro($ir->price) !!}</td>
+                <td class="right">{!! euro($ir->amount * $ir->price) !!}</td>
               </tr>
             @endif
             @endforeach
@@ -203,17 +203,17 @@ if ($layout->count() > 0) {
           <tr>
             <td class="bottomleft" colspan="4"></td>
             <th class="right">Basis BTW</th>
-            <td class="right">{{ euro(Invoices::getTotal($id)) }}</td>
+            <td class="right">{!! euro(Invoices::getTotal($id)) !!}</td>
           </tr>
           <tr>
             <td class="bottomleft" colspan="4"></td>
             <th class="right">Bedrag BTW</th>
-            <td class="td_total_taxes right">{{ euro(Invoices::getTotal($id,true)) }}</td>
+            <td class="td_total_taxes right">{!! euro(Invoices::getTotal($id,true)) !!}</td>
           </tr>
           <tr class="strong">
             <td class="bottomleft" colspan="4"></td>
             <th class="right">Factuurbedrag</th>
-            <td class="td_total right">{{ euro(Invoices::getTotal($id,false,true)) }}</td>
+            <td class="td_total right">{!! euro(Invoices::getTotal($id,false,true)) !!}</td>
           </tr>
         </tfoot>
       </table>

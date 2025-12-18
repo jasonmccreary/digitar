@@ -11,7 +11,7 @@
 		textarea { width: 100%; min-height: 400px; }
 		input[type=text] { width: 100%; }
 	</style>
-	{{ Form::open() }}
+	{!! Form::open() !!}
 
 
 	<?php 
@@ -31,7 +31,7 @@
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Mail onderwerp</label>
-					<input type="text" name="newInvoiceName" value="{{ $name }}" />
+					<input type="text" name="newInvoiceName" value="{!! $name !!}" />
 				</div>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Mail inhoud</label>
-					<textarea id="code" name="newInvoice">{{ $code }}</textarea>
+					<textarea id="code" name="newInvoice">{!! $code !!}</textarea>
 				</div>
 			</div>
 		</div>
@@ -64,7 +64,7 @@
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Mail onderwerp</label>
-					<input type="text" name="reminderInvoiceName" value="{{ $name }}" />
+					<input type="text" name="reminderInvoiceName" value="{!! $name !!}" />
 				</div>
 			</div>
 		</div>
@@ -73,7 +73,7 @@
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Mail inhoud</label>
-					<textarea id="code2" name="reminderInvoice">{{ $code }}</textarea>
+					<textarea id="code2" name="reminderInvoice">{!! $code !!}</textarea>
 				</div>
 			</div>
 		</div>
@@ -83,6 +83,6 @@
 		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
 	</div>
 
-	{{ Form::close() }}
+	{!! Form::close() !!}
 
 @endsection

@@ -43,9 +43,9 @@
     </style>
   @endif
 </head>
-<curURL data="{{ $_SERVER['REQUEST_URI'] }}"></curURL>
+<curURL data="{!! $_SERVER['REQUEST_URI'] !!}"></curURL>
 @if (Auth::user())
-  <curUser data-cid="{{ Auth::user()->cid }}"></curUser>
+  <curUser data-cid="{!! Auth::user()->cid !!}"></curUser>
 @endif
 <body class="">
     <div class="dropzone-previews preview-container dz-preview uploaded-files"><div class="flex">
