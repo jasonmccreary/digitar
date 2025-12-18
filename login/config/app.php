@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Facade;
+
 return [
 
     /*
@@ -156,57 +158,19 @@ return [
     |
     */
 
-    'aliases' => [
-
-        'App' => 'Illuminate\Support\Facades\App',
-        'Arr' => Illuminate\Support\Arr::class,
-        'Artisan' => 'Illuminate\Support\Facades\Artisan',
-        'Auth' => 'Illuminate\Support\Facades\Auth',
-        'Blade' => 'Illuminate\Support\Facades\Blade',
-        'Broadcast' => Illuminate\Support\Facades\Broadcast::class,
-        'Bus' => Illuminate\Support\Facades\Bus::class,
-        'Cache' => 'Illuminate\Support\Facades\Cache',
-        'ClassLoader' => 'Illuminate\Support\ClassLoader',
-        'Config' => 'Illuminate\Support\Facades\Config',
-        'Controller' => 'Illuminate\Routing\Controller',
-        'Cookie' => 'Illuminate\Support\Facades\Cookie',
-        'Crypt' => 'Illuminate\Support\Facades\Crypt',
-        'Date' => Illuminate\Support\Facades\Date::class,
-        'DB' => 'Illuminate\Support\Facades\DB',
-        'Eloquent' => 'Illuminate\Database\Eloquent\Model',
-        'Event' => 'Illuminate\Support\Facades\Event',
-        'File' => 'Illuminate\Support\Facades\File',
-        'Form' => 'Illuminate\Support\Facades\Form',
-        'Hash' => 'Illuminate\Support\Facades\Hash',
-        'Http' => Illuminate\Support\Facades\Http::class,
-        'Js' => Illuminate\Support\Js::class,
-        'HTML' => 'Illuminate\Support\Facades\HTML',
-        'Lang' => 'Illuminate\Support\Facades\Lang',
-        'Log' => 'Illuminate\Support\Facades\Log',
-        'Mail' => 'Illuminate\Support\Facades\Mail',
-        'Notification' => Illuminate\Support\Facades\Notification::class,
-        'Paginator' => 'Illuminate\Support\Facades\Paginator',
-        'Password' => 'Illuminate\Support\Facades\Password',
-        'Queue' => 'Illuminate\Support\Facades\Queue',
-        'RateLimiter' => Illuminate\Support\Facades\RateLimiter::class,
-        'Redirect' => 'Illuminate\Support\Facades\Redirect',
-        'Redis' => 'Illuminate\Support\Facades\Redis',
-        'Request' => 'Illuminate\Support\Facades\Request',
-        'Response' => 'Illuminate\Support\Facades\Response',
-        'Route' => 'Illuminate\Support\Facades\Route',
-        'Schema' => 'Illuminate\Support\Facades\Schema',
-        'Seeder' => 'Illuminate\Database\Seeder',
-        'Session' => 'Illuminate\Support\Facades\Session',
-        'SSH' => 'Illuminate\Support\Facades\SSH',
-        'Str' => 'Illuminate\Support\Str',
-        'URL' => 'Illuminate\Support\Facades\URL',
-        'Validator' => 'Illuminate\Support\Facades\Validator',
-        'View' => 'Illuminate\Support\Facades\View',
+    'aliases' => Facade::defaultAliases()->merge([
         'Alert' => 'Prologue\Alerts\Facades\Alert',
-        'PDF' => 'Barryvdh\DomPDF\Facade',
+        'ClassLoader' => 'Illuminate\Support\ClassLoader',
+        'Controller' => 'Illuminate\Routing\Controller',
         'DbView' => 'Flynsarmy\DbBladeCompiler\Facades\DbView',
-
-    ],
+        'Form' => 'Illuminate\Support\Facades\Form',
+        'HTML' => 'Illuminate\Support\Facades\HTML',
+        'PDF' => 'Barryvdh\DomPDF\Facade',
+        'Paginator' => 'Illuminate\Support\Facades\Paginator',
+        'Redis' => 'Illuminate\Support\Facades\Redis',
+        'SSH' => 'Illuminate\Support\Facades\SSH',
+        'Seeder' => 'Illuminate\Database\Seeder',
+    ])->toArray(),
 
     'cipher' => MCRYPT_RIJNDAEL_256,
 
