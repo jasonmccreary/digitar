@@ -12,7 +12,7 @@ class Inspire extends Command
      *
      * @var string
      */
-    protected $name = 'inspire';
+    protected $signature = 'inspire';
 
     /**
      * The console command description.
