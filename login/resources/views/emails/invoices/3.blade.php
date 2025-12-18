@@ -21,7 +21,7 @@ if ($layout->count() > 0) {
 	</head>
 	<body>
 		<div>
-			Beste {!! $d->contact or $d->name !!},<br />
+			Beste {!! $d->contact ?? $d->name !!},<br />
 			<br />
 			Enkele tijd terug heeft u een factuur met factuurnummer {!! $i->invoicenumber !!} ontvangen voor een van onze producten/diensten.<br />
 			We hebben echter nog geen betaling mogen ontvangen voor deze factuur.<br />

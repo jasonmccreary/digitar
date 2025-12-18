@@ -216,7 +216,7 @@ $aYears = Files::getYears();
     <div class="content">
       @if(isset($title) && strlen($title) > 0)
       <div class="page-title">
-        <h3>{!! $title or 'home' !!}</h3>
+        <h3>{!! $title ?? 'home' !!}</h3>
       </div>
       @endif
 

@@ -59,7 +59,7 @@
 						<span>Briefpapier uploaden</span>
 						{!! Form::file('file','',array('id'=>'','class'=>'upload')) !!}
 					</div>
-					<div class="fileName"><a href="javascript:;" onclick="window.open('{!! $param['background'] !!}', 'Layout bekijken', 'width=820,height=850,scrollbars=yes,toolbar=no,location=no'); return false" class="imagehover" data-img="{!! $param['background'] or '' !!}">{!! $param['background'] or '' !!}</a></div>
+					<div class="fileName"><a href="javascript:;" onclick="window.open('{!! $param['background'] !!}', 'Layout bekijken', 'width=820,height=850,scrollbars=yes,toolbar=no,location=no'); return false" class="imagehover" data-img="{!! $param['background'] ?? '' !!}">{!! $param['background'] ?? '' !!}</a></div>
 				</div>
 			</div>
 		</div>
@@ -77,7 +77,7 @@
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Layout css</label>
-					<textarea id="code2" name="css">{!! $param['css'] or '' !!}</textarea>
+					<textarea id="code2" name="css">{!! $param['css'] ?? '' !!}</textarea>
 				</div>
 			</div>
 		</div>
