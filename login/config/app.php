@@ -2,6 +2,18 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Application Name
+    |--------------------------------------------------------------------------
+    |
+    | This value is the name of your application. This value is used when the
+    | framework needs to place the application's name in a notification or
+    | any other location as required by the application or its packages.
+    */
+
+    'name' => 'My Application',
+
     'env' => env('APP_ENV', 'production'),
 
     /*
@@ -100,6 +112,7 @@ return [
         'Illuminate\Html\HtmlServiceProvider',
         'Illuminate\Log\LogServiceProvider',
         'Illuminate\Mail\MailServiceProvider',
+        Illuminate\Notifications\NotificationServiceProvider::class,
         'Illuminate\Database\MigrationServiceProvider',
         'Illuminate\Pagination\PaginationServiceProvider',
         'Illuminate\Queue\QueueServiceProvider',
@@ -149,6 +162,7 @@ return [
         'Artisan' => 'Illuminate\Support\Facades\Artisan',
         'Auth' => 'Illuminate\Support\Facades\Auth',
         'Blade' => 'Illuminate\Support\Facades\Blade',
+        'Bus' => Illuminate\Support\Facades\Bus::class,
         'Cache' => 'Illuminate\Support\Facades\Cache',
         'ClassLoader' => 'Illuminate\Support\ClassLoader',
         'Config' => 'Illuminate\Support\Facades\Config',
@@ -165,6 +179,7 @@ return [
         'Lang' => 'Illuminate\Support\Facades\Lang',
         'Log' => 'Illuminate\Support\Facades\Log',
         'Mail' => 'Illuminate\Support\Facades\Mail',
+        'Notification' => Illuminate\Support\Facades\Notification::class,
         'Paginator' => 'Illuminate\Support\Facades\Paginator',
         'Password' => 'Illuminate\Support\Facades\Password',
         'Queue' => 'Illuminate\Support\Facades\Queue',
