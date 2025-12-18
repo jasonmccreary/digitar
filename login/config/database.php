@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => App::environment(),
+    'default' => 'mysql',
 
     /*
     |--------------------------------------------------------------------------
@@ -48,48 +48,28 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
-            'database' => __DIR__.'/../database/production.sqlite',
+            'database' => storage_path().'/database.sqlite',
             'prefix' => '',
         ],
 
-        'dev' => [
+        'mysql' => [
             'driver' => 'mysql',
-            'host' => 'localhost',
-            'database' => 'digitar',
-            'username' => 'root',
-            'password' => 'howtoforge',
+            'host' => env('DB_HOST', 'localhost'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
-        ],
-
-        'prod' => [
-            'driver' => 'mysql',
-            'host' => 'localhost',
-            'database' => 'digitar_archive',
-            'username' => 'digitar_site',
-            'password' => '46016A9f',
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
-        ],
-        'debug' => [
-            'driver' => 'mysql',
-            'host' => 'localhost',
-            'database' => 'digitar_archive',
-            'username' => 'digitar_site',
-            'password' => '46016A9f',
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
+            'strict' => false,
         ],
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'host' => 'localhost',
-            'database' => 'database',
-            'username' => 'root',
-            'password' => '',
+            'host' => env('DB_HOST', 'localhost'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
@@ -97,10 +77,10 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'host' => 'localhost',
-            'database' => 'database',
-            'username' => 'root',
-            'password' => '',
+            'host' => env('DB_HOST', 'localhost'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
             'prefix' => '',
         ],
 
