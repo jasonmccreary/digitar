@@ -9,7 +9,6 @@
     "require": {
         "laravel/framework": "5.0.*",
         "prologue/alerts": "dev-master",
-        "way/generators": "dev-master",
         "laravelcollective/html": "~5.0"
     },
     "autoload": {
