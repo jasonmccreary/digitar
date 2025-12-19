@@ -980,7 +980,6 @@ class xmlapi
      * Failure to prive these will cause an error to be logged.  Any other key/value pairs as defined by the createaccount call
      * documentation are allowed parameters for this call.
      *
-     * @param  array  $acctconf
      * @return mixed
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/CreateAccount XML API Call documentation

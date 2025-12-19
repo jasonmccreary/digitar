@@ -12,8 +12,6 @@ class OrganizationsController extends Controller
 {
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function add(): RedirectResponse
     {
@@ -54,9 +52,6 @@ class OrganizationsController extends Controller
 
     /**
      * Delete the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function delete(int $id): RedirectResponse
     {
@@ -73,9 +68,6 @@ class OrganizationsController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function edit(int $id): RedirectResponse
     {

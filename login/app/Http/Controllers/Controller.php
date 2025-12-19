@@ -12,8 +12,6 @@ class Controller extends BaseController
 
     /**
      * Setup the layout used by the controller.
-     *
-     * @return void
      */
     protected function setupLayout(): void
     {
