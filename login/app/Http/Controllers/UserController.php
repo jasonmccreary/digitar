@@ -56,7 +56,7 @@ class UserController extends Controller
 
             if (count($users) == 1 && Crypt::decrypt($users[0]->password) == $input['password']) {
 
-                $dt = new DateTime;
+                $dt = new \DateTime;
                 $updateUser = User::find($users[0]->id);
                 $updateUser->lastlogin = $dt->format('Y-m-d H:i:s');
                 $updateUser->save();

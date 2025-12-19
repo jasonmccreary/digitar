@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+
 /**
  * cPanel XMLAPI Client Class
  *
@@ -824,7 +826,7 @@ class xmlapi
         // Get input, loading an xml string with simplexml if its the top level of recursion
         $data = ((! $recurse) && is_string($input)) ? simplexml_load_string($input) : $input;
         // Convert SimpleXMLElements to array
-        if ($data instanceof SimpleXMLElement) {
+        if ($data instanceof \SimpleXMLElement) {
             $data = (array) $data;
         }
         // Recurse into arrays
