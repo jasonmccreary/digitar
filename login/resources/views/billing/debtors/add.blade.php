@@ -8,7 +8,7 @@
 	.form-label { margin-top: 0;}
 	</style>
 
-	{!! Form::open() !!}
+	{{ html()->form()->open() }}
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row form-row">
@@ -17,7 +17,7 @@
 						<label class="form-label" style="line-height:37px;margin-right:15px;">Debiteur nummer</label>
 					</div>
 					<div class="pull-left">
-						{!! Form::text('debnumber', (strlen(Request::old('debnumber')) > 0 ? Request::old('debnumber') : "D".str_pad(Debtors::newDebNumber(), 5, "0", STR_PAD_LEFT)), array('class' => 'form-control')) !!}
+						{{ html()->text('debnumber', strlen(Request::old('debnumber')) > 0 ? Request::old('debnumber') : "D" . str_pad(Debtors::newDebNumber(), 5, "0", STR_PAD_LEFT))->class('form-control') }}
 					</div>
 				</div>
 			</div>
@@ -28,29 +28,29 @@
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Bedrijfsnaam</label>
-					{!! Form::text('name', Request::old('name'), array('class' => 'form-control')) !!}
+					{{ html()->text('name', Request::old('name'))->class('form-control') }}
 				</div>
 			</div>
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Adres</label>
-					{!! Form::text('address', Request::old('address'), array('class' => 'form-control')) !!}
+					{{ html()->text('address', Request::old('address'))->class('form-control') }}
 				</div>
 			</div>
 			<div class="row form-row">
 				<div class="col-md-4 form-group">
 					<label class="form-label">Postcode</label>
-					{!! Form::text('zipcode', Request::old('zipcode'), array('class' => 'form-control')) !!}
+					{{ html()->text('zipcode', Request::old('zipcode'))->class('form-control') }}
 				</div>
 				<div class="col-md-8 form-group">
 					<label class="form-label">Plaats</label>
-					{!! Form::text('city', Request::old('city'), array('class' => 'form-control')) !!}
+					{{ html()->text('city', Request::old('city'))->class('form-control') }}
 				</div>
 			</div>
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Land</label>
-					{!! Form::text('country', (strlen(Request::old('country')) > 0 ? Request::old('country') : 'NL'), array('class' => 'form-control')) !!}
+					{{ html()->text('country', strlen(Request::old('country')) > 0 ? Request::old('country') : 'NL')->class('form-control') }}
 				</div>
 			</div>
 
@@ -58,27 +58,27 @@
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Contact persoon</label>
-					{!! Form::text('contact', Request::old('contact'), array('class' => 'form-control')) !!}
+					{{ html()->text('contact', Request::old('contact'))->class('form-control') }}
 				</div>
 			</div>
 			<div class="row form-row">
 				<div class="col-md-6 form-group">
 					<label class="form-label">Telefoon nummer</label>
-					{!! Form::text('phone', Request::old('phone'), array('class' => 'form-control')) !!}
+					{{ html()->text('phone', Request::old('phone'))->class('form-control') }}
 				</div>
 				<div class="col-md-6 form-group">
 					<label class="form-label">Mobiel nummer</label>
-					{!! Form::text('mobile', Request::old('mobile'), array('class' => 'form-control')) !!}
+					{{ html()->text('mobile', Request::old('mobile'))->class('form-control') }}
 				</div>
 			</div>
 			<div class="row form-row">
 				<div class="col-md-6 form-group">
 					<label class="form-label">E-mail</label>
-					{!! Form::text('email', Request::old('email'), array('class' => 'form-control')) !!}
+					{{ html()->text('email', Request::old('email'))->class('form-control') }}
 				</div>
 				<div class="col-md-6 form-group">
 					<label class="form-label">Website</label>
-					{!! Form::text('website', Request::old('website'), array('class' => 'form-control')) !!}
+					{{ html()->text('website', Request::old('website'))->class('form-control') }}
 				</div>
 			</div>
 		</div>
@@ -87,18 +87,18 @@
 			<div class="row form-row">
 				<div class="col-md-6 form-group">
 					<label class="form-label">KvK nummer</label>
-					{!! Form::text('kvk', Request::old('kvk'), array('class' => 'form-control')) !!}
+					{{ html()->text('kvk', Request::old('kvk'))->class('form-control') }}
 				</div>
 				<div class="col-md-6 form-group">
 					<label class="form-label">BTW nummer</label>
-					{!! Form::text('btw', Request::old('btw'), array('class' => 'form-control')) !!}
+					{{ html()->text('btw', Request::old('btw'))->class('form-control') }}
 				</div>
 			</div>
 			<div class="row form-row">
 				<div class="col-md-6 form-group">
 					<label class="form-label">Betalingstermijn</label>
 					<span class="help">in dagen</span>
-					{!! Form::text('payterm', (strlen(Request::old('payterm')) > 0 ? Request::old('payterm') : 30), array('class' => 'form-control')) !!}
+					{{ html()->text('payterm', strlen(Request::old('payterm')) > 0 ? Request::old('payterm') : 30)->class('form-control') }}
 				</div>
 			</div>
 		</div>
@@ -106,6 +106,6 @@
 	<div class="form-group">
 		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
 	</div>
-	{!! Form::close() !!}
+	{{ html()->form()->close() }}
 
 @endsection

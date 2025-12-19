@@ -9,11 +9,11 @@
     "require": {
         "laravel/framework": "^11.47",
         "prologue/alerts": "dev-master",
-        "laravelcollective/html": "^6.4",
         "php": "^8.2",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.4",
-        "league/flysystem-aws-s3-v3": "^3.0"
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "spatie/laravel-html": "^3.11"
     },
     "autoload": {
         "psr-4": {

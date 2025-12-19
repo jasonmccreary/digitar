@@ -11,7 +11,7 @@
 		textarea { width: 100%; min-height: 400px; }
 		input[type=text] { width: 100%; }
 	</style>
-	{!! Form::open() !!}
+	{{ html()->form()->open() }}
 
 
 	<?php 
@@ -83,6 +83,6 @@
 		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
 	</div>
 
-	{!! Form::close() !!}
+	{{ html()->form()->close() }}
 
 @endsection

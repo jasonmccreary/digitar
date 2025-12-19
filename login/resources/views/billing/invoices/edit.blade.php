@@ -12,7 +12,7 @@
 	.invoicerow-placeholder { height: 47px; }
 	.form-control[readonly] { cursor: auto; background-color: #fff; }
 </style>
-{!! Form::open(array('class' => 'invoice')) !!}
+{{ html()->form('POST', url()->current())->class('invoice')->open() }}
 
 <div class="grid simple">
 	<div class="grid-body">
@@ -42,7 +42,7 @@
 						<div class="row form-row">
 							<div class="col-md-12 form-group">
 								<label class="form-label">Factuurnummer</label>
-								{!! Form::text('invoicenumber', (strlen(Request::old('invoicenumber')) > 0 ? Request::old('invoicenumber') : $i->invoicenumber), array('class' => 'form-control')) !!}
+								{{ html()->text('invoicenumber', strlen(Request::old('invoicenumber')) > 0 ? Request::old('invoicenumber') : $i->invoicenumber)->class('form-control') }}
 							</div>
 						</div>
 						<div class="row form-row">
@@ -57,7 +57,7 @@
 			            <div class="row form-row">
 							<div class="col-md-12 form-group">
 								<label class="form-label">Referentie</label>
-								{!! Form::text('reference', (strlen(Request::old('reference')) > 0 ? Request::old('reference') : $i->reference), array('class' => 'form-control')) !!}
+								{{ html()->text('reference', strlen(Request::old('reference')) > 0 ? Request::old('reference') : $i->reference)->class('form-control') }}
 							</div>
 						</div>
 						<div class="row form-row">
@@ -205,7 +205,7 @@
 
 	</div>
 </div>
-{!! Form::close() !!}
+{{ html()->form()->close() }}
 <div class="grid simple">
 	<div class="grid-body">
 

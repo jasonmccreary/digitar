@@ -2,7 +2,7 @@
 
 @section('content')
 
-	{!! Form::open() !!}
+	{{ html()->form()->open() }}
 	<div class="row">
 		<div class="col-md-4">
 			<div class="form-group">
@@ -18,7 +18,7 @@
 			<div class="form-group">
 				@foreach($mods as $mod)
 					<div class="checkbox check-success 	">
-						{!! Form::checkbox('mod['.$mod->id.']', '1', Usermods::checked($mod->id,$user->id), array('id'=>$mod->id)) !!}
+						{{ html()->checkbox('mod[' . $mod->id . ']', Usermods::checked($mod->id, $user->id), '1')->id($mod->id) }}
 			          <label for="{!! $mod->id !!}">{!! $mod->name !!}</label>
 			        </div>					
 				@endforeach
@@ -28,6 +28,6 @@
 	<div class="form-group">
 		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
 	</div>
-	{!! Form::close() !!}
+	{{ html()->form()->close() }}
 
 @endsection

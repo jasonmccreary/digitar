@@ -12,7 +12,7 @@
 	.invoicerow-placeholder { height: 47px; }
 	.form-control[readonly] { cursor: auto; background-color: #fff; }
 </style>
-{!! Form::open(array('class' => 'invoice')) !!}
+{{ html()->form('POST', url()->current())->class('invoice')->open() }}
 
 <div class="grid simple">
 	<div class="grid-body">
@@ -42,7 +42,7 @@
 						<div class="row form-row">
 							<div class="col-md-12 form-group">
 								<label class="form-label">Factuurnummer</label>
-								{!! Form::text('invoicenumber', strlen(Request::old('invoicenumber')) > 0 ? Request::old('invoicenumber') : 'F'.str_pad(Invoices::newInvoiceNumber(), 7, "0", STR_PAD_LEFT), array('class' => 'form-control')) !!}
+								{{ html()->text('invoicenumber', strlen(Request::old('invoicenumber')) > 0 ? Request::old('invoicenumber') : 'F' . str_pad(Invoices::newInvoiceNumber(), 7, "0", STR_PAD_LEFT))->class('form-control') }}
 							</div>
 						</div>
 						<div class="row form-row">
@@ -57,7 +57,7 @@
 			            <div class="row form-row">
 							<div class="col-md-12 form-group">
 								<label class="form-label">Referentie</label>
-								{!! Form::text('reference', Request::old('reference'), array('class' => 'form-control')) !!}
+								{{ html()->text('reference', Request::old('reference'))->class('form-control') }}
 							</div>
 						</div>
 						<div class="row form-row">
@@ -148,22 +148,22 @@
 					<div class="row form-row">
 						<input type="hidden" name="r-type" value="1" />
 						<div class="col-md-1 form-group">
-							{!! Form::text('r-date', simple_date(date('Y-m-d')), array('class' => 'form-control input-sm date')) !!}
+							{{ html()->text('r-date', simple_date(date('Y-m-d')))->class('form-control input-sm date') }}
 						</div>
 						<div class="col-md-2 form-group sm-select">
 							{!! Form::select2('r-product', Products::getDropdown(), '0', array('class' => 'product-select', 'style' => 'width:100%;'),array(0)) !!}
 						</div>
 						<div class="col-md-1 form-group">
-							{!! Form::text('r-amount', 1, array('class' => 'form-control input-sm amount auto', 'data-v-min' => '-999.99', 'data-v-max' => '999.99', 'data-a-dec' => '.', 'data-a-sep' => ',')) !!}
+							{{ html()->text('r-amount', 1)->class('form-control input-sm amount auto')->data('v-min', '-999.99')->data('v-max', '999.99')->data('a-dec', '.')->data('a-sep', ',') }}
 						</div>
 						<div class="col-md-4 form-group">
-							{!! Form::text('r-description', '', array('class' => 'form-control input-sm description')) !!}
+							{{ html()->text('r-description', '')->class('form-control input-sm description') }}
 						</div>
 						<div class="col-md-1 form-group">
-							{!! Form::text('r-tax', 21, array('class' => 'form-control input-sm tax auto', 'data-v-min' => '0', 'data-v-max' => '99')) !!}
+							{{ html()->text('r-tax', 21)->class('form-control input-sm tax auto')->data('v-min', '0')->data('v-max', '99') }}
 						</div>
 						<div class="col-md-1 form-group">
-							{!! Form::text('r-price', '', array('class' => 'form-control input-sm price auto', 'data-a-sep' => '.', 'data-a-dec' => ',', 'data-a-sign' => '€ ')) !!}
+							{{ html()->text('r-price', '')->class('form-control input-sm price auto')->data('a-sep', '.')->data('a-dec', ',')->data('a-sign', '€ ') }}
 						</div>
 						<div class="col-md-1 form-group">
 							<input type="text" class="form-control input-sm total auto" data-a-sep="." data-a-dec="," data-a-sign="€ " readonly="true" tabindex="-1" />
@@ -190,7 +190,7 @@
 
 	</div>
 </div>
-{!! Form::close() !!}
+{{ html()->form()->close() }}
 <div class="grid simple">
 	<div class="grid-body">
 

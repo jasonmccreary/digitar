@@ -2,7 +2,7 @@
 
 @section('content')
 
-	{!! Form::open() !!}
+	{{ html()->form()->open() }}
 		@if(strlen(Debtors::get($i->did)->email) > 5)
 			<h4 class="m-b-40">Hoe wilt u de factuur versturen?</h4>
 			<button name="send" value="mail" class="btn btn-success btn-cons">Per mail</button>
@@ -11,6 +11,6 @@
 		@endif
 		<button name="send" value="print" class="btn btn-success btn-cons">Per post</button>
 		<button name="send" value="false" class="btn btn-danger btn-cons pull-right">Annuleren</button>
-	{!! Form::close() !!}
+	{{ html()->form()->close() }}
 
 @endsection
