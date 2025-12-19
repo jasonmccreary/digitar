@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use App\Models\Cloud;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -14,13 +16,14 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Prologue\Alerts\Facades\Alert;
 
-class CloudsController extends Controller
+class CloudsController extends Controller implements HasMiddleware
 {
-    public function __construct()
+    public static function middleware(): array
     {
-
-        $this->middleware('auth');
-        $this->middleware('folders');
+        return [
+            'auth',
+            'folders',
+        ];
     }
 
     public function showFiles(): \Illuminate\View\View
