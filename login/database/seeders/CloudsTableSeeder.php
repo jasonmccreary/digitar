@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 class CloudsTableSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         // Uncomment the below to wipe the table clean before populating
         // DB::table('clouds')->truncate();

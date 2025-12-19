@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Cloud;
-use App\User;
+use App\Models\Cloud;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
@@ -22,7 +23,7 @@ class CloudsController extends Controller
         $this->middleware('folders');
     }
 
-    public function showFiles()
+    public function showFiles(): \Illuminate\View\View
     {
 
         View::share('fid', 'files');
@@ -64,7 +65,7 @@ class CloudsController extends Controller
 
     }
 
-    public function editFile($id)
+    public function editFile($id): RedirectResponse
     {
 
         if (Auth::user()->lookonly == 1) {
@@ -128,7 +129,7 @@ class CloudsController extends Controller
         $f->delete();
     }
 
-    public function viewdetails($fid)
+    public function viewdetails($fid): \Illuminate\View\View
     {
 
         $f = new Cloud;

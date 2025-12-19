@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Files;
-use App\User;
+use App\Models\Files;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
+use Illuminate\View\View;
 use Prologue\Alerts\Facades\Alert;
 
 class ToolsController extends Controller
 {
-    public function savePdfContents()
+    public function savePdfContents(): View
     {
 
         $files1 = Files::whereNull('contents')
@@ -87,7 +89,7 @@ class ToolsController extends Controller
         return $return;
     }
 
-    public function createForwarder()
+    public function createForwarder(): RedirectResponse
     {
 
         require_once app_path().'/controllers/xmlapi.class.php';
@@ -135,7 +137,7 @@ class ToolsController extends Controller
         return $return;
     }
 
-    public function createFtp()
+    public function createFtp(): RedirectResponse
     {
 
         require_once app_path().'/controllers/xmlapi.class.php';

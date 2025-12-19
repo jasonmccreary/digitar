@@ -1,28 +1,11 @@
 <?php
 
+use App\Models\Folder;
+use App\Models\User;
 use Illuminate\Support\Facades\Request;
 
 Validator::extend('alpha_space', function ($attr, $value) {
     return preg_match('/^[A-Za-z0-9_\- ]+$/', $value);
-});
-
-/*
-|--------------------------------------------------------------------------
-| Application & Route Filters
-|--------------------------------------------------------------------------
-|
-| Below you will find the "before" and "after" events for the application
-| which may be used to do any work before or after a request into your
-| application. Here you may also register your custom route filters.
-|
-*/
-
-App::before(function ($request) {
-    //
-});
-
-App::after(function ($request, $response) {
-    //
 });
 
 /*
@@ -106,10 +89,6 @@ Route::filter('folders', function () {
     View::share('aFolders', Folder::getAllUserFolders());
 });
 
-Route::filter('auth.basic', function () {
-    return Auth::basic();
-});
-
 /*
 |--------------------------------------------------------------------------
 | Guest Filter
@@ -124,22 +103,5 @@ Route::filter('auth.basic', function () {
 Route::filter('guest', function () {
     if (Auth::check()) {
         return redirect('/admin');
-    }
-});
-
-/*
-|--------------------------------------------------------------------------
-| CSRF Protection Filter
-|--------------------------------------------------------------------------
-|
-| The CSRF filter is responsible for protecting your application against
-| cross-site request forgery attacks. If this special token in a user
-| session does not match the one given in this request, we'll bail.
-|
-*/
-
-Route::filter('csrf', function () {
-    if (Session::token() != Request::get('_token')) {
-        throw new Illuminate\Session\TokenMismatchException;
     }
 });

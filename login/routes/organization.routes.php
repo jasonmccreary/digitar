@@ -45,10 +45,7 @@ Route::get('organization/client/add', function () {
         'sfolders' => $sfolders,
     ]);
 })->middleware('auth');
-Route::post('organization/client/add', [
-    'middleware' => 'auth',
-    'uses' => [UserController::class, 'addClient'],
-]);
+Route::post('organization/client/add', [UserController::class, 'addClient'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Edit a Client
@@ -114,10 +111,7 @@ Route::get('organization/moderator/add', function () {
         'title' => 'Beheerder toevoegen',
     ]);
 })->middleware('auth');
-Route::post('organization/moderator/add', [
-    'middleware' => 'auth',
-    'uses' => [UserController::class, 'addModerator'],
-]);
+Route::post('organization/moderator/add', [UserController::class, 'addModerator'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Edit a moderator

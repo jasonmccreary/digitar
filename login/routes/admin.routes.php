@@ -107,10 +107,7 @@ Route::get('admin/user/add', function () {
         return redirect('/admin/organizations/add');
     }
 })->middleware('auth');
-Route::post('admin/user/add', [
-    'middleware' => 'auth',
-    'uses' => [UserController::class, 'addOrganization'],
-]);
+Route::post('admin/user/add', [UserController::class, 'addOrganization'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Edit a administrator
@@ -324,10 +321,7 @@ Route::get('admin/tools/forwardcheck', function () {
     ]);
 
 })->middleware('auth');
-Route::post('admin/tools/forwardcheck', [
-    'middleware' => 'auth',
-    'uses' => [ToolsController::class, 'createForwarder'],
-]);
+Route::post('admin/tools/forwardcheck', [ToolsController::class, 'createForwarder'])->middleware('auth');
 
 Route::get('admin/tools/ftpcheck', function () {
 
@@ -337,10 +331,7 @@ Route::get('admin/tools/ftpcheck', function () {
     ]);
 
 })->middleware('auth');
-Route::post('admin/tools/ftpcheck', [
-    'middleware' => 'auth',
-    'uses' => [ToolsController::class, 'createFtp'],
-]);
+Route::post('admin/tools/ftpcheck', [ToolsController::class, 'createFtp'])->middleware('auth');
 
 Route::get('admin/tools/getpdfcontents', function () {
 

@@ -1,9 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -53,14 +55,14 @@ class User extends Authenticatable
 
             if ($org->count() > 0) {
                 $org = $org->first();
-                if (!$org->billing) {
+                if (! $org->billing) {
                     return false;
                 }
             }
 
             if ($client->count() > 0) {
                 $client = $client->first();
-                if (!$client->billing) {
+                if (! $client->billing) {
                     return false;
                 }
             }
@@ -75,7 +77,7 @@ class User extends Authenticatable
     {
         if ($username) {
             $user = new User;
-            $user = $user->where('rights', '=', '1')->where('oid', '=', $oid)->where('cid', '=', $cid)->whereRaw("(name like '%" . $username . "%' OR username like '%" . $username . "%')");
+            $user = $user->where('rights', '=', '1')->where('oid', '=', $oid)->where('cid', '=', $cid)->whereRaw("(name like '%".$username."%' OR username like '%".$username."%')");
             if ($user->count() > 0) {
                 return $user->get();
             }
@@ -111,7 +113,7 @@ class User extends Authenticatable
     {
         if ($username) {
             $user = new User;
-            $user = $user->where('rights', '=', '1')->where('oid', '=', $oid)->where('cid', '=', $cid)->whereRaw("(name like '%" . $username . "%' OR username like '%" . $username . "%')");
+            $user = $user->where('rights', '=', '1')->where('oid', '=', $oid)->where('cid', '=', $cid)->whereRaw("(name like '%".$username."%' OR username like '%".$username."%')");
             dd(DB::getQueryLog());
             if ($user->count() > 0) {
                 return $user->get();
@@ -134,7 +136,7 @@ class User extends Authenticatable
             $user = $u->where('id', '=', 1)->first();
         }
 
-        if (!is_object($user)) {
+        if (! is_object($user)) {
             if (Auth::user()->oid != 0) {
                 $u = new Organizations;
                 $user = $u->where('id', '=', Auth::user()->oid)->first();

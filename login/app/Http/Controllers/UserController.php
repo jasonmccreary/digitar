@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Cloud;
-use App\Debtors;
-use App\Files;
-use App\Folderright;
-use App\Invoicerows;
-use App\Invoices;
-use App\Layouts;
-use App\Messages;
-use App\Products;
-use App\User;
-use App\Usermods;
+use App\Models\Cloud;
+use App\Models\Debtors;
+use App\Models\Files;
+use App\Models\Folderright;
+use App\Models\Invoicerows;
+use App\Models\Invoices;
+use App\Models\Layouts;
+use App\Models\Messages;
+use App\Models\Products;
+use App\Models\User;
+use App\Models\Usermods;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +24,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Prologue\Alerts\Facades\Alert;
 
 class UserController extends Controller
@@ -30,7 +33,7 @@ class UserController extends Controller
 
     public $rules;
 
-    public function postLogin()
+    public function postLogin(): RedirectResponse
     {
         $input = Request::all();
 
@@ -53,7 +56,7 @@ class UserController extends Controller
 
             if (count($users) == 1 && Crypt::decrypt($users[0]->password) == $input['password']) {
 
-                $dt = new DateTime;
+                $dt = new \DateTime;
                 $updateUser = User::find($users[0]->id);
                 $updateUser->lastlogin = $dt->format('Y-m-d H:i:s');
                 $updateUser->save();
@@ -84,7 +87,7 @@ class UserController extends Controller
         }
     }
 
-    public function supersearch()
+    public function supersearch(): View
     {
         $u = Auth::user();
         if ($u->rights == 5) {
@@ -217,7 +220,7 @@ class UserController extends Controller
         );
     }
 
-    public function add($organization_id, $clientid = false, $rights = 1, $folders = false)
+    public function add($organization_id, $clientid = false, $rights = 1, $folders = false): RedirectResponse
     {
         $input = Request::all();
 
@@ -617,7 +620,7 @@ class UserController extends Controller
         return redirect($this->redirect);
     }
 
-    public function loginas($id, $password)
+    public function loginas($id, $password): RedirectResponse
     {
         if (Auth::guest()) {
             return redirect('/');
@@ -641,7 +644,7 @@ class UserController extends Controller
         }
     }
 
-    public function checkCredentials()
+    public function checkCredentials(): JsonResponse
     {
         // Check authorozation
         if (Request::get('safe') !== 'AIzaSyAyXmJSzBExyYfIqKnqYNh_3jRt9XaJlvM') {
@@ -656,7 +659,7 @@ class UserController extends Controller
         }
     }
 
-    public function checkUsername()
+    public function checkUsername(): JsonResponse
     {
         $username = Request::get('username');
         $user = DB::table('users')->select('id', 'name', 'username', 'rights', 'cid', 'oid')->where('username', $username);
@@ -669,7 +672,7 @@ class UserController extends Controller
         }
     }
 
-    public function logout()
+    public function logout(): RedirectResponse
     {
         if (Session::has('prevuid.'.(count(Session::get('prevuid')) - 1))) {
             Auth::loginUsingId(Session::get('prevuid.'.(count(Session::get('prevuid')) - 1)));

@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
 class Invoices extends Model
@@ -94,8 +95,8 @@ class Invoices extends Model
         }
     }
 
-    public function debtor()
+    public function debtor(): BelongsTo
     {
-        return $this->belongsTo(\App\Debtors::class, 'did', 'id');
+        return $this->belongsTo(\App\Models\Debtors::class, 'did', 'id');
     }
 }

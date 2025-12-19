@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Debtors;
+use App\Models\Debtors;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -11,7 +12,7 @@ use Prologue\Alerts\Facades\Alert;
 
 class DebtorsController extends Controller
 {
-    public function add()
+    public function add(): RedirectResponse
     {
         $rules = [
             'debnumber' => 'alpha_space',
@@ -66,7 +67,7 @@ class DebtorsController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($id): RedirectResponse
     {
         $rules = [
             'debnumber' => 'alpha_space',
@@ -122,7 +123,7 @@ class DebtorsController extends Controller
         }
     }
 
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         if (Request::get('delete') == 'true') {
             $d = new Debtors;

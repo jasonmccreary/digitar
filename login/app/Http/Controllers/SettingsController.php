@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Debtors;
-use App\Invoices;
-use App\Layouts;
-use App\User;
+use App\Models\Debtors;
+use App\Models\Invoices;
+use App\Models\Layouts;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -23,7 +24,7 @@ class SettingsController extends Controller
      * ======================
      */
 
-    public static function saveMails($id = false)
+    public static function saveMails($id = false): RedirectResponse
     {
 
         if ($id != false) {
@@ -47,7 +48,7 @@ class SettingsController extends Controller
         return Redirect::route('settingsMails');
     }
 
-    public static function deleteMail($id)
+    public static function deleteMail($id): RedirectResponse
     {
         $layout = Layouts::where('cid', '=', Auth::user()->cid)->where('id', '=', $id)->delete();
 
@@ -56,7 +57,7 @@ class SettingsController extends Controller
         return Redirect::route('settingsMails');
     }
 
-    public static function saveInvoices($id = false)
+    public static function saveInvoices($id = false): RedirectResponse
     {
 
         if ($id != false) {
@@ -103,7 +104,7 @@ class SettingsController extends Controller
         }
     }
 
-    public static function deleteInvoice($id)
+    public static function deleteInvoice($id): RedirectResponse
     {
         $layout = Layouts::where('cid', '=', Auth::user()->cid)->where('id', '=', $id)->delete();
 

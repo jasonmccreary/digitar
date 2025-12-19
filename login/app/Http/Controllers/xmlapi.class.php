@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+
 /**
  * cPanel XMLAPI Client Class
  *
@@ -175,7 +177,7 @@ class xmlapi
      * @param  string  $password  The password to authenticate with
      * @return Xml_Api object
      */
-    public function __construct($host = null, $user = null, $password = null)
+    public function __construct(?string $host = null, ?string $user = null, ?string $password = null)
     {
         // Check if debugging must be enabled
         if ((defined('XMLAPI_DEBUG')) && (XMLAPI_DEBUG == '1')) {
@@ -286,7 +288,7 @@ class xmlapi
      *
      * @see get_debug()
      */
-    public function set_debug($debug = 1)
+    public function set_debug(bool $debug = 1)
     {
         $this->debug = $debug;
     }
@@ -314,7 +316,7 @@ class xmlapi
      *
      * @see get_host()
      */
-    public function set_host($host)
+    public function set_host(string $host)
     {
         $this->host = $host;
     }
@@ -349,7 +351,7 @@ class xmlapi
      * @see set_protocol()
      * @see get_port()
      */
-    public function set_port($port)
+    public function set_port(int $port)
     {
         if (! is_int($port)) {
             $port = intval($port);
@@ -392,7 +394,7 @@ class xmlapi
      *
      * @see get_protocol()
      */
-    public function set_protocol($proto)
+    public function set_protocol(string $proto)
     {
         if ($proto != 'https' && $proto != 'http') {
             throw new Exception('https and http are the only protocols that can be passed to set_protocol');
@@ -435,7 +437,7 @@ class xmlapi
      *
      * @see get_output()
      */
-    public function set_output($output)
+    public function set_output(string $output)
     {
         if ($output != 'json' && $output != 'xml' && $output != 'array' && $output != 'simplexml') {
             throw new Exception('json, xml, array and simplexml are the only allowed values for set_output');
@@ -492,7 +494,7 @@ class xmlapi
      * @see set_auth_type()
      * @see set_user()
      */
-    public function set_password($pass)
+    public function set_password(string $pass)
     {
         $this->auth_type = 'pass';
         $this->auth = $pass;
@@ -510,7 +512,7 @@ class xmlapi
      * @see set_auth_type()
      * @see set_user()
      */
-    public function set_hash($hash)
+    public function set_hash(string $hash)
     {
         $this->auth_type = 'hash';
         $this->auth = preg_replace("/(\n|\r|\s)/", '', $hash);
@@ -539,7 +541,7 @@ class xmlapi
      * @see set_hash()
      * @see get_user()
      */
-    public function set_user($user)
+    public function set_user(string $user)
     {
         $this->user = $user;
     }
@@ -555,7 +557,7 @@ class xmlapi
      * @see set_hash()
      * @see set_user()
      */
-    public function hash_auth($user, $hash)
+    public function hash_auth(string $user, string $hash)
     {
         $this->set_hash($hash);
         $this->set_user($user);
@@ -572,7 +574,7 @@ class xmlapi
      * @see set_pass()
      * @see set_user()
      */
-    public function password_auth($user, $pass)
+    public function password_auth(string $user, string $pass)
     {
         $this->set_password($pass);
         $this->set_user($user);
@@ -657,7 +659,7 @@ class xmlapi
      * @param  array  $vars  An associative array of the parameters to be passed to the XML-API Calls
      * @return mixed
      */
-    public function xmlapi_query($function, $vars = [])
+    public function xmlapi_query(string $function, array $vars = [])
     {
         // Check to make sure all the data needed to perform the query is in place
         if (! $function) {
@@ -824,7 +826,7 @@ class xmlapi
         // Get input, loading an xml string with simplexml if its the top level of recursion
         $data = ((! $recurse) && is_string($input)) ? simplexml_load_string($input) : $input;
         // Convert SimpleXMLElements to array
-        if ($data instanceof SimpleXMLElement) {
+        if ($data instanceof \SimpleXMLElement) {
             $data = (array) $data;
         }
         // Recurse into arrays
@@ -857,7 +859,7 @@ class xmlapi
      * @link http://docs.cpanel.net/twiki/bin/view/DeveloperResources/ApiRef/WebHome API1 & API2 Call documentation
      * @link http://docs.cpanel.net/twiki/bin/view/DeveloperResources/ApiBasics/CallingApiOne API1 Documentation
      */
-    public function api1_query($user, $module, $function, $args = [])
+    public function api1_query(string $user, string $module, string $function, array $args = [])
     {
         if (! isset($module) || ! isset($function) || ! isset($user)) {
             error_log('api1_query requires that a module and function are passed to it');
@@ -913,7 +915,7 @@ class xmlapi
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ApiTwo Legacy API2 Documentation
      * @link http://docs.cpanel.net/twiki/bin/view/DeveloperResources/ApiBasics/CallingApiTwo API2 Documentation
      */
-    public function api2_query($user, $module, $function, $args = [])
+    public function api2_query(string $user, string $module, string $function, array $args = [])
     {
         if (! isset($user) || ! isset($module) || ! isset($function)) {
             error_log('api2_query requires that a username, module and function are passed to it');
@@ -980,12 +982,11 @@ class xmlapi
      * Failure to prive these will cause an error to be logged.  Any other key/value pairs as defined by the createaccount call
      * documentation are allowed parameters for this call.
      *
-     * @param  array  $acctconf
      * @return mixed
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/CreateAccount XML API Call documentation
      */
-    public function createacct($acctconf)
+    public function createacct(array $acctconf)
     {
         if (! is_array($acctconf)) {
             error_log('createacct requires that first parameter passed to it is an array');
@@ -1012,7 +1013,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ChangePassword XML API Call documentation
      */
-    public function passwd($username, $pass)
+    public function passwd(string $username, string $pass)
     {
         if (! isset($username) || ! isset($pass)) {
             error_log('passwd requires that an username and password are passed to it');
@@ -1034,7 +1035,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/LimitBandwidth XML API Call documentation
      */
-    public function limitbw($username, $bwlimit)
+    public function limitbw(string $username, int $bwlimit)
     {
         if (! isset($username) || ! isset($bwlimit)) {
             error_log('limitbw requires that an username and bwlimit are passed to it');
@@ -1056,7 +1057,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ListAccounts XML API Call documentation
      */
-    public function listaccts($searchtype = null, $search = null)
+    public function listaccts(?string $searchtype = null, ?string $search = null)
     {
         if ($search) {
             return $this->xmlapi_query('listaccts', ['searchtype' => $searchtype, 'search' => $search]);
@@ -1077,7 +1078,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ModifyAccount XML API Call documentation
      */
-    public function modifyacct($username, $args = [])
+    public function modifyacct(string $username, array $args = [])
     {
         if (! isset($username)) {
             error_log('modifyacct requires that username is passed to it');
@@ -1105,7 +1106,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/EditQuota XML API Call documentation
      */
-    public function editquota($username, $quota)
+    public function editquota(string $username, int $quota)
     {
         if (! isset($username) || ! isset($quota)) {
             error_log('editquota requires that an username and quota are passed to it');
@@ -1134,7 +1135,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ShowAccountInformation XML API Call documenation
      */
-    public function accountsummary($username)
+    public function accountsummary(string $username)
     {
         if (! isset($username)) {
             error_log('accountsummary requires that an username is passed to it');
@@ -1157,7 +1158,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SuspendAccount XML API Call documentation
      */
-    public function suspendacct($username, $reason = null)
+    public function suspendacct(string $username, ?string $reason = null)
     {
         if (! isset($username)) {
             error_log('suspendacct requires that an username is passed to it');
@@ -1197,7 +1198,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/TerminateAccount
      */
-    public function removeacct($username, $keepdns = false)
+    public function removeacct(string $username, bool $keepdns = false)
     {
         if (! isset($username)) {
             error_log('removeacct requires that a username is passed to it');
@@ -1221,7 +1222,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/UnsuspendAcount XML API Call documentation
      */
-    public function unsuspendacct($username)
+    public function unsuspendacct(string $username)
     {
         if (! isset($username)) {
             error_log('unsuspendacct requires that a username is passed to it');
@@ -1243,7 +1244,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ChangePackage XML API Call documentation
      */
-    public function changepackage($username, $pkg)
+    public function changepackage(string $username, string $pkg)
     {
         if (! isset($username) || ! isset($pkg)) {
             error_log('changepackage requires that username and pkg are passed to it');
@@ -1279,7 +1280,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/DomainUserData
      */
-    public function domainuserdata($domain)
+    public function domainuserdata(string $domain)
     {
         if (! isset($domain)) {
             error_log('domainuserdata requires that domain is passed to it');
@@ -1303,7 +1304,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetSiteIp XML API Call documentation
      */
-    public function setsiteip($ip, $user = null, $domain = null)
+    public function setsiteip(string $ip, ?string $user = null, ?string $domain = null)
     {
         if (! isset($ip)) {
             error_log('setsiteip requires that ip is passed to it');
@@ -1341,7 +1342,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/AddDNSZone XML API Call documentation
      */
-    public function adddns($domain, $ip)
+    public function adddns(string $domain, string $ip)
     {
         if (! isset($domain) || ! isset($ip)) {
             error_log('adddns require that domain, ip are passed to it');
@@ -1365,7 +1366,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/AddZoneRecord XML API Call documentation
      */
-    public function addzonerecord($zone, $args)
+    public function addzonerecord(string $zone, array $args)
     {
         if (! is_array($args)) {
             error_log("addzonerecord requires that $args passed to it is an array");
@@ -1393,7 +1394,7 @@ class xmlapi
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/EditZoneRecord XML API Call documentation
      * @see dumpzone()
      */
-    public function editzonerecord($zone, $line, $args)
+    public function editzonerecord(string $zone, int $line, array $args)
     {
         if (! is_array($args)) {
             error_log("editzone requires that $args passed to it is an array");
@@ -1419,7 +1420,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/GetZoneRecord XML API Call documentation
      */
-    public function getzonerecord($zone, $line)
+    public function getzonerecord(string $zone, string $line)
     {
         return $this->xmlapi_query('getzonerecord', ['domain' => $zone, 'Line' => $line]);
     }
@@ -1434,7 +1435,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/DeleteDNSZone XML API Call documentation
      */
-    public function killdns($domain)
+    public function killdns(string $domain)
     {
         if (! isset($domain)) {
             error_log('killdns requires that domain is passed to it');
@@ -1471,7 +1472,7 @@ class xmlapi
      * @see editdnsrecord()
      * @see getdnsrecord()
      */
-    public function dumpzone($domain)
+    public function dumpzone(string $domain)
     {
         if (! isset($domain)) {
             error_log('dumpzone requires that a domain is passed to it');
@@ -1492,7 +1493,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/LookupIP XML API Call documentation
      */
-    public function lookupnsip($nameserver)
+    public function lookupnsip(string $nameserver)
     {
         if (! isset($nameserver)) {
             error_log('lookupnsip requres that a nameserver is passed to it');
@@ -1513,7 +1514,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/RemoveZone XML API Call documentation
      */
-    public function removezonerecord($zone, $line)
+    public function removezonerecord(string $zone, int $line)
     {
         if (! isset($zone) || ! isset($line)) {
             error_log('removezone record requires that a zone and line number is passed to it');
@@ -1534,7 +1535,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ResetZone XML API Call documentation
      */
-    public function resetzone($domain)
+    public function resetzone(string $domain)
     {
         if (! isset($domain)) {
             error_log('resetzone requires that a domain name is passed to it');
@@ -1562,7 +1563,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/AddPackage XML API Call documentation
      */
-    public function addpkg($pkg)
+    public function addpkg(array $pkg)
     {
         if (! isset($pkg['name'])) {
             error_log('addpkg requires that name is defined in the array passed to it');
@@ -1583,7 +1584,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/DeletePackage XML API Call documentation
      */
-    public function killpkg($pkgname)
+    public function killpkg(string $pkgname)
     {
         if (! isset($pkgname)) {
             error_log('killpkg requires that the package name is passed to it');
@@ -1606,7 +1607,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/EditPackage XML API Call documentation
      */
-    public function editpkg($pkg)
+    public function editpkg(array $pkg)
     {
         if (! $isset($pkg['name'])) {
             error_log('editpkg requires that name is defined in the array passed to it');
@@ -1650,7 +1651,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/AddResellerPrivileges XML API Call documentation
      */
-    public function setupreseller($username, $makeowner = true)
+    public function setupreseller(string $username, int $makeowner = true)
     {
         if (! isset($username)) {
             error_log('setupreseller requires that username is passed to it');
@@ -1676,7 +1677,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/CreateResellerACLList XML API Call documentation
      */
-    public function saveacllist($acl)
+    public function saveacllist(array $acl)
     {
         if (! isset($acl['acllist'])) {
             error_log('saveacllist requires that acllist is defined in the array passed to it');
@@ -1725,7 +1726,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ListResellersAccountsInformation XML API Call documentation
      */
-    public function resellerstats($username)
+    public function resellerstats(string $username)
     {
         if (! isset($username)) {
             error_log('resellerstats requires that a username is passed to it');
@@ -1746,7 +1747,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/RemoveResellerPrivileges XML API Call documentation
      */
-    public function unsetupreseller($username)
+    public function unsetupreseller(string $username)
     {
         if (! isset($username)) {
             error_log('unsetupreseller requires that a username is passed to it');
@@ -1769,7 +1770,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetResellersACLList XML API Call documentation
      */
-    public function setacls($acl)
+    public function setacls(array $acl)
     {
         if (! isset($acl['reseller'])) {
             error_log('setacls requires that reseller is defined in the array passed to it');
@@ -1792,7 +1793,7 @@ class xmlapi
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/TerminateResellerandAccounts XML API Call documentation
      *
      **/
-    public function terminatereseller($reseller, $terminatereseller = true)
+    public function terminatereseller(string $reseller, bool $terminatereseller = true)
     {
         if (! isset($reseller)) {
             error_log('terminatereseller requires that username is passed to it');
@@ -1819,7 +1820,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetResellerIps XML API Call documentation
      */
-    public function setresellerips($user, $ip = null)
+    public function setresellerips(string $user, ?string $ip = null)
     {
         if (! isset($user)) {
             error_log('setresellerips requires that a username is passed to it');
@@ -1847,7 +1848,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetResellerLimits XML API Call documentation
      */
-    public function setresellerlimits($reseller_cfg)
+    public function setresellerlimits(array $reseller_cfg)
     {
         if (! isset($reseller_cfg['user'])) {
             error_log('setresellerlimits requires that a user is defined in the array passed to it');
@@ -1870,7 +1871,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetResellerMainIp XML API Call documentation
      */
-    public function setresellermainip($reseller, $ip)
+    public function setresellermainip(string $reseller, string $ip)
     {
         if (! isset($reseller) || ! isset($ip)) {
             error_log('setresellermainip requires that an reseller and ip are passed to it');
@@ -1895,7 +1896,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetResellerPkgLimit XML API Call documentation
      */
-    public function setresellerpackagelimits($user, $no_limit, $package = null, $allowed = null, $number = null)
+    public function setresellerpackagelimits(string $user, bool $no_limit, ?string $package = null, ?bool $allowed = null, ?int $number = null)
     {
         if (! isset($user) || ! isset($no_limit)) {
             error_log('setresellerpackagelimits requires that a username and no_limit are passed to it by default');
@@ -1939,7 +1940,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SuspendReseller XML API Call documentation
      */
-    public function suspendreseller($reseller, $reason = null)
+    public function suspendreseller(string $reseller, ?string $reason = null)
     {
         if (! isset($reseller)) {
             error_log("suspendreseller requires that the reseller's username is passed to it");
@@ -1964,7 +1965,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/UnsuspendReseller XML API Call documentation
      */
-    public function unsuspendreseller($user)
+    public function unsuspendreseller(string $user)
     {
         if (! isset($user)) {
             error_log('unsuspendreseller requires that a username is passed to it');
@@ -1985,7 +1986,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/AcctCounts XML API Call documentation
      */
-    public function acctcounts($user)
+    public function acctcounts(string $user)
     {
         if (! isset($user)) {
             error_log('acctcounts requires that a username is passed to it');
@@ -2008,7 +2009,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetResellerNameservers XML API Call documentation
      */
-    public function setresellernameservers($user, $nameservers = null)
+    public function setresellernameservers(string $user, ?string $nameservers = null)
     {
         if (! isset($user)) {
             error_log('setresellernameservers requires that a username is passed to it');
@@ -2097,7 +2098,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/RebootServer XML API Call documentation
      */
-    public function reboot($force = false)
+    public function reboot(bool $force = false)
     {
         if ($force) {
             return $this->xmlapi_query('reboot', ['force' => '1']);
@@ -2117,7 +2118,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/AddIPAddress XML API Call documentation
      */
-    public function addip($ip, $netmask)
+    public function addip(string $ip, string $netmask)
     {
         if (! isset($ip) || ! isset($netmask)) {
             error_log('addip requires that an IP address and Netmask are passed to it');
@@ -2141,7 +2142,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/DeleteIPAddress XML API Call documentation
      */
-    public function delip($ip, $ethernetdev = null, $skipifshutdown = false)
+    public function delip(string $ip, ?string $ethernetdev = null, bool $skipifshutdown = false)
     {
         $args = [];
         if (! isset($ip)) {
@@ -2182,7 +2183,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetHostname XML API Call documentation
      */
-    public function sethostname($hostname)
+    public function sethostname(string $hostname)
     {
         if (! isset($hostname)) {
             error_log('sethostname requires that hostname is passed to it');
@@ -2206,7 +2207,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetResolvers XML API Call documentation
      */
-    public function setresolvers($nameserver1, $nameserver2 = null, $nameserver3 = null)
+    public function setresolvers(string $nameserver1, ?string $nameserver2 = null, ?string $nameserver3 = null)
     {
         $args = [];
         if (! isset($nameserver1)) {
@@ -2237,7 +2238,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ShowBw XML API Call documentation
      */
-    public function showbw($args = null)
+    public function showbw(?array $args = null)
     {
         if (is_array($args)) {
             return $this->xmlapi_query('showbw', $args);
@@ -2283,7 +2284,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/RestartService XML API Call documentation
      */
-    public function restartsrv($service)
+    public function restartsrv(string $service)
     {
         if (! isset($service)) {
             error_log('restartsrv requires that service is passed to it');
@@ -2327,7 +2328,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ConfigureService XML API Call documentation
      */
-    public function configureservice($service, $enabled = true, $monitored = true)
+    public function configureservice(string $service, bool $enabled = true, bool $monitored = true)
     {
         if (! isset($service)) {
             error_log('configure service requires that a service is passed to it');
@@ -2366,7 +2367,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/FetchSSL XML API Call documentation
      */
-    public function fetchsslinfo($args)
+    public function fetchsslinfo(array $args)
     {
         if ((isset($args['domain']) && isset($args['crtdata'])) || (! isset($args['domain']) && ! isset($args['crtdata']))) {
             error_log('fetchsslinfo requires domain OR crtdata is passed to it');
@@ -2389,7 +2390,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/GenerateSSL XML API Call documentation
      */
-    public function generatessl($args)
+    public function generatessl(array $args)
     {
         if (! isset($args['xemail']) || ! isset($args['host']) || ! isset($args['country']) || ! isset($args['state']) || ! isset($args['city']) || ! isset($args['co']) || ! isset($args['cod']) || ! isset($args['email']) || ! isset($args['pass'])) {
             error_log('generatessl requires that xemail, host, country, state, city, co, cod, email and pass are defined in the array passed to it');
@@ -2411,7 +2412,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/InstallSSL XML API Call documentation
      */
-    public function installssl($args)
+    public function installssl(array $args)
     {
         if (! isset($args['user']) || ! isset($args['domain']) || ! isset($args['cert']) || ! isset($args['key']) || ! isset($args['cab']) || ! isset($args['ip'])) {
             error_log('installssl requires that user, domain, cert, key, cab and ip are defined in the array passed to it');

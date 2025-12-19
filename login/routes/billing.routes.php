@@ -33,10 +33,7 @@ Route::get('billing/debtors/add', function () {
         'title' => 'Debiteur toevoegen',
     ]);
 })->middleware('auth');
-Route::post('billing/debtors/add', [
-    'middleware' => 'auth',
-    'uses' => [DebtorsController::class, 'add'],
-]);
+Route::post('billing/debtors/add', [DebtorsController::class, 'add'])->middleware('auth');
 
 Route::get('billing/debtor/edit/{id}', function ($id) {
     $debtor = Debtors::where('id', '=', $id)->where('cid', '=', Auth::user()->cid)->first();
@@ -80,10 +77,7 @@ Route::get('billing/invoices/add', function () {
         'title' => 'Factuur aanmaken',
     ]);
 })->middleware('auth');
-Route::post('billing/invoices/add', [
-    'middleware' => 'auth',
-    'uses' => [InvoiceController::class, 'add'],
-]);
+Route::post('billing/invoices/add', [InvoiceController::class, 'add'])->middleware('auth');
 
 Route::get('billing/invoice/edit/{id}', function ($id) {
     $invoice = Invoices::where('id', '=', $id)->where('cid', '=', Auth::user()->cid)->first();
@@ -160,10 +154,7 @@ Route::get('billing/product/add', function () {
         'title' => 'Artikel aanmaken',
     ]);
 })->middleware('auth');
-Route::post('billing/product/add', [
-    'middleware' => 'auth',
-    'uses' => [ProductsController::class, 'add'],
-]);
+Route::post('billing/product/add', [ProductsController::class, 'add'])->middleware('auth');
 
 Route::get('billing/product/edit/{id}', function ($id) {
     $product = Products::byID($id)->first();
@@ -173,10 +164,7 @@ Route::get('billing/product/edit/{id}', function ($id) {
         'product' => $product,
     ]);
 })->middleware('auth');
-Route::post('billing/product/edit/{id}', [
-    'middleware' => 'auth',
-    'uses' => [ProductsController::class, 'edit'],
-]);
+Route::post('billing/product/edit/{id}', [ProductsController::class, 'edit'])->middleware('auth');
 
 Route::get('billing/product/delete/{id}', function ($id) {
     $p = Products::byID($id)->first();

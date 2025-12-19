@@ -35,10 +35,7 @@ Route::get('client/user/add', function () {
         'sfolders' => $sfolders,
     ]);
 })->middleware('auth');
-Route::post('client/user/add', [
-    'middleware' => 'auth',
-    'uses' => [UserController::class, 'addUser'],
-]);
+Route::post('client/user/add', [UserController::class, 'addUser'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
  |	Edit a User

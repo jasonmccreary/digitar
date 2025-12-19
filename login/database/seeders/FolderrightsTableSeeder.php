@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 class FolderrightsTableSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         // Uncomment the below to wipe the table clean before populating
         // DB::table('folderrights')->truncate();

@@ -3,20 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, ValidatesRequests;
 
     /**
      * Setup the layout used by the controller.
-     *
-     * @return void
      */
-    protected function setupLayout()
+    protected function setupLayout(): void
     {
         if (! is_null($this->layout)) {
             $this->layout = view($this->layout);

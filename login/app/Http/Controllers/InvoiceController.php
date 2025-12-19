@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Debtors;
-use App\Invoicerows;
-use App\Invoices;
-use App\Layouts;
-use App\User;
+use App\Models\Debtors;
+use App\Models\Invoicerows;
+use App\Models\Invoices;
+use App\Models\Layouts;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Prologue\Alerts\Facades\Alert;
 
 class InvoiceController extends Controller
@@ -26,7 +28,7 @@ class InvoiceController extends Controller
 
     private $subject;
 
-    public function add()
+    public function add(): RedirectResponse
     {
         $rules = [
             'debtor' => 'required|integer',
@@ -106,7 +108,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($id): RedirectResponse
     {
         $rules = [
             'debtor' => 'required|integer',
@@ -191,7 +193,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         if (Request::get('delete') == 'true') {
             $i = new Invoices;
@@ -298,7 +300,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function searchFiles()
+    public function searchFiles(): View
     {
 
         $search = Request::get('billing-search');
