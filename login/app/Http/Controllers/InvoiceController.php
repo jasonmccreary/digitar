@@ -7,6 +7,7 @@ use App\Models\Invoicerows;
 use App\Models\Invoices;
 use App\Models\Layouts;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -267,7 +268,7 @@ class InvoiceController extends Controller
         define('DOMPDF_ENABLE_PHP', true);
         define('DOMPDF_ENABLE_HTML5PARSER', true);
 
-        $oPdf = PDF::loadView('billing.pdf', $param)->setPaper('a4');
+        $oPdf = Pdf::loadView('billing.pdf', $param)->setPaper('a4');
 
         if ($save == true) {
             $filePath = '/home/digitar/clients/'.$this->org->username.'/'.$this->client->username.'/'.$this->invoice->invoicenumber.'.pdf';
