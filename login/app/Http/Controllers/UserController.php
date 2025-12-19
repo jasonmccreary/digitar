@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Cloud;
-use App\Debtors;
-use App\Files;
-use App\Folderright;
-use App\Invoicerows;
-use App\Invoices;
-use App\Layouts;
-use App\Messages;
-use App\Products;
-use App\User;
-use App\Usermods;
+use App\Models\Cloud;
+use App\Models\Debtors;
+use App\Models\Files;
+use App\Models\Folderright;
+use App\Models\Invoicerows;
+use App\Models\Invoices;
+use App\Models\Layouts;
+use App\Models\Messages;
+use App\Models\Products;
+use App\Models\User;
+use App\Models\Usermods;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;

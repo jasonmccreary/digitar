@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Cloud;
-use App\User;
+use App\Models\Cloud;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;

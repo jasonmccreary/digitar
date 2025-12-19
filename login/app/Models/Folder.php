@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -63,6 +63,6 @@ class Folder extends Model
 
     public function rights(): BelongsTo
     {
-        return $this->belongsTo(\App\Folderright::class, 'id', 'fid');
+        return $this->belongsTo(\App\Models\Folderright::class, 'id', 'fid');
     }
 }

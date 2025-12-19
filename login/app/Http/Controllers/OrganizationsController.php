@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Organizations;
+use App\Models\Organizations;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;

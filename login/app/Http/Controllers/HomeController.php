@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Files;
-use App\User;
+use App\Models\Files;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Debtors;
+use App\Models\Debtors;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
