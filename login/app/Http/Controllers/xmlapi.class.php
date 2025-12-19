@@ -175,7 +175,7 @@ class xmlapi
      * @param  string  $password  The password to authenticate with
      * @return Xml_Api object
      */
-    public function __construct(string $host = null, string $user = null, string $password = null)
+    public function __construct(?string $host = null, ?string $user = null, ?string $password = null)
     {
         // Check if debugging must be enabled
         if ((defined('XMLAPI_DEBUG')) && (XMLAPI_DEBUG == '1')) {
@@ -1055,7 +1055,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ListAccounts XML API Call documentation
      */
-    public function listaccts(string $searchtype = null, string $search = null)
+    public function listaccts(?string $searchtype = null, ?string $search = null)
     {
         if ($search) {
             return $this->xmlapi_query('listaccts', ['searchtype' => $searchtype, 'search' => $search]);
@@ -1156,7 +1156,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SuspendAccount XML API Call documentation
      */
-    public function suspendacct(string $username, string $reason = null)
+    public function suspendacct(string $username, ?string $reason = null)
     {
         if (! isset($username)) {
             error_log('suspendacct requires that an username is passed to it');
@@ -1302,7 +1302,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetSiteIp XML API Call documentation
      */
-    public function setsiteip(string $ip, string $user = null, string $domain = null)
+    public function setsiteip(string $ip, ?string $user = null, ?string $domain = null)
     {
         if (! isset($ip)) {
             error_log('setsiteip requires that ip is passed to it');
@@ -1818,7 +1818,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetResellerIps XML API Call documentation
      */
-    public function setresellerips(string $user, string $ip = null)
+    public function setresellerips(string $user, ?string $ip = null)
     {
         if (! isset($user)) {
             error_log('setresellerips requires that a username is passed to it');
@@ -1894,7 +1894,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetResellerPkgLimit XML API Call documentation
      */
-    public function setresellerpackagelimits(string $user, bool $no_limit, string $package = null, bool $allowed = null, int $number = null)
+    public function setresellerpackagelimits(string $user, bool $no_limit, ?string $package = null, ?bool $allowed = null, ?int $number = null)
     {
         if (! isset($user) || ! isset($no_limit)) {
             error_log('setresellerpackagelimits requires that a username and no_limit are passed to it by default');
@@ -1938,7 +1938,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SuspendReseller XML API Call documentation
      */
-    public function suspendreseller(string $reseller, string $reason = null)
+    public function suspendreseller(string $reseller, ?string $reason = null)
     {
         if (! isset($reseller)) {
             error_log("suspendreseller requires that the reseller's username is passed to it");
@@ -2007,7 +2007,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetResellerNameservers XML API Call documentation
      */
-    public function setresellernameservers(string $user, string $nameservers = null)
+    public function setresellernameservers(string $user, ?string $nameservers = null)
     {
         if (! isset($user)) {
             error_log('setresellernameservers requires that a username is passed to it');
@@ -2140,7 +2140,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/DeleteIPAddress XML API Call documentation
      */
-    public function delip(string $ip, string $ethernetdev = null, bool $skipifshutdown = false)
+    public function delip(string $ip, ?string $ethernetdev = null, bool $skipifshutdown = false)
     {
         $args = [];
         if (! isset($ip)) {
@@ -2205,7 +2205,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/SetResolvers XML API Call documentation
      */
-    public function setresolvers(string $nameserver1, string $nameserver2 = null, string $nameserver3 = null)
+    public function setresolvers(string $nameserver1, ?string $nameserver2 = null, ?string $nameserver3 = null)
     {
         $args = [];
         if (! isset($nameserver1)) {
@@ -2236,7 +2236,7 @@ class xmlapi
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/ShowBw XML API Call documentation
      */
-    public function showbw(array $args = null)
+    public function showbw(?array $args = null)
     {
         if (is_array($args)) {
             return $this->xmlapi_query('showbw', $args);
