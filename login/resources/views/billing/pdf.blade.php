@@ -1,10 +1,10 @@
 <?php
 if (!isset($lid)) { $lid = NULL; }
-$layout = Layouts::where('cid','=',Auth::user()->cid)->where('id','=',$lid);
+$layout = App\Models\Layouts::where('cid','=',Auth::user()->cid)->where('id','=',$lid);
 if ($layout->count() > 0) {
   $return = $layout->first();
 
-  $i = Invoices::where('id','=',$id)->where('cid','=',Auth::user()->cid)->first();
+  $i = App\Models\Invoices::where('id','=',$id)->where('cid','=',Auth::user()->cid)->first();
   $param['id'] = $i->id;
   $param['cid'] = $i->cid;
   $param['uid'] = $i->uid;
@@ -14,7 +14,7 @@ if ($layout->count() > 0) {
   $param['date'] = $i->date;
   $param['status'] = $i->status;
 
-  $d = Debtors::where('id','=',$i->did);
+  $d = App\Models\Debtors::where('id','=',$i->did);
   if ($d->count() > 0) {
     $d = $d->first();
     $param['toName'] = $d->name;
@@ -35,7 +35,7 @@ if ($layout->count() > 0) {
 
   $lParams = $layout->first()->params;
   $lParams = unserialize($lParams);
-  if (isset($lParams['background'])) { $background = $lParams['background']; } 
+  if (isset($lParams['background'])) { $background = $lParams['background']; }
   if (isset($lParams['css'])) { $css = $lParams['css']; }
 ?>
 
@@ -58,8 +58,8 @@ if ($layout->count() > 0) {
     body {
       color:#000000;
       margin:0;
-      background-image: url(<?php echo $background; ?>); 
-      background-repeat: repeat; 
+      background-image: url(<?php echo $background; ?>);
+      background-repeat: repeat;
       background-position: center;
     }
 
@@ -67,7 +67,7 @@ if ($layout->count() > 0) {
     .footer .page { color: #777; text-align: center; font-size: 1.2em; padding-top: .5em; }
     .footer .page:after { content: counter(page); }
     hr { page-break-after: always; border: 0; }
-    
+
     .page-break {
       page-break-after: always;
     }
@@ -180,7 +180,7 @@ if ($layout->count() > 0) {
           </tr>
         </thead>
         <tbody>
-          @foreach(Invoicerows::where('iid','=',$id)->get() as $ir)
+          @foreach(App\Models\Invoicerows::where('iid','=',$id)->get() as $ir)
             @if($ir->type == 9)
               <tr>
                 <td colspan="6">{!! nl2br($ir->description) !!}</td>

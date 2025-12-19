@@ -1,6 +1,6 @@
 <?php
 
-$aYears = Files::getYears();
+$aYears = App\Models\Files::getYears();
 
 ?>
 <!-- BEGIN MOBILE SEARCH BAR -->

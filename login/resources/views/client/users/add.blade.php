@@ -57,22 +57,22 @@
 		          <label for="billing">Facturatie</label>
 		        </div>
 		        @endif
-		        
+
 		    </div>
 			<h3>Mappen</h3>
 			<div class="form-group">
-				<?php $folders = new Folder(); ?>
+				<?php $folders = new App\Models\Folder(); ?>
 				@foreach($sfolders as $f)
 					<div class="checkbox check-success 	">
 						{{ html()->checkbox('fid[' . $f->id . ']', false, '1')->id($f->id)->class('parentf') }}
 			          <label for="{!! $f->id !!}">{!! $f->name !!}</label>
-			        </div>	
+			        </div>
 			        @foreach(Folder::getSubfolders($f->id) as $sf)
 						<div class="checkbox check-success" style="padding-left:20px;">
 							{{ html()->checkbox('fid[' . $sf->id . ']', false, '1')->id($sf->id)->attribute('parent', $f->id)->class('subf') }}
 				          <label for="{!! $sf->id !!}">{!! $sf->name !!}</label>
-				        </div>					
-					@endforeach				
+				        </div>
+					@endforeach
 				@endforeach
 			</div>
 		</div>

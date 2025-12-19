@@ -36,7 +36,7 @@
 						<option value="0" @if($file['fid'] == '0') selected @endif>Onverwerkt</option>
 						@foreach($aFolders as $folder)
 						<?php
-				          $subfolders = Folder::getSubfolders($folder->id);
+				          $subfolders = App\Models\Folder::getSubfolders($folder->id);
 				        ?>
 							<option value="{!! $folder->id !!}" @if($file['fid'] == $folder->id) selected @endif>{!! $folder->name !!}</option>
 							@foreach($subfolders as $sf)
@@ -46,7 +46,7 @@
 						</select>
 					</div>
 
-					<div class="form-group" id="geboektcheck" @if(Folder::where('id', '=', $file['fid'])->where('bookedcheck', '=', '1')->count() == 0 || !Session::has('highrank')) style="display:none;" @endif>
+					<div class="form-group" id="geboektcheck" @if(App\Models\Folder::where('id', '=', $file['fid'])->where('bookedcheck', '=', '1')->count() == 0 || !Session::has('highrank')) style="display:none;" @endif>
 						<p><div class="checkbox check-info">
                       		<input id="checkbox4" type="checkbox" name="geboekt" value="1" @if($file['geboekt'] == '1') checked="checked" @endif >
                       		<label for="checkbox4" style="padding-left: 25px;">Geboekt </label>

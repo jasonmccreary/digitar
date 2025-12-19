@@ -14,9 +14,9 @@
 	{{ html()->form()->open() }}
 
 
-	<?php 
+	<?php
 		$code = ''; $name = '';
-		$layout = Layouts::where('cid','=',Auth::user()->cid)->where('type','=','1');
+		$layout = App\Models\Layouts::where('cid','=',Auth::user()->cid)->where('type','=','1');
 		if ($layout->count() > 0) {
 			$code = $layout->first()->code;
 			$name = $layout->first()->name;
@@ -47,9 +47,9 @@
 	</div>
 
 
-	<?php 
+	<?php
 		$code = ''; $name = '';
-		$layout = Layouts::where('cid','=',Auth::user()->cid)->where('type','=','3');
+		$layout = App\Models\Layouts::where('cid','=',Auth::user()->cid)->where('type','=','3');
 		if ($layout->count() > 0) {
 			$code = $layout->first()->code;
 			$name = $layout->first()->name;
@@ -78,7 +78,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="form-group m-t-40">
 		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
 	</div>

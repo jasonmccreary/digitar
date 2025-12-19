@@ -44,7 +44,7 @@
 						<select id="folderSelect" style="width:100%;" name="folder">
 							<option value="0" selected>Onverwerkt</option>
 							@foreach($aFolders as $folder)
-								<?php $subfolders = Folder::getSubfolders($folder->id); ?>
+								<?php $subfolders = App\Models\Folder::getSubfolders($folder->id); ?>
 								<option value="{!! $folder->id !!}">{!! $folder->name !!}</option>
 								@foreach($subfolders as $sf)
 				                  <option value="{!! $sf->id !!}" > &nbsp;&nbsp; - {!! $sf->name !!}</option>
@@ -94,7 +94,7 @@
 	@foreach($files as $file)
 		@if(is_numeric($fid))
 			<?php
-				$fDetails = Folder::where('id', '=', $file->fid)->first();
+				$fDetails = App\Models\Folder::where('id', '=', $file->fid)->first();
 			?>
 			@if(isset($fDetails->bookedcheck) && $fDetails->bookedcheck == 1 && $file->geboekt == 0 && Session::has('highrank'))
 				<tr class="red checkableRow">

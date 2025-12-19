@@ -1,12 +1,12 @@
 @extends('master')
 
 @section('content')
-	
-	<?php 
+
+	<?php
 
 	$code = ''; $name = '';
 
-	$layout = Layouts::where('cid','=',Auth::user()->cid)->where('type','=','2');
+	$layout = App\Models\Layouts::where('cid','=',Auth::user()->cid)->where('type','=','2');
 	if ($layout->count() > 0) {
 		$code = $layout->first()->code;
 		$name = $layout->first()->name;
@@ -17,7 +17,7 @@
 		print_r($params['background']);
 		echo '</pre>';
 	}
-	?>	
+	?>
 
 	<style>
 		h3 { margin-bottom: 55px; border-bottom: 1px solid rgba(0, 0, 0, .0); }
@@ -53,7 +53,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="form-group m-t-40">
 		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
 	</div>

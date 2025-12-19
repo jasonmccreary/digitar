@@ -25,7 +25,7 @@
 
 						<select id="selectDebtor" style="width:100%;" name="debtor">
 							<option disabled selected="">- Maak een keuze -</option>
-							@foreach(Debtors::where('cid','=',Auth::user()->cid)->get() as $debtor)
+							@foreach(App\Models\Debtors::where('cid','=',Auth::user()->cid)->get() as $debtor)
 								<option value="{!! $debtor->id !!}" @if(Request::old('debtor') == $debtor->id) selected @endif>{!! $debtor->debnumber !!} {!! $debtor->name !!}</option>
 							@endforeach
 						</select>

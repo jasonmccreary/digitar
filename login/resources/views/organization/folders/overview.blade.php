@@ -31,8 +31,8 @@
 						<a href="/organization/folder/delete/{!! $f->id !!}" class="btn btn-white btn-xs btn-mini" title="Verwijderen"><i class="fa fa-trash-o"></i></a>
 					</td>
 				</tr>
-					<?php $subfolder = Folder::where('uid', '=', Auth::user()->id)->where('pid', '=', $f->id)->get(); ?>				
-					@foreach($subfolder as $sf) 
+					<?php $subfolder = App\Models\Folder::where('uid', '=', Auth::user()->id)->where('pid', '=', $f->id)->get(); ?>
+					@foreach($subfolder as $sf)
 						<tr class="subitem" style="background:#fff;">
 							<td style="vertical-align: middle;"><span style="padding:0px 10px 0px 20px;"><i class="fa fa-angle-right"></i></span>{!! $sf->name !!}</td>
 							<td><div style="border-radius:3px;background:#1B1E24;padding:10px;float:left;">
@@ -44,10 +44,10 @@
 							</td>
 						</tr>
 					@endforeach
-				
+
 				</tbody>
 			@endforeach
-		
+
 	</table>
 
 @endsection
