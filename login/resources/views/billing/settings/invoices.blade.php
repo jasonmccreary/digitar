@@ -28,7 +28,7 @@
 		input[type=text] { width: 100%; }
 		input[type=file] { border: none; }
 	</style>
-	{!! Form::open(array('files'=>true)) !!}
+	{{ html()->form('POST', url()->current())->acceptsFiles()->open() }}
 
 	<div class="row">
 		<div class="col-md-12">
@@ -39,7 +39,7 @@
 			<div class="row form-row">
 				<div class="col-md-12 form-group">
 					<label class="form-label">Briefpapier</label>
-					{!! Form::file('file','',array('id'=>'','class'=>'')) !!}
+					{{ html()->file('file', array('id' => '', 'class' => ''))->attributes('') }}
 				</div>
 			</div>
 		</div>
@@ -58,6 +58,6 @@
 		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
 	</div>
 
-	{!! Form::close() !!}
+	{{ html()->form()->close() }}
 
 @endsection

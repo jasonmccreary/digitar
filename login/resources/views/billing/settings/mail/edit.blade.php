@@ -11,7 +11,7 @@
 		input[type=file] { border: none; }
 	</style>
 
-	{!! Form::open() !!}
+	{{ html()->form()->open() }}
 	{? $param = unserialize($layout->params); ?}
 
 	<div class="row">
@@ -19,7 +19,7 @@
 			<div class="row form-row">
 				<div class="col-md-6 form-group">
 					<label class="form-label">Mail naam</label>
-					{!! Form::text('name', $layout->name, array('class'=>'form-control', 'maxlength'=>'150')) !!}
+					{{ html()->text('name', $layout->name)->class('form-control')->maxlength('150') }}
 				</div>
 			</div>
 		</div>
@@ -28,7 +28,7 @@
 			<div class="row form-row">
 				<div class="col-md-6 form-group">
 					<label class="form-label">Mail onderwerp</label>
-					{!! Form::text('subject', $param['subject'], array('class'=>'form-control', 'maxlength'=>'150')) !!}
+					{{ html()->text('subject', $param['subject'])->class('form-control')->maxlength('150') }}
 				</div>
 			</div>
 		</div>
@@ -47,6 +47,6 @@
 		<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
 	</div>
 
-	{!! Form::close() !!}
+	{{ html()->form()->close() }}
 
 @endsection
