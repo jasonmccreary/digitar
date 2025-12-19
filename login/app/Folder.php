@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,7 +61,7 @@ class Folder extends Model
         // return Folder::whereRaw("uid = '". Auth::user()->oid ."' AND pid IS NULL OR uid = '". Auth::user()->id."' AND pid IS NULL")->orderBy('order')->get();
     }
 
-    public function rights()
+    public function rights(): BelongsTo
     {
         return $this->belongsTo(\App\Folderright::class, 'id', 'fid');
     }

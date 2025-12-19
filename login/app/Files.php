@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +55,7 @@ class Files extends Model
         return Files::where('cid', '=', $uid)->count();
     }
 
-    public function folder()
+    public function folder(): BelongsTo
     {
         return $this->belongsTo(\App\Folder::class, 'fid', 'id');
     }

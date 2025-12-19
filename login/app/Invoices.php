@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -94,7 +95,7 @@ class Invoices extends Model
         }
     }
 
-    public function debtor()
+    public function debtor(): BelongsTo
     {
         return $this->belongsTo(\App\Debtors::class, 'did', 'id');
     }

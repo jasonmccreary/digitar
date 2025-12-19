@@ -7,7 +7,7 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function test_basic_example()
+    public function test_basic_example(): void
     {
         $crawler = $this->client->request('GET', '/');
 
