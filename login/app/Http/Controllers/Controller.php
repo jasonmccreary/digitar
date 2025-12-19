@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
 abstract class Controller
 {
-
     /**
      * Setup the layout used by the controller.
      */
