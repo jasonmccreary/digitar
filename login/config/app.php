@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
-use Illuminate\Support\ServiceProvider;
 
 return [
 
@@ -10,7 +9,6 @@ return [
     'liveurl' => 'https://login.digitar.nu',
 
     'timezone' => 'Europe/Amsterdam',
-
 
     'manifest' => storage_path().'/meta',
 
