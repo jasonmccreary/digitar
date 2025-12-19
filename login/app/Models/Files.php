@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -57,7 +57,7 @@ class Files extends Model
 
     public function folder(): BelongsTo
     {
-        return $this->belongsTo(\App\Folder::class, 'fid', 'id');
+        return $this->belongsTo(\App\Models\Folder::class, 'fid', 'id');
     }
 
     // public function userss() {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Debtors;
-use App\Invoices;
-use App\Layouts;
-use App\User;
+use App\Models\Debtors;
+use App\Models\Invoices;
+use App\Models\Layouts;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Files;
-use App\Folder;
-use App\Folderright;
-use App\Messages;
-use App\User;
+use App\Models\Files;
+use App\Models\Folder;
+use App\Models\Folderright;
+use App\Models\Messages;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;

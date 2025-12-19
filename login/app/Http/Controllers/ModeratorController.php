@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Usermods;
+use App\Models\Usermods;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
 
