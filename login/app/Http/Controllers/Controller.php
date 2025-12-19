@@ -15,7 +15,7 @@ class Controller extends BaseController
      *
      * @return void
      */
-    protected function setupLayout()
+    protected function setupLayout(): void
     {
         if (! is_null($this->layout)) {
             $this->layout = view($this->layout);

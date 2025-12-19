@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Files;
 use App\Folder;
 use App\Folderright;
@@ -16,7 +17,7 @@ use Prologue\Alerts\Facades\Alert;
 
 class FoldersController extends Controller
 {
-    public function add()
+    public function add(): RedirectResponse
     {
         $input = Request::all();
 
@@ -73,7 +74,7 @@ class FoldersController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($id): RedirectResponse
     {
         $rules = [
             'mapname' => 'alpha_space',
@@ -123,7 +124,7 @@ class FoldersController extends Controller
         return Redirect::route('folders');
     }
 
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         if (Request::get('delete') == 'true') {
             $sf = new Folder;
@@ -140,7 +141,7 @@ class FoldersController extends Controller
         return Redirect::route('folders');
     }
 
-    public function deleteUser($uid)
+    public function deleteUser($uid): RedirectResponse
     {
         if (Request::get('delete') == 'true') {
 

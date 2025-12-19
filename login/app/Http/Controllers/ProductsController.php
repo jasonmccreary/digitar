@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Products;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -11,7 +12,7 @@ use Prologue\Alerts\Facades\Alert;
 
 class ProductsController extends Controller
 {
-    public function add()
+    public function add(): RedirectResponse
     {
         $rules = [
             'name' => 'required',
@@ -50,7 +51,7 @@ class ProductsController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($id): RedirectResponse
     {
         $rules = [
             'name' => 'required',
@@ -96,7 +97,7 @@ class ProductsController extends Controller
         }
     }
 
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         if (Request::get('delete') == 'true') {
             $p = Products::byID($id);

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Cloud;
 use App\Debtors;
 use App\Files;
@@ -30,7 +33,7 @@ class UserController extends Controller
 
     public $rules;
 
-    public function postLogin()
+    public function postLogin(): RedirectResponse
     {
         $input = Request::all();
 
@@ -84,7 +87,7 @@ class UserController extends Controller
         }
     }
 
-    public function supersearch()
+    public function supersearch(): View
     {
         $u = Auth::user();
         if ($u->rights == 5) {
@@ -217,7 +220,7 @@ class UserController extends Controller
         );
     }
 
-    public function add($organization_id, $clientid = false, $rights = 1, $folders = false)
+    public function add($organization_id, $clientid = false, $rights = 1, $folders = false): RedirectResponse
     {
         $input = Request::all();
 
@@ -617,7 +620,7 @@ class UserController extends Controller
         return redirect($this->redirect);
     }
 
-    public function loginas($id, $password)
+    public function loginas($id, $password): RedirectResponse
     {
         if (Auth::guest()) {
             return redirect('/');
@@ -641,7 +644,7 @@ class UserController extends Controller
         }
     }
 
-    public function checkCredentials()
+    public function checkCredentials(): JsonResponse
     {
         // Check authorozation
         if (Request::get('safe') !== 'AIzaSyAyXmJSzBExyYfIqKnqYNh_3jRt9XaJlvM') {
@@ -656,7 +659,7 @@ class UserController extends Controller
         }
     }
 
-    public function checkUsername()
+    public function checkUsername(): JsonResponse
     {
         $username = Request::get('username');
         $user = DB::table('users')->select('id', 'name', 'username', 'rights', 'cid', 'oid')->where('username', $username);
@@ -669,7 +672,7 @@ class UserController extends Controller
         }
     }
 
-    public function logout()
+    public function logout(): RedirectResponse
     {
         if (Session::has('prevuid.'.(count(Session::get('prevuid')) - 1))) {
             Auth::loginUsingId(Session::get('prevuid.'.(count(Session::get('prevuid')) - 1)));

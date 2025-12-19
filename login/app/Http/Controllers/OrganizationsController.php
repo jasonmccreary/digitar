@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Organizations;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
@@ -14,7 +15,7 @@ class OrganizationsController extends Controller
      *
      * @return Response
      */
-    public function add()
+    public function add(): RedirectResponse
     {
         $input = Request::all();
 
@@ -57,7 +58,7 @@ class OrganizationsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function delete($id)
+    public function delete(int $id): RedirectResponse
     {
         if (Request::get('delete') == 'true') {
             $organization = new Organizations;
@@ -76,7 +77,7 @@ class OrganizationsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): RedirectResponse
     {
         $input = Request::all();
 

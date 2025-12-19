@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Files;
 use App\User;
 use Carbon\Carbon;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
-    public function getIndex()
+    public function getIndex(): View
     {
         if (! Auth::check()) {
             return view('login.login');
@@ -20,7 +21,7 @@ class HomeController extends Controller
         }
     }
 
-    public function filesToday()
+    public function filesToday(): View
     {
         $f = Files::leftJoin('users', 'users.id', '=', 'files.uid')
             ->select(DB::raw('files.*, users.id as userId, users.cid as userCid'))

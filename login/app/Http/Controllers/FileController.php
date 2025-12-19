@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Files;
 use App\Folder;
 use App\Folderright;
@@ -157,7 +159,7 @@ class FileController extends Controller
         }
     }
 
-    public function searchFiles($search)
+    public function searchFiles($search): JsonResponse
     {
         $jsonfiles = [];
         $f = new Files;
@@ -237,7 +239,7 @@ class FileController extends Controller
         return $f;
     }
 
-    public function editFile($id)
+    public function editFile($id): RedirectResponse
     {
 
         if (Auth::user()->lookonly == 1) {
@@ -322,7 +324,7 @@ class FileController extends Controller
         $f->delete();
     }
 
-    public static function markBooked($fids)
+    public static function markBooked($fids): RedirectResponse
     {
         $fc = new FoldersController;
         foreach ($fids as $fid => $v) {
@@ -345,7 +347,7 @@ class FileController extends Controller
         }
     }
 
-    public static function moveToFolder($fids, $foid)
+    public static function moveToFolder($fids, $foid): RedirectResponse
     {
         $fc = new FoldersController;
         foreach ($fids as $fid => $v) {
@@ -770,7 +772,7 @@ class FileController extends Controller
         }
     }
 
-    public function viewfile($fid)
+    public function viewfile($fid): \Illuminate\View\View
     {
 
         $f = new Files;
@@ -784,7 +786,7 @@ class FileController extends Controller
         ]);
     }
 
-    public function loadpdf($fid)
+    public function loadpdf($fid): RedirectResponse
     {
         $f = new Files;
 
@@ -811,7 +813,7 @@ class FileController extends Controller
 
     }
 
-    public function loadfile($fid = false, $viewer = 'pdfjs')
+    public function loadfile($fid = false, $viewer = 'pdfjs'): RedirectResponse
     {
         if ($fid != false) {
             $f = new Files;
@@ -853,7 +855,7 @@ class FileController extends Controller
 
     }
 
-    public function sendmail()
+    public function sendmail(): RedirectResponse
     {
         $input = Request::all();
 

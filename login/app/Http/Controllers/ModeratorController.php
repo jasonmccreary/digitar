@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Usermods;
 use Illuminate\Support\Facades\Request;
 
 class ModeratorController extends Controller
 {
-    public static function edit($uid)
+    public static function edit($uid): RedirectResponse
     {
 
         // Alert::info(print_r(Request::get('mod'),true))->flash();
