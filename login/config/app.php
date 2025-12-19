@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Facade;
+
 return [
 
     /*
@@ -97,38 +99,44 @@ return [
 
     'providers' => [
 
+        /*
+         * Laravel Framework Service Providers...
+         */
+        Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
-        'Illuminate\Foundation\Providers\ArtisanServiceProvider',
-        'Illuminate\Auth\AuthServiceProvider',
-        'Illuminate\Cache\CacheServiceProvider',
-        'Illuminate\Session\CommandsServiceProvider',
-        'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
-        'Illuminate\Routing\ControllerServiceProvider',
-        'Illuminate\Cookie\CookieServiceProvider',
-        'Illuminate\Database\DatabaseServiceProvider',
-        'Illuminate\Encryption\EncryptionServiceProvider',
-        'Illuminate\Filesystem\FilesystemServiceProvider',
-        'Illuminate\Hashing\HashServiceProvider',
-        'Illuminate\Html\HtmlServiceProvider',
-        'Illuminate\Log\LogServiceProvider',
-        'Illuminate\Mail\MailServiceProvider',
+        Illuminate\Bus\BusServiceProvider::class,
+        Illuminate\Cache\CacheServiceProvider::class,
+        Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
+        Illuminate\Cookie\CookieServiceProvider::class,
+        Illuminate\Database\DatabaseServiceProvider::class,
+        Illuminate\Encryption\EncryptionServiceProvider::class,
+        Illuminate\Filesystem\FilesystemServiceProvider::class,
+        Illuminate\Foundation\Providers\FoundationServiceProvider::class,
+        Illuminate\Hashing\HashServiceProvider::class,
+        Illuminate\Mail\MailServiceProvider::class,
         Illuminate\Notifications\NotificationServiceProvider::class,
-        'Illuminate\Database\MigrationServiceProvider',
-        'Illuminate\Pagination\PaginationServiceProvider',
-        'Illuminate\Queue\QueueServiceProvider',
-        'Illuminate\Redis\RedisServiceProvider',
-        'Illuminate\Remote\RemoteServiceProvider',
-        'Illuminate\Auth\Reminders\ReminderServiceProvider',
-        'Illuminate\Database\SeedServiceProvider',
-        'Illuminate\Session\SessionServiceProvider',
-        'Illuminate\Translation\TranslationServiceProvider',
-        'Illuminate\Validation\ValidationServiceProvider',
-        'Illuminate\View\ViewServiceProvider',
-        'Illuminate\Workbench\WorkbenchServiceProvider',
-        'Prologue\Alerts\AlertsServiceProvider',
-        'Way\Generators\GeneratorsServiceProvider',
-        'Barryvdh\DomPDF\ServiceProvider',
-        'Flynsarmy\DbBladeCompiler\DbBladeCompilerServiceProvider',
+        Illuminate\Pagination\PaginationServiceProvider::class,
+        Illuminate\Pipeline\PipelineServiceProvider::class,
+        Illuminate\Queue\QueueServiceProvider::class,
+        Illuminate\Redis\RedisServiceProvider::class,
+        Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
+        Illuminate\Session\SessionServiceProvider::class,
+        Illuminate\Translation\TranslationServiceProvider::class,
+        Illuminate\Validation\ValidationServiceProvider::class,
+        Illuminate\View\ViewServiceProvider::class,
+
+        /*
+         * Package Service Providers...
+         */
+
+        /*
+         * Application Service Providers...
+         */
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
 
     ],
 
@@ -156,58 +164,9 @@ return [
     |
     */
 
-    'aliases' => [
-
-        'App' => 'Illuminate\Support\Facades\App',
-        'Arr' => Illuminate\Support\Arr::class,
-        'Artisan' => 'Illuminate\Support\Facades\Artisan',
-        'Auth' => 'Illuminate\Support\Facades\Auth',
-        'Blade' => 'Illuminate\Support\Facades\Blade',
-        'Broadcast' => Illuminate\Support\Facades\Broadcast::class,
-        'Bus' => Illuminate\Support\Facades\Bus::class,
-        'Cache' => 'Illuminate\Support\Facades\Cache',
-        'ClassLoader' => 'Illuminate\Support\ClassLoader',
-        'Config' => 'Illuminate\Support\Facades\Config',
-        'Controller' => 'Illuminate\Routing\Controller',
-        'Cookie' => 'Illuminate\Support\Facades\Cookie',
-        'Crypt' => 'Illuminate\Support\Facades\Crypt',
-        'Date' => Illuminate\Support\Facades\Date::class,
-        'DB' => 'Illuminate\Support\Facades\DB',
-        'Eloquent' => 'Illuminate\Database\Eloquent\Model',
-        'Event' => 'Illuminate\Support\Facades\Event',
-        'File' => 'Illuminate\Support\Facades\File',
-        'Form' => 'Illuminate\Support\Facades\Form',
-        'Hash' => 'Illuminate\Support\Facades\Hash',
-        'Http' => Illuminate\Support\Facades\Http::class,
-        'Js' => Illuminate\Support\Js::class,
-        'HTML' => 'Illuminate\Support\Facades\HTML',
-        'Lang' => 'Illuminate\Support\Facades\Lang',
-        'Log' => 'Illuminate\Support\Facades\Log',
-        'Mail' => 'Illuminate\Support\Facades\Mail',
-        'Notification' => Illuminate\Support\Facades\Notification::class,
-        'Paginator' => 'Illuminate\Support\Facades\Paginator',
-        'Password' => 'Illuminate\Support\Facades\Password',
-        'Queue' => 'Illuminate\Support\Facades\Queue',
-        'RateLimiter' => Illuminate\Support\Facades\RateLimiter::class,
-        'Redirect' => 'Illuminate\Support\Facades\Redirect',
-        'Redis' => 'Illuminate\Support\Facades\Redis',
-        'Request' => 'Illuminate\Support\Facades\Request',
-        'Response' => 'Illuminate\Support\Facades\Response',
-        'Route' => 'Illuminate\Support\Facades\Route',
-        'Schema' => 'Illuminate\Support\Facades\Schema',
-        'Seeder' => 'Illuminate\Database\Seeder',
-        'Session' => 'Illuminate\Support\Facades\Session',
-        'SSH' => 'Illuminate\Support\Facades\SSH',
-        'Str' => 'Illuminate\Support\Str',
-        'URL' => 'Illuminate\Support\Facades\URL',
-        'Validator' => 'Illuminate\Support\Facades\Validator',
-        'View' => 'Illuminate\Support\Facades\View',
-        'Alert' => 'Prologue\Alerts\Facades\Alert',
-        'PDF' => 'Barryvdh\DomPDF\Facade',
-        'DbView' => 'Flynsarmy\DbBladeCompiler\Facades\DbView',
-
-    ],
-
-    'cipher' => MCRYPT_RIJNDAEL_256,
+    'aliases' => Facade::defaultAliases()->merge([
+        'Alert' => Prologue\Alerts\Facades\Alert::class,
+        'Redis' => Illuminate\Support\Facades\Redis::class,
+    ])->toArray(),
 
 ];
