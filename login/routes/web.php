@@ -37,7 +37,7 @@ if (! Auth::guest()) {
         Route::view('help', 'help.overview', ['title' => 'Veel gestelde vragen &amp; uitleg']);
     }
 } else {
-Route::redirect('help', '/');
+    Route::redirect('help', '/');
 }
 
 Route::view('403', 'errors.403');
