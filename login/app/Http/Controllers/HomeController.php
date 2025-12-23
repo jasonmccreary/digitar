@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Files;
 use App\Models\User;
 use Carbon\Carbon;
@@ -12,9 +13,9 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    public function getIndex(): View
+    public function getIndex(Request $request): View
     {
-        if (! Auth::check()) {
+        if (! $request->user()) {
             return view('login.login');
         } else {
             return view('users.viewfile');

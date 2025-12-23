@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Files;
 use App\Models\Folder;
 use App\Models\Folderright;
@@ -9,7 +10,6 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -17,9 +17,9 @@ use Prologue\Alerts\Facades\Alert;
 
 class FoldersController extends Controller
 {
-    public function add(): RedirectResponse
+    public function add(Request $request): RedirectResponse
     {
-        $input = Request::all();
+        $input = $request->all();
 
         $rules = [
             'mapname' => 'alpha_space',
@@ -36,7 +36,7 @@ class FoldersController extends Controller
         } else {
             $f = new Folder;
 
-            $check = $f->where('name', '=', Request::get('mapname'))->where('uid', '=', Auth::user()->id);
+            $check = $f->where('name', '=', $request->get('mapname'))->where('uid', '=', $request->user()->id);
             if ($check->count() > 0) {
                 Alert::error('De map naam bestaat al.')->flash();
 
@@ -45,13 +45,13 @@ class FoldersController extends Controller
 
             $order = Folder::getAllUserFolders(true)->max('order') + 1;
 
-            $f->uid = Auth::user()->id;
-            $f->name = Request::get('mapname');
-            $f->color = Request::get('color');
-            if (is_numeric(Request::get('parent'))) {
-                $pf = Folder::where('id', '=', Request::get('parent'));
+            $f->uid = $request->user()->id;
+            $f->name = $request->get('mapname');
+            $f->color = $request->get('color');
+            if (is_numeric($request->get('parent'))) {
+                $pf = Folder::where('id', '=', $request->get('parent'));
                 if ($pf->count() > 0) {
-                    $f->pid = Request::get('parent');
+                    $f->pid = $request->get('parent');
                     $pf = $pf->first();
                 } else {
                     unset($pf);
@@ -59,7 +59,7 @@ class FoldersController extends Controller
             } else {
                 $f->pid = null;
             }
-            if (Request::has('geboekt') || isset($pf) && $pf->bookedcheck == 1) {
+            if ($request->has('geboekt') || isset($pf) && $pf->bookedcheck == 1) {
                 $f->bookedcheck = 1;
             } else {
                 $f->bookedcheck = 0;
@@ -74,14 +74,14 @@ class FoldersController extends Controller
         }
     }
 
-    public function edit($id): RedirectResponse
+    public function edit(Request $request, $id): RedirectResponse
     {
         $rules = [
             'mapname' => 'alpha_space',
             'color' => 'required',
         ];
 
-        $v = Validator::make(Request::all(), $rules);
+        $v = Validator::make($request->all(), $rules);
         if ($v->fails()) {
             foreach ($v->messages()->all() as $message) {
                 Alert::error($message)->flash();
@@ -89,7 +89,7 @@ class FoldersController extends Controller
                 return Redirect::back()->withInput();
             }
         } else {
-            if (Request::get('parent') == $id) {
+            if ($request->get('parent') == $id) {
                 Alert::error('De hoofdmap mag niet het zelfde zijn.')->flash();
 
                 return Redirect::back()->withInput();
@@ -97,12 +97,12 @@ class FoldersController extends Controller
             $folder = new Folder;
             $f = $folder->find($id);
 
-            $f->name = Request::get('mapname');
-            $f->color = Request::get('color');
-            if (is_numeric(Request::get('parent'))) {
-                $pf = $folder->where('id', '=', Request::get('parent'));
+            $f->name = $request->get('mapname');
+            $f->color = $request->get('color');
+            if (is_numeric($request->get('parent'))) {
+                $pf = $folder->where('id', '=', $request->get('parent'));
                 if ($pf->count() > 0) {
-                    $f->pid = Request::get('parent');
+                    $f->pid = $request->get('parent');
                     $pf = $pf->first();
                 } else {
                     unset($pf);
@@ -110,7 +110,7 @@ class FoldersController extends Controller
             } else {
                 $f->pid = null;
             }
-            if (Request::has('geboekt') || isset($pf) && $pf->bookedcheck == 1) {
+            if ($request->has('geboekt') || isset($pf) && $pf->bookedcheck == 1) {
                 $f->bookedcheck = 1;
             } else {
                 $f->bookedcheck = 0;
@@ -124,9 +124,9 @@ class FoldersController extends Controller
         return Redirect::route('folders');
     }
 
-    public function delete($id): RedirectResponse
+    public function delete(Request $request, $id): RedirectResponse
     {
-        if (Request::get('delete') == 'true') {
+        if ($request->get('delete') == 'true') {
             $sf = new Folder;
 
             $folder = $sf->find($id);
@@ -141,9 +141,9 @@ class FoldersController extends Controller
         return Redirect::route('folders');
     }
 
-    public function deleteUser($uid): RedirectResponse
+    public function deleteUser(Request $request, $uid): RedirectResponse
     {
-        if (Request::get('delete') == 'true') {
+        if ($request->get('delete') == 'true') {
 
             foreach (Folder::where('uid', '=', $uid)->get() as $f) {
 
@@ -179,10 +179,10 @@ class FoldersController extends Controller
         }
     }
 
-    public function geboektcheck($id, $json = true)
+    public function geboektcheck(Request $request, $id, $json = true)
     {
         $data = false;
-        if (Folder::where('id', '=', $id)->where('bookedcheck', '=', 1)->count() > 0 && Session::has('highrank')) {
+        if (Folder::where('id', '=', $id)->where('bookedcheck', '=', 1)->count() > 0 && $request->session()->has('highrank')) {
             $data = true;
         }
         if ($json) {

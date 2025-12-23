@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Cloud;
 use App\Models\Debtors;
 use App\Models\Files;
@@ -19,7 +20,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -33,9 +33,9 @@ class UserController extends Controller
 
     public $rules;
 
-    public function postLogin(): RedirectResponse
+    public function postLogin(Request $request): RedirectResponse
     {
-        $input = Request::all();
+        $input = $request->all();
 
         $rules = [
             'username' => 'required|alpha_num',
@@ -64,7 +64,7 @@ class UserController extends Controller
                 Auth::loginUsingId($users[0]->id);
 
                 if ($users[0]->rights > 2) {
-                    Session::put('highrank', true);
+                    $request->session()->put('highrank', true);
                 }
                 if ($users[0]->rights == 5) {
                     return redirect('/admin/superlogin');
@@ -87,9 +87,9 @@ class UserController extends Controller
         }
     }
 
-    public function supersearch(): View
+    public function supersearch(Request $request): View
     {
-        $u = Auth::user();
+        $u = $request->user();
         if ($u->rights == 5) {
             $c = DB::select("select
 				u1.name,
@@ -101,16 +101,16 @@ class UserController extends Controller
 			where
 				rights = 2 and
 				(
-					name like '%".Request::get('search')."%' or
-					username like '%".Request::get('search')."%'
+					name like '%".$request->get('search')."%' or
+					username like '%".$request->get('search')."%'
 				) or exists (
 					select 1 from users as u2
 					where
 						rights = 1 and
 						cid = u1.id and
 						(
-							u2.name like '%".Request::get('search')."%' or
-							u2.username like '%".Request::get('search')."%'
+							u2.name like '%".$request->get('search')."%' or
+							u2.username like '%".$request->get('search')."%'
 						)
 				)
 			LIMIT 5");
@@ -126,8 +126,8 @@ class UserController extends Controller
 				rights = 2 and
 				oid = '".$u->id."' and
 				(
-					name like '%".Request::get('search')."%' or
-					username like '%".Request::get('search')."%'
+					name like '%".$request->get('search')."%' or
+					username like '%".$request->get('search')."%'
 				) or exists (
 					select 1 from users as u2
 					where
@@ -135,8 +135,8 @@ class UserController extends Controller
 						cid = u1.id and
 						oid = '".$u->id."' and
 						(
-							u2.name like '%".Request::get('search')."%' or
-							u2.username like '%".Request::get('search')."%'
+							u2.name like '%".$request->get('search')."%' or
+							u2.username like '%".$request->get('search')."%'
 						)
 				)
 			LIMIT 5");
@@ -147,7 +147,7 @@ class UserController extends Controller
         if (count($c) > 0) {
             return view('login.supersearch', [
                 'clients' => $clients,
-                'username' => Request::get('search'),
+                'username' => $request->get('search'),
             ]);
         }
 
@@ -173,19 +173,19 @@ class UserController extends Controller
         );
     }
 
-    public function addClient()
+    public function addClient(Request $request)
     {
         $this->redirect = 'organization/client';
 
         return $this->add(
-            Auth::user()->id,
+            $request->user()->id,
             false,
             2,
             true
         );
     }
 
-    public function addModerator()
+    public function addModerator(Request $request)
     {
         $this->redirect = 'organization/moderator';
         $this->rules = [
@@ -196,13 +196,13 @@ class UserController extends Controller
         ];
 
         return $this->add(
-            Auth::user()->id,
+            $request->user()->id,
             false,
             3
         );
     }
 
-    public function addUser()
+    public function addUser(Request $request)
     {
         $this->redirect = 'client/user';
         $this->rules = [
@@ -213,16 +213,16 @@ class UserController extends Controller
         ];
 
         return $this->add(
-            Auth::user()->oid,
-            Auth::user()->id,
+            $request->user()->oid,
+            $request->user()->id,
             1,
             true
         );
     }
 
-    public function add($organization_id, $clientid = false, $rights = 1, $folders = false): RedirectResponse
+    public function add(Request $request, $organization_id, $clientid = false, $rights = 1, $folders = false): RedirectResponse
     {
-        $input = Request::all();
+        $input = $request->all();
 
         if (! is_array($this->rules)) {
             $rules = [
@@ -247,7 +247,7 @@ class UserController extends Controller
             return redirect('/'.$this->redirect.'/add')->withInput();
         } else {
             $u = new User;
-            $un = User::where('username', '=', strtolower(Request::get('username')));
+            $un = User::where('username', '=', strtolower($request->get('username')));
             if ($un->count() > 0) {
                 Alert::error('Deze gebruikersnaam bestaat al.')->flash();
 
@@ -259,29 +259,29 @@ class UserController extends Controller
                 $u->cid = $clientid;
             }
             $pass = Crypt::encrypt(Str::random(8));
-            $u->username = strtolower(Request::get('username'));
-            $u->billing = Request::get('billing');
+            $u->username = strtolower($request->get('username'));
+            $u->billing = $request->get('billing');
             $u->password = $pass;
             $u->rights = $rights;
-            $u->name = Request::get('name');
-            $u->address = Request::get('address');
-            $u->zipcode = Request::get('zipcode');
-            $u->city = Request::get('city');
-            $u->tell = Request::get('tell');
-            $u->email = Request::get('email');
-            $u->website = Request::get('website');
-            $u->lookonly = Request::get('lookonly', '0');
-            $u->onverwerkt = Request::get('onverwerkt', '1');
+            $u->name = $request->get('name');
+            $u->address = $request->get('address');
+            $u->zipcode = $request->get('zipcode');
+            $u->city = $request->get('city');
+            $u->tell = $request->get('tell');
+            $u->email = $request->get('email');
+            $u->website = $request->get('website');
+            $u->lookonly = $request->get('lookonly', '0');
+            $u->onverwerkt = $request->get('onverwerkt', '1');
             $u->listed = 1;
             $u->save();
 
-            if (Request::get('billing') > 0) {
+            if ($request->get('billing') > 0) {
                 Layouts::setUp($u); // setup invoice layouts
             }
 
-            if (is_array(Request::get('fid'))) {
+            if (is_array($request->get('fid'))) {
                 Folderright::where('uid', '=', $u->id)->delete();
-                foreach (Request::get('fid') as $id => $v) {
+                foreach ($request->get('fid') as $id => $v) {
                     $nf = new Folderright;
                     $nf->fid = $id;
                     $nf->uid = $u->id;
@@ -306,16 +306,16 @@ class UserController extends Controller
                 $xmlapi->set_output('json');
                 $xmlapi->set_debug(0);
                 $args = [
-                    'user' => strtolower(Request::get('username')),
+                    'user' => strtolower($request->get('username')),
                     'pass' => $pass,
                     'quota' => 0,
-                    'homedir' => 'clients/'.$org->username.'/'.strtolower(Request::get('username')).'/unsorted',
+                    'homedir' => 'clients/'.$org->username.'/'.strtolower($request->get('username')).'/unsorted',
                 ];
                 $obj = $xmlapi->api2_query('digitar', 'Ftp', 'addftp', $args);
 
                 // api call to add email adress and set forwarder to pipe script
                 // $p['domain']    = 'digitar.nu';
-                // $p['email']     = Request::get('username').'@digitar.nu';
+                // $p['email']     = $request->get('username').'@digitar.nu';
                 // $p['fwdopt']    = 'pipe';
                 // $p['pipefwd']   = '/home/digitar/crons/mailPipe.php';
                 // $res = $xmlapi->api2_query('digitar', 'Email', 'addforward', $p);
@@ -333,32 +333,32 @@ class UserController extends Controller
      |--------------------------------------------------------------------------
     */
 
-    public function editAdmin($id)
+    public function editAdmin(Request $request, $id)
     {
         $this->redirect = 'admin/user';
 
         return $this->edit(
             $id,
-            Request::get('oid'),
+            $request->get('oid'),
             false,
             4
         );
     }
 
-    public function editClient($id)
+    public function editClient(Request $request, $id)
     {
         $this->redirect = 'organization/client';
 
         return $this->edit(
             $id,
-            Auth::user()->id,
+            $request->user()->id,
             false,
             2,
             true
         );
     }
 
-    public function editModerator($id)
+    public function editModerator(Request $request, $id)
     {
         $this->redirect = 'organization/moderator';
         $this->rules = [
@@ -370,13 +370,13 @@ class UserController extends Controller
 
         return $this->edit(
             $id,
-            Auth::user()->id,
+            $request->user()->id,
             false,
             3
         );
     }
 
-    public function editUser($id)
+    public function editUser(Request $request, $id)
     {
         $this->redirect = 'client/user';
         $this->rules = [
@@ -388,8 +388,8 @@ class UserController extends Controller
 
         return $this->edit(
             $id,
-            Auth::user()->oid,
-            Auth::user()->id,
+            $request->user()->oid,
+            $request->user()->id,
             1,
             true
         );
@@ -538,11 +538,11 @@ class UserController extends Controller
         return $this->delete($id);
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
-        if (Request::get('delete') == 'true') {
+        if ($request->get('delete') == 'true') {
             $did = User::where('id', '=', $id)->first();
-            $cu = Auth::user();
+            $cu = $request->user();
             if ($did->rights >= $cu->rights || $did->rights >= $cu->rights && $did->cid != $cu->cid) {
                 return view('blank', [
                     'title' => 'We hebben een probleem!',
@@ -620,7 +620,7 @@ class UserController extends Controller
         return redirect($this->redirect);
     }
 
-    public function loginas($id, $password): RedirectResponse
+    public function loginas(Request $request, $id, $password): RedirectResponse
     {
         if (Auth::guest()) {
             return redirect('/');
@@ -630,10 +630,10 @@ class UserController extends Controller
 
         if (count($query) == 1) {
             if ($query[0]->rights > 2) {
-                Session::put('highrank', true);
+                $request->session()->put('highrank', true);
             }
-            $newpuid = count(Session::get('prevuid'));
-            Session::put('prevuid.'.$newpuid, Auth::user()->id);
+            $newpuid = count($request->session()->get('prevuid'));
+            $request->session()->put('prevuid.'.$newpuid, $request->user()->id);
             Auth::loginUsingId($query[0]->id);
 
             return redirect('/');
@@ -644,24 +644,24 @@ class UserController extends Controller
         }
     }
 
-    public function checkCredentials(): JsonResponse
+    public function checkCredentials(Request $request): JsonResponse
     {
         // Check authorozation
-        if (Request::get('safe') !== 'AIzaSyAyXmJSzBExyYfIqKnqYNh_3jRt9XaJlvM') {
+        if ($request->get('safe') !== 'AIzaSyAyXmJSzBExyYfIqKnqYNh_3jRt9XaJlvM') {
             return response()->json('Not Authorized!', 400);
         }
-        $user = DB::table('users')->select('id', 'name', 'username', 'password', 'rights', 'cid', 'oid')->where('username', strtolower(Request::get('username')))->where('cid', '<>', '0')->first();
+        $user = DB::table('users')->select('id', 'name', 'username', 'password', 'rights', 'cid', 'oid')->where('username', strtolower($request->get('username')))->where('cid', '<>', '0')->first();
 
-        if (count($user) == 1 && Crypt::decrypt($user->password) == Request::get('password')) {
+        if (count($user) == 1 && Crypt::decrypt($user->password) == $request->get('password')) {
             return response()->json(['username' => $user->username, 'uid' => $user->id, 'cid' => $user->cid, 'oid' => $user->oid], 200);
         } else {
             return response()->json('Not found!', 400);
         }
     }
 
-    public function checkUsername(): JsonResponse
+    public function checkUsername(Request $request): JsonResponse
     {
-        $username = Request::get('username');
+        $username = $request->get('username');
         $user = DB::table('users')->select('id', 'name', 'username', 'rights', 'cid', 'oid')->where('username', $username);
         if ($user->count() > 0) {
             $u = $user->first();
@@ -672,14 +672,14 @@ class UserController extends Controller
         }
     }
 
-    public function logout(): RedirectResponse
+    public function logout(Request $request): RedirectResponse
     {
-        if (Session::has('prevuid.'.(count(Session::get('prevuid')) - 1))) {
-            Auth::loginUsingId(Session::get('prevuid.'.(count(Session::get('prevuid')) - 1)));
-            Session::forget('prevuid.'.(count(Session::get('prevuid')) - 1));
+        if ($request->session()->has('prevuid.'.(count($request->session()->get('prevuid')) - 1))) {
+            Auth::loginUsingId($request->session()->get('prevuid.'.(count($request->session()->get('prevuid')) - 1)));
+            $request->session()->forget('prevuid.'.(count($request->session()->get('prevuid')) - 1));
         } else {
-            Session::forget('highrank');
-            Session::forget('pgcount');
+            $request->session()->forget('highrank');
+            $request->session()->forget('pgcount');
             Auth::logout();
         }
 

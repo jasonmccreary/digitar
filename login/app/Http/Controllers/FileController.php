@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Files;
 use App\Models\Folder;
 use App\Models\Folderright;
@@ -15,7 +16,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -35,16 +35,16 @@ class FileController extends Controller implements HasMiddleware
         ];
     }
 
-    public function showFiles($fid, $ajax = false)
+    public function showFiles(Request $request, $fid, $ajax = false)
     {
-        if (! Auth::check() || Auth::user()->rights != 1) {
+        if (! $request->user() || $request->user()->rights != 1) {
             return redirect('/');
         }
         View::share('fid', $fid);
 
         if (! is_numeric($fid)) {
-            if ($fid == 'inbox' && Auth::user()->onverwerkt == 0) {
-                $folder = Folderright::where('uid', '=', Auth::user()->id)->orderByDesc('id')->first();
+            if ($fid == 'inbox' && $request->user()->onverwerkt == 0) {
+                $folder = Folderright::where('uid', '=', $request->user()->id)->orderByDesc('id')->first();
 
                 // dd($folder);
                 return redirect('/user/folder/'.$folder->fid);
@@ -59,7 +59,7 @@ class FileController extends Controller implements HasMiddleware
             }
             $bookedcheck = 1;
         } else {
-            if (Folderright::where('fid', '=', $fid)->where('uid', '=', Auth::user()->id)->count() <= 0) {
+            if (Folderright::where('fid', '=', $fid)->where('uid', '=', $request->user()->id)->count() <= 0) {
                 return redirect('403');
             } // IF A USER IS NOT AUTHORIZED TO VIEW THE FOLDER
             $fo = Folder::where('id', '=', $fid)->first();
@@ -68,10 +68,10 @@ class FileController extends Controller implements HasMiddleware
         }
 
         $files = Files::select('id', 'fid', 'name', 'geboekt', 'uid', 'date');
-        $files->where('cid', '=', Auth::user()->cid);
+        $files->where('cid', '=', $request->user()->cid);
         $files->where('fid', '=', $fid);
         if ($fid != 'inbox' && $fid != 'geboekt') {
-            $files->where('date', 'like', Session::get('year').'%');
+            $files->where('date', 'like', $request->session()->get('year').'%');
         }
         if ($fid == 'geboekt') {
             $files->where('geboekt', '=', '0');
@@ -83,7 +83,7 @@ class FileController extends Controller implements HasMiddleware
                 'title' => $title,
                 'noGrid' => 'true',
             ]);
-        } elseif (Request::is('*ajax*')) {
+        } elseif ($request->is('*ajax*')) {
             $jsonfiles = [];
 
             foreach ($files->get() as $key => $file) {
@@ -96,9 +96,9 @@ class FileController extends Controller implements HasMiddleware
                     'username' => User::getUserName($file->uid),
                     'date' => strtotime($file->date),
                     'nicedate' => nice_date($file->date),
-                    'highrank' => Session::has('highrank'),
+                    'highrank' => $request->session()->has('highrank'),
                     'bookedcheck' => $bookedcheck,
-                    'rights' => Auth::user()->rights,
+                    'rights' => $request->user()->rights,
                 ];
             }
 
@@ -160,13 +160,13 @@ class FileController extends Controller implements HasMiddleware
         }
     }
 
-    public function searchFiles($search): JsonResponse
+    public function searchFiles(Request $request, $search): JsonResponse
     {
         $jsonfiles = [];
         $f = new Files;
         $files = $f->selectRaw("*, MATCH (name,note,contents) AGAINST ('".$search."' IN BOOLEAN MODE) AS relevance_score")
             ->where(
-                'cid', '=', Auth::user()->cid
+                'cid', '=', $request->user()->cid
             )->where(function ($query) use ($search) {
                 // $query->where('name', 'LIKE', '%'.$search.'%')
                 // 	->orWhere('note', 'LIKE', '%'.$search.'%')
@@ -175,7 +175,7 @@ class FileController extends Controller implements HasMiddleware
             })->orderByDesc('date')->orderByDesc('relevance_score')->paginate(250);
 
         foreach ($files as $key => $file) {
-            if (Folderright::where('fid', '=', $file->fid)->where('uid', '=', Auth::user()->id)->count() > 0) { // Only view files from folders wich user is authorized to, otherwise skip the file.
+            if (Folderright::where('fid', '=', $file->fid)->where('uid', '=', $request->user()->id)->count() > 0) { // Only view files from folders wich user is authorized to, otherwise skip the file.
                 $jsonfiles[] = (object) [
                     'id' => $file->id,
                     'fid' => $file->fid,
@@ -185,8 +185,8 @@ class FileController extends Controller implements HasMiddleware
                     'username' => User::getUserName($file->uid),
                     'date' => strtotime($file->date),
                     'nicedate' => nice_date($file->date),
-                    'highrank' => Session::has('highrank'),
-                    'rights' => Auth::user()->rights,
+                    'highrank' => $request->session()->has('highrank'),
+                    'rights' => $request->user()->rights,
                     'relevance_score' => $file->relevance_score,
                 ];
             }
@@ -240,16 +240,16 @@ class FileController extends Controller implements HasMiddleware
         return $f;
     }
 
-    public function editFile($id): RedirectResponse
+    public function editFile(Request $request, $id): RedirectResponse
     {
 
-        if (Auth::user()->lookonly == 1) {
+        if ($request->user()->lookonly == 1) {
             Alert::error('U mag geen wijzigingen doorvoeren.')->flash();
 
             return Redirect::back();
         }
 
-        $input = Request::all();
+        $input = $request->all();
 
         $rules = [
             'folder' => 'required',
@@ -267,7 +267,7 @@ class FileController extends Controller implements HasMiddleware
             $file = new Files;
             $f = $file->find($id);
 
-            $client = User::find(Auth::user()->cid);
+            $client = User::find($request->user()->cid);
             $compressPath = '../../../clients/'.User::getUserUsername($client->oid).'/'.$client->username.'/';
             $tmpPath = '../tmp/';
             $filenameTxt = str_replace('.pdf', '', $f->file).'.txt';
@@ -284,11 +284,11 @@ class FileController extends Controller implements HasMiddleware
 
             // $file = new Files();
             // $f = $file->find($id);
-            $f->fid = Request::get('folder');
-            $f->geboekt = Request::get('geboekt');
-            $f->name = Request::get('name');
-            $f->date = date('Y-m-d H:i:s', strtotime(Request::get('date')));
-            $f->note = Request::get('note');
+            $f->fid = $request->get('folder');
+            $f->geboekt = $request->get('geboekt');
+            $f->name = $request->get('name');
+            $f->date = date('Y-m-d H:i:s', strtotime($request->get('date')));
+            $f->note = $request->get('note');
             $f->save();
 
         }
@@ -655,44 +655,44 @@ class FileController extends Controller implements HasMiddleware
         }
     }
 
-    public function upload()
+    public function upload(Request $request)
     {
-        $input = Request::all();
-        $file = Request::file('file');
+        $input = $request->all();
+        $file = $request->file('file');
         // dd($file);
         if (! is_object($file)) {
             return response('Geen geldig bestands type.', 400);
         }
 
-        if (Request::get('userid')) {
-            Auth::loginUsingId(Request::get('userid'));
+        if ($request->get('userid')) {
+            Auth::loginUsingId($request->get('userid'));
         }
 
         $v1 = Validator::make($input, ['file' => 'mimes:jpg,jpeg,png,pdf|max:10240']);
         if (! $v1->fails()) {
             $u = new User;
             $organization = $u
-                ->where('id', '=', Auth::user()->oid)
+                ->where('id', '=', $request->user()->oid)
                 ->first();
             $client = $u
-                ->where('id', '=', Auth::user()->cid)
-                ->where('oid', '=', Auth::user()->oid)
+                ->where('id', '=', $request->user()->cid)
+                ->where('oid', '=', $request->user()->oid)
                 ->first();
 
             $destinationPath = '../../../clients/'.$organization->username.'/'.$client->username.'';
-            $filename = Str::random(32).'.'.Request::file('file')->getClientOriginalExtension();
+            $filename = Str::random(32).'.'.$request->file('file')->getClientOriginalExtension();
             while (File::exists($destinationPath.'/'.$filename)) {
-                $filename = Str::random(32).'.'.Request::file('file')->getClientOriginalExtension();
+                $filename = Str::random(32).'.'.$request->file('file')->getClientOriginalExtension();
             }
 
-            $upload_success = Request::file('file')->move($destinationPath, $filename);
+            $upload_success = $request->file('file')->move($destinationPath, $filename);
 
             // compress
 
             if ($upload_success) {
                 $compressPath = '../../../clients/'.$organization->username.'/'.$client->username.'/';
                 $tmpPath = '../tmp/';
-                $filenameTxt = str_replace(Request::file('file')->getClientOriginalExtension(), '.txt', $filename);
+                $filenameTxt = str_replace($request->file('file')->getClientOriginalExtension(), '.txt', $filename);
 
                 $io = shell_exec("pdftotext '".$compressPath.$filename."' '".$tmpPath.$filenameTxt."'");
                 if (file_exists($tmpPath.$filenameTxt)) {
@@ -702,21 +702,21 @@ class FileController extends Controller implements HasMiddleware
                     $fileContents = null;
                 }
 
-                if (in_array(Request::file('file')->getClientOriginalExtension(), ['png', 'jpg', 'jpeg'])) {
-                    $filename2 = str_replace(Request::file('file')->getClientOriginalExtension(), 'pdf', $filename);
+                if (in_array($request->file('file')->getClientOriginalExtension(), ['png', 'jpg', 'jpeg'])) {
+                    $filename2 = str_replace($request->file('file')->getClientOriginalExtension(), 'pdf', $filename);
                     exec('convert '.$compressPath.$filename.' '.$compressPath.$filename2.'');
                     unlink($compressPath.$filename);
                     $filename = $filename2;
                 }
 
-                if (Request::get('filename')) {
-                    $savefilename = Request::get('filename');
+                if ($request->get('filename')) {
+                    $savefilename = $request->get('filename');
                 } else {
                     $savefilename = $file->getClientOriginalName();
                 }
                 $newfile = $this->addFile($savefilename, $filename, $client->id, $fileContents);
 
-                $fidnf = (Request::get('fid') * 1);
+                $fidnf = ($request->get('fid') * 1);
                 if (is_numeric($fidnf) && $fidnf > 0) {
                     $newfile->fid = $fidnf;
                     $newfile->save();
@@ -746,20 +746,20 @@ class FileController extends Controller implements HasMiddleware
         if (! $v2->fails()) {
             $u = new User;
             $organization = $u
-                ->where('id', '=', Auth::user()->oid)
+                ->where('id', '=', $request->user()->oid)
                 ->first();
             $client = $u
-                ->where('id', '=', Auth::user()->cid)
-                ->where('oid', '=', Auth::user()->oid)
+                ->where('id', '=', $request->user()->cid)
+                ->where('oid', '=', $request->user()->oid)
                 ->first();
 
             $destinationPath = '../../../clients/'.$organization->username.'/'.$client->username.'';
-            $filename = Str::random(32).'.'.Request::file('file')->getClientOriginalExtension();
+            $filename = Str::random(32).'.'.$request->file('file')->getClientOriginalExtension();
             while (File::exists($destinationPath.'/'.$filename)) {
-                $filename = Str::random(32).'.'.Request::file('file')->getClientOriginalExtension();
+                $filename = Str::random(32).'.'.$request->file('file')->getClientOriginalExtension();
             }
 
-            $upload_success = Request::file('file')->move($destinationPath, $filename);
+            $upload_success = $request->file('file')->move($destinationPath, $filename);
 
             // compress
 
@@ -773,13 +773,13 @@ class FileController extends Controller implements HasMiddleware
         }
     }
 
-    public function viewfile($fid): \Illuminate\View\View
+    public function viewfile(Request $request, $fid): \Illuminate\View\View
     {
 
         $f = new Files;
         $file = $f
             ->where('id', '=', $fid)
-            ->where('cid', '=', Auth::user()->cid)
+            ->where('cid', '=', $request->user()->cid)
             ->first();
 
         return view('users.viewfile', [
@@ -787,17 +787,17 @@ class FileController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function loadpdf($fid): RedirectResponse
+    public function loadpdf(Request $request, $fid): RedirectResponse
     {
         $f = new Files;
 
         $file = $f
             ->where('id', '=', $fid)
-            ->where('cid', '=', Auth::user()->cid)
+            ->where('cid', '=', $request->user()->cid)
             ->first();
 
-        $organization = User::where('id', '=', Auth::user()->oid)->first();
-        $client = User::where('id', '=', Auth::user()->cid)->where('oid', '=', Auth::user()->oid);
+        $organization = User::where('id', '=', $request->user()->oid)->first();
+        $client = User::where('id', '=', $request->user()->cid)->where('oid', '=', $request->user()->oid);
         if (! $client->count()) {
             return redirect('/user/folder/inbox');
         }
@@ -814,16 +814,16 @@ class FileController extends Controller implements HasMiddleware
 
     }
 
-    public function loadfile($fid = false, $viewer = 'pdfjs'): RedirectResponse
+    public function loadfile(Request $request, $fid = false, $viewer = 'pdfjs'): RedirectResponse
     {
         if ($fid != false) {
             $f = new Files;
             $file = $f
                 ->where('id', '=', $fid)
-                ->where('cid', '=', Auth::user()->cid)
+                ->where('cid', '=', $request->user()->cid)
                 ->first();
 
-            $uf = Folderright::where('fid', '=', $file->fid)->where('uid', '=', Auth::user()->id)->count();
+            $uf = Folderright::where('fid', '=', $file->fid)->where('uid', '=', $request->user()->id)->count();
             if ($uf > 0 || $file->fid == 0) {
 
                 $fileurl = FileController::getFolderPath($file->fid, false, 'cf').$file->file;
@@ -856,9 +856,9 @@ class FileController extends Controller implements HasMiddleware
 
     }
 
-    public function sendmail(): RedirectResponse
+    public function sendmail(Request $request): RedirectResponse
     {
-        $input = Request::all();
+        $input = $request->all();
 
         $rules = [
             'to' => 'required|email',
@@ -882,15 +882,15 @@ class FileController extends Controller implements HasMiddleware
             return Redirect::back()->withInput();
         } else {
 
-            Mail::queue('emails.files', Request::all(), function ($message) {
+            Mail::queue('emails.files', $request->all(), function ($message) {
 
-                $org = User::where('id', '=', Auth::user()->oid)->first();
-                $client = User::where('id', '=', Auth::user()->cid)->first();
+                $org = User::where('id', '=', $request->user()->oid)->first();
+                $client = User::where('id', '=', $request->user()->cid)->first();
 
                 $message->from($client->username.'@digitar.nu', $client->name);
-                $message->to(Request::get('to'))->subject(Request::get('subject'));
+                $message->to($request->get('to'))->subject($request->get('subject'));
 
-                foreach (Request::get('fileid') as $fileid => $filename) {
+                foreach ($request->get('fileid') as $fileid => $filename) {
                     $file = Files::getFileById($fileid);
 
                     $pathToFile = '/home/digitar/clients/'.$org->username.'/'.$client->username.'/'.$file->file;

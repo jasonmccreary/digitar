@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Files;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Request;
 use Illuminate\View\View;
 use Prologue\Alerts\Facades\Alert;
 
@@ -89,7 +89,7 @@ class ToolsController extends Controller
         return $return;
     }
 
-    public function createForwarder(): RedirectResponse
+    public function createForwarder(Request $request): RedirectResponse
     {
 
         require_once app_path().'/controllers/xmlapi.class.php';
@@ -100,12 +100,12 @@ class ToolsController extends Controller
         $xmlapi->set_debug(0);
 
         $p['domain'] = 'digitar.nu';
-        $p['email'] = strtolower(Request::get('username')).'@digitar.nu';
+        $p['email'] = strtolower($request->get('username')).'@digitar.nu';
         $p['fwdopt'] = 'pipe';
         $p['pipefwd'] = '/home/digitar/crons/mailPipe.php';
         $res = $xmlapi->api2_query('digitar', 'Email', 'addforward', $p);
 
-        Alert::success('Een nieuwe forwarder is aangemaakt voor: '.Request::get('username'))->flash();
+        Alert::success('Een nieuwe forwarder is aangemaakt voor: '.$request->get('username'))->flash();
 
         return redirect('/admin/tools/forwardcheck');
     }
@@ -137,7 +137,7 @@ class ToolsController extends Controller
         return $return;
     }
 
-    public function createFtp(): RedirectResponse
+    public function createFtp(Request $request): RedirectResponse
     {
 
         require_once app_path().'/controllers/xmlapi.class.php';
@@ -148,10 +148,10 @@ class ToolsController extends Controller
         $xmlapi->set_debug(1);
 
         $args = [
-            'user' => strtolower(Request::get('username')),
-            'pass' => Request::get('password'),
+            'user' => strtolower($request->get('username')),
+            'pass' => $request->get('password'),
             'quota' => 0,
-            'homedir' => 'clients/'.strtolower(Request::get('organization')).'/'.strtolower(Request::get('username')).'/unsorted',
+            'homedir' => 'clients/'.strtolower($request->get('organization')).'/'.strtolower($request->get('username')).'/unsorted',
         ];
         $obj = $xmlapi->api2_query('digitar', 'Ftp', 'addftp', $args);
 
@@ -159,7 +159,7 @@ class ToolsController extends Controller
         if (isset($obj->cpanelresult->error)) {
             Alert::error($obj->cpanelresult->error)->flash();
         } else {
-            Alert::success('Een nieuw FTP account is aangemaakt voor: '.Request::get('username'))->flash();
+            Alert::success('Een nieuw FTP account is aangemaakt voor: '.$request->get('username'))->flash();
         }
 
         return redirect('/admin/tools/ftpcheck');

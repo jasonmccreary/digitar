@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Cloud;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -9,7 +10,6 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -25,14 +25,14 @@ class CloudsController extends Controller implements HasMiddleware
         ];
     }
 
-    public function showFiles(): \Illuminate\View\View
+    public function showFiles(Request $request): \Illuminate\View\View
     {
 
         View::share('fid', 'files');
         $title = 'Uitwisseling bestanden';
 
         $files = Cloud::select('*');
-        $files->where('cid', '=', Auth::user()->cid);
+        $files->where('cid', '=', $request->user()->cid);
         $files->orderBy('date');
 
         return view('users.cloud', [
@@ -67,16 +67,16 @@ class CloudsController extends Controller implements HasMiddleware
 
     }
 
-    public function editFile($id): RedirectResponse
+    public function editFile(Request $request, $id): RedirectResponse
     {
 
-        if (Auth::user()->lookonly == 1) {
+        if ($request->user()->lookonly == 1) {
             Alert::error('U mag geen wijzigingen doorvoeren.')->flash();
 
             return Redirect::back();
         }
 
-        $input = Request::all();
+        $input = $request->all();
 
         $rules = [
             'name' => 'required',
@@ -131,13 +131,13 @@ class CloudsController extends Controller implements HasMiddleware
         $f->delete();
     }
 
-    public function viewdetails($fid): \Illuminate\View\View
+    public function viewdetails(Request $request, $fid): \Illuminate\View\View
     {
 
         $f = new Cloud;
         $file = $f
             ->where('id', '=', $fid)
-            ->where('cid', '=', Auth::user()->cid)
+            ->where('cid', '=', $request->user()->cid)
             ->first();
 
         return view('users.viewdetails', [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Debtors;
 use App\Models\Invoices;
 use App\Models\Layouts;
@@ -10,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Prologue\Alerts\Facades\Alert;
 
@@ -116,9 +116,9 @@ class SettingsController extends Controller
     /*
         IMPORT AND EXPORT FUNCTIONS BELOW
      */
-    public function genDebtorsExport()
+    public function genDebtorsExport(Request $request)
     {
-        $debtors = Debtors::where('cid', '=', Auth::user()->cid)->get();
+        $debtors = Debtors::where('cid', '=', $request->user()->cid)->get();
         // return $debtors;
         $return = 'Zoeknaam; Debiteru nummer; Code aanmanen; Journaal code; BTW berekenen; Kredietbeperking code; Kortingspercentage; Naam; Straat; Postcode; Woonplaats; Land; KVK nummer; BTW nummer; Contact persoon; Contact telefoon; Contact mobiel; Contact email; Contact website
 ';
@@ -155,9 +155,9 @@ class SettingsController extends Controller
         // return Redirect::back();
     }
 
-    public function genBillingExport()
+    public function genBillingExport(Request $request)
     {
-        $invoices = Invoices::where('cid', '=', Auth::user()->cid)->get();
+        $invoices = Invoices::where('cid', '=', $request->user()->cid)->get();
         // return $invoices;
         $return = 'CDBETCOND; BTWBEREKENEN; BEDRAGBTW; BTWAANGEPAST; CDBTW; CDAANMANEN; CDDAGBOEK; CDDEBITEUR; FACTSALDO; FACTDATUM; FACTNUMMER; PERIODE
 ';
