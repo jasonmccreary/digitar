@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Prologue\Alerts\Facades\Alert;
+use xmlapi;
 
 class UserController extends Controller
 {
@@ -288,8 +289,6 @@ class UserController extends Controller
             }
 
             if ($rights == 2) {
-                require_once app_path().'/controllers/xmlapi.class.php';
-
                 $org = User::where('id', '=', $organization_id);
                 if ($org->count() != 1) {
                     echo $organization_id.'<br />';
@@ -467,8 +466,6 @@ class UserController extends Controller
 
                 }
                 if ($u->rights == 2 && Request::has('password')) {
-                    require_once app_path().'/controllers/xmlapi.class.php';
-
                     $org = User::where('id', '=', $did->oid);
                     $org = $org->first();
 
@@ -592,8 +589,6 @@ class UserController extends Controller
                 $u->delete();
 
                 if ($did->rights == 2) {
-                    require_once app_path().'/controllers/xmlapi.class.php';
-
                     // api call to remove ftp user
                     $xmlapi = new xmlapi('31.7.4.236');
                     $xmlapi->password_auth('root', 'HOLME7OmsFNW');

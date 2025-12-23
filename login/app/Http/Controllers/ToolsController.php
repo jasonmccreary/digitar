@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Prologue\Alerts\Facades\Alert;
+use xmlapi;
 
 class ToolsController extends Controller
 {
@@ -60,9 +61,6 @@ class ToolsController extends Controller
 
     public static function checkForwarders()
     {
-
-        require_once app_path().'/controllers/xmlapi.class.php';
-
         // api call to add ftp user and its home directory
         $xmlapi = new xmlapi('31.7.4.236');
         $xmlapi->password_auth('root', 'HOLME7OmsFNW');
@@ -91,9 +89,6 @@ class ToolsController extends Controller
 
     public function createForwarder(Request $request): RedirectResponse
     {
-
-        require_once app_path().'/controllers/xmlapi.class.php';
-
         $xmlapi = new xmlapi('31.7.4.236');
         $xmlapi->password_auth('root', 'HOLME7OmsFNW');
         $xmlapi->set_output('json');
@@ -112,9 +107,6 @@ class ToolsController extends Controller
 
     public static function checkFtp()
     {
-
-        require_once app_path().'/controllers/xmlapi.class.php';
-
         // api call to add ftp user and its home directory
         $xmlapi = new xmlapi('31.7.4.236');
         $xmlapi->password_auth('root', 'HOLME7OmsFNW');
@@ -139,9 +131,6 @@ class ToolsController extends Controller
 
     public function createFtp(Request $request): RedirectResponse
     {
-
-        require_once app_path().'/controllers/xmlapi.class.php';
-
         $xmlapi = new xmlapi('31.7.4.236');
         $xmlapi->password_auth('root', 'HOLME7OmsFNW');
         $xmlapi->set_output('json');
