@@ -3,14 +3,13 @@
 use App\Http\Controllers\OrganizationsController;
 use App\Http\Controllers\ToolsController;
 use App\Http\Controllers\UserController;
+use App\Models\Organizations;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('admin', '/admin/superlogin');
 
 Route::get('admin/superlogin', function () {
-    $u = new User;
-
     return view('login.superlogin', [
         'superlogin' => 'true',
     ]);
@@ -18,11 +17,9 @@ Route::get('admin/superlogin', function () {
 Route::post('admin/supersearch', [UserController::class, 'supersearch'])->middleware('auth');
 
 Route::get('admin/organizations', function () {
-    $o = new Organizations;
-
     return view('admin.organizations.overview', [
         'title' => 'Organisaties',
-        'organizations' => $o->all(),
+        'organizations' => Organizations::all(),
     ]);
 })->middleware('auth');
 /*
@@ -31,7 +28,7 @@ Route::get('admin/organizations', function () {
  |--------------------------------------------------------------------------
 */
 Route::get('admin/organizations/add', function () {
-    return view('admin.organizations.add')->with('title', 'Organisatie toevoegen');
+    return view('admin.organizations.add', ['title' => 'Organisatie toevoegen']);
 })->middleware('auth');
 Route::post('admin/organizations/add', [OrganizationsController::class, 'add'])->middleware('auth');
 /*
@@ -40,8 +37,7 @@ Route::post('admin/organizations/add', [OrganizationsController::class, 'add'])-
  |--------------------------------------------------------------------------
 */
 Route::get('admin/organization/edit/{id}', function ($id) {
-    $o = new Organizations;
-    $org = $o->find($id);
+    $org = Organizations::find($id);
 
     return view('admin.organizations.edit', [
         'title' => 'Organisatie bewerken',
