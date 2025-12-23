@@ -33,7 +33,7 @@ class CloudsController extends Controller implements HasMiddleware
 
         $files = Cloud::select('*');
         $files->where('cid', '=', Auth::user()->cid);
-        $files->orderBy('date', 'asc');
+        $files->orderBy('date');
 
         return view('users.cloud', [
             'title' => $title,

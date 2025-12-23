@@ -64,7 +64,7 @@ Route::post('billing/debtor/delete/{id}', [DebtorsController::class, 'delete'])-
 
 Route::get('billing/invoices', function () {
     $invoices = new Invoices;
-    $aInvoices = $invoices->where('cid', '=', Auth::user()->cid)->where('date', 'like', Session::get('year').'%')->orderBy('invoicenumber', 'ASC')->get();
+    $aInvoices = $invoices->where('cid', '=', Auth::user()->cid)->where('date', 'like', Session::get('year').'%')->orderBy('invoicenumber')->get();
 
     return view('billing.invoices.overview', [
         'title' => 'Facturen',

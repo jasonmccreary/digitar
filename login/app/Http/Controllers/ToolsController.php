@@ -16,7 +16,7 @@ class ToolsController extends Controller
     {
 
         $files1 = Files::whereNull('contents')
-            ->where('updated_at', '<', Carbon::today())->orderBy('ID', 'DESC');
+            ->where('updated_at', '<', Carbon::today())->orderByDesc('ID');
         $files = $files1->limit(1000)
             ->get();
 

@@ -33,9 +33,9 @@ class Messages extends Model
     public static function get($cid, $old = false)
     {
         if (! $old) {
-            return Messages::where('cid', '=', $cid)->whereNull('read')->orderBy('created_at', 'DESC')->get();
+            return Messages::where('cid', '=', $cid)->whereNull('read')->orderByDesc('created_at')->get();
         } else {
-            return Messages::where('cid', '=', $cid)->where('read', '!=', 'NULL')->orderBy('created_at', 'DESC')->get();
+            return Messages::where('cid', '=', $cid)->where('read', '!=', 'NULL')->orderByDesc('created_at')->get();
         }
     }
 }

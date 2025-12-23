@@ -44,7 +44,7 @@ class FileController extends Controller implements HasMiddleware
 
         if (! is_numeric($fid)) {
             if ($fid == 'inbox' && Auth::user()->onverwerkt == 0) {
-                $folder = Folderright::where('uid', '=', Auth::user()->id)->orderBy('id', 'desc')->first();
+                $folder = Folderright::where('uid', '=', Auth::user()->id)->orderByDesc('id')->first();
 
                 // dd($folder);
                 return redirect('/user/folder/'.$folder->fid);
@@ -76,7 +76,7 @@ class FileController extends Controller implements HasMiddleware
         if ($fid == 'geboekt') {
             $files->where('geboekt', '=', '0');
         }
-        $files->orderBy('date', 'desc');
+        $files->orderByDesc('date');
 
         if ($ajax == false) {
             return view('users.files', [
@@ -133,7 +133,7 @@ class FileController extends Controller implements HasMiddleware
                     ->where('folderrights.uid', '=', Auth::user()->id);
             })
             ->where('cid', '=', $user->cid)
-            ->orderBy('date', 'desc');
+            ->orderByDesc('date');
 
         if (Request::is('*ajax*')) {
             $jsonfiles = [];
@@ -172,7 +172,7 @@ class FileController extends Controller implements HasMiddleware
                 // 	->orWhere('note', 'LIKE', '%'.$search.'%')
                 // 	->orWhere('contents', 'LIKE', '%'.$search.'%');
                 $query->whereRaw("MATCH (name,note,contents) AGAINST ('".$search."' IN BOOLEAN MODE)");
-            })->orderBy('date', 'DESC')->orderBy('relevance_score', 'DESC')->paginate(250);
+            })->orderByDesc('date')->orderByDesc('relevance_score')->paginate(250);
 
         foreach ($files as $key => $file) {
             if (Folderright::where('fid', '=', $file->fid)->where('uid', '=', Auth::user()->id)->count() > 0) { // Only view files from folders wich user is authorized to, otherwise skip the file.
