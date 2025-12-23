@@ -13,7 +13,7 @@
 		<tbody>
 			@foreach($folders as $f)
 				<?php
-          			$subfolders = Folder::getSubfolders($f->id,$f->cfid);
+          			$subfolders = App\Models\Folder::getSubfolders($f->id,$f->cfid);
         		?>
 				<tr>
 					<td style="vertical-align: middle;">{!! $f->name !!}</td>

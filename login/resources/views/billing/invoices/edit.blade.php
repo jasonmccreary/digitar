@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('content')
-		
+
 	</div>
 </div>
 <style>
@@ -22,10 +22,10 @@
 				<div class="row form-row">
 					<div class="col-md-4">
 						<label class="form-label">Debiteur</label>
-						
+
 						<select id="selectDebtor" style="width:100%;" name="debtor">
 							<option disabled selected="">- Maak een keuze -</option>
-							@foreach(Debtors::where('cid','=',Auth::user()->cid)->get() as $debtor)
+							@foreach(App\Models\Debtors::where('cid','=',Auth::user()->cid)->get() as $debtor)
 								<option value="{!! $debtor->id !!}" @if(Request::old('debtor') == $debtor->id) selected @elseif($i->did == $debtor->id) selected @endif>{!! $debtor->debnumber !!} {!! $debtor->name !!}</option>
 							@endforeach
 						</select>
@@ -145,7 +145,7 @@
 				</div>
 				<div id="invoicerows">
 
-					@foreach(Invoicerows::where('iid','=',$i->id)->get() as $k => $ir)
+					@foreach(App\Models\Invoicerows::where('iid','=',$i->id)->get() as $k => $ir)
 						@if ($ir->type == 1)
 							<div class="row form-row">
 								<input type="hidden" name="r-type" value="1" />
@@ -198,7 +198,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="form-group m-t-40">
 			<button type="submit" class="btn btn-success btn-cons">Opslaan</button>
 		</div>

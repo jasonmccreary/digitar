@@ -6,7 +6,7 @@
     </ul>
   </li>
   <?php
-  $org = new Organizations();
+  $org = new App\Models\Organizations();
   if ($org->where('uid', '=', Auth::user()->id)->where('id', '=', Auth::user()->oid)->count()) {
     echo '
     <li> <a href="javascript:;"> <span class="title">Organisaties</span> <span class="arrow "></span> </a>

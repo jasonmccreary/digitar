@@ -368,7 +368,7 @@ Route::get('billing/pdf/{action}/{id}', function ($action, $id) {
 
     define('DOMPDF_ENABLE_PHP', true);
     define('DOMPDF_ENABLE_HTML5PARSER', true);
-    $pdf = PDF::loadView('billing.pdf', $param)->setPaper('a4');
+    $pdf = Pdf::loadView('billing.pdf', $param)->setPaper('a4');
     // $pdf->set_option('isHtml5ParserEnabled', true);
 
     if ($action == 'view') {

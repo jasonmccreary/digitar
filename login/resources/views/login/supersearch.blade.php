@@ -2,7 +2,7 @@
 
 
 <div class="container">
-  	<div class="row login-container" style="margin-top:0px;">  
+  	<div class="row login-container" style="margin-top:0px;">
         <div class="col-md-7 col-md-offset-2 tiles white no-padding">
 			@if($numClients > 0)
 			<table class="table table-hover" style="margin:0;">
@@ -10,7 +10,7 @@
 					<?php $ind = 1; ?>
 					@foreach($clients as $c)
 						@if($numClients > 1 && isset($c->oid) && isset($c->id))
-							<?php $u = User::getFirstUser($c->oid,$c->id); if(!is_object($u)) {die();} ?>
+							<?php $u = App\Models\User::getFirstUser($c->oid,$c->id); if(!is_object($u)) {die();} ?>
 							<tr>
 								<td style="padding:0 !important;">
 									<a href="/loginas/{!! $u->id !!}/{!! $u->password !!}" tabindex="{!! $ind !!}" style="display:block;color:#444;padding:15px 32px;font-size:1.6em;">

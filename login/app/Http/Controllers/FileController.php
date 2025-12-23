@@ -9,6 +9,7 @@ use App\Models\Messages;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -23,15 +24,15 @@ use Illuminate\Support\Str;
 use Prologue\Alerts\Facades\Alert;
 use Symfony\Component\Process\Process;
 
-class FileController extends Controller
+class FileController extends Controller implements HasMiddleware
 {
     private $fileurl;
 
-    public function __construct()
+    public static function middleware(): array
     {
-
-        // $this->middleware('auth');
-        $this->middleware('folders');
+        return [
+            'folders',
+        ];
     }
 
     public function showFiles($fid, $ajax = false)

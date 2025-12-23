@@ -75,7 +75,7 @@
 	        </div>
 			<h3>Mappen</h3>
 			<div class="form-group">
-				<?php $folders = new Folder(); ?>
+				<?php $folders = new App\Models\Folder(); ?>
 				@foreach($sfolders as $f)
 					<div class="checkbox check-success">
 						{{ html()->checkbox('fid[' . $f->id . ']', $folders->checked($f->id, $user->id), '1')->id($f->id)->class('parentf') }}

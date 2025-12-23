@@ -41,7 +41,7 @@
 						<select id="folderSelect" style="width:100%;" name="folder">
 							<option value="0" selected>Onverwerkt</option>
 							@foreach($aFolders as $folder)
-								<?php $subfolders = Folder::getSubfolders($folder->id); ?>
+								<?php $subfolders = App\Models\Folder::getSubfolders($folder->id); ?>
 								<option value="{!! $folder->id !!}">{!! $folder->name !!}</option>
 								@foreach($subfolders as $sf)
 				                  <option value="{!! $sf->id !!}" > &nbsp;&nbsp; - {!! $sf->name !!}</option>
@@ -114,7 +114,7 @@
       	<tbody>
       		{{-- Datatables ajax loading / public/assets/js/datatables.js --}}
       	</tbody>
-	</table>	
+	</table>
 
 	@endif
 
@@ -126,14 +126,14 @@
 	</form>
 
 
-<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
-    <div class="modal-dialog form-block" style="width:95%;"> 
-        <div class="modal-content" style="border-radius:0;"> 
-            <div class="modal-body" style="background:none;padding:0;"> 
-            </div> 
-            <div style="clear:both;"></div> 
-        </div> 
-    </div> 
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog form-block" style="width:95%;">
+        <div class="modal-content" style="border-radius:0;">
+            <div class="modal-body" style="background:none;padding:0;">
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
 </div>
 
 @endsection

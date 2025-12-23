@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('content')
-	
+
 		<table class="table table-condensed" id="cleartable" data-sort-order="desc">
 		<thead>
 			<tr>
@@ -22,9 +22,9 @@
 					<td>{!! euro(Invoices::getTotal($i->id)) !!}</td>
 					<td>{!! euro(Invoices::getTotal($i->id,false,true)) !!}</td>
 					<td>{!! nice_date($i->date) !!}</td>
-					<td>{!! Invoices::showStatus($i->id) !!}</td>
+					<td>{!! App\Models\Invoices::showStatus($i->id) !!}</td>
 					<td>
-						<div class="btn-group"> 
+						<div class="btn-group">
 							<a class="btn btn-white btn-mini dropdown-toggle" data-toggle="dropdown" href="#"> Acties <span class="caret"></span> </a>
 							<ul class="dropdown-menu">
 								<li><a href="/billing/pdf/view/{!! $i->id !!}" onclick="window.open('/billing/pdf/view/{!! $i->id !!}', 'Factuur bekijken', 'width=820,height=850,scrollbars=yes,toolbar=no,location=no'); return false"><i class="fa fa-search"></i> Bekijken</a></li>
@@ -40,7 +40,7 @@
 										<li><a href="/billing/invoice/send/{!! $i->id !!}" class="red"><i class="fa fa-exclamation-triangle"></i> Herinnering versturen</a></li>
 										@endif
 									@endif
-									
+
 									<li class="divider"></li>
 									<li><a href="/billing/invoice/edit/{!! $i->id !!}"><i class="fa fa-pencil"></i> Bewerken</a></li>
 									<li><a href="/billing/invoice/delete/{!! $i->id !!}" class="red"><i class="fa fa-trash-o"></i> Verwijderen</a></li>

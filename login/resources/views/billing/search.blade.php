@@ -21,7 +21,7 @@
 			<td class="v-align-middle">{!! Debtors::getName($invoice->did) !!}</td>
 			<td class="v-align-middle"><span class="muted">{!! $invoice->invoicenumber !!}</span></td>
 			<td><span class="muted">{!! euro(Invoices::getTotal($invoice->id)) !!}</span></td>
-			<td>{!! Invoices::showStatus($invoice->id) !!}</td>
+			<td>{!! App\Models\Invoices::showStatus($invoice->id) !!}</td>
 			<td><a href="/billing/pdf/view/{!! $invoice->id !!}" onclick="window.open('/billing/pdf/view/{!! $invoice->id !!}', 'Factuur bekijken', 'width=820,height=850,scrollbars=yes,toolbar=no,location=no'); return false" class="btn btn-white btn-xs btn-mini" title="Factuur bekijken"><i class="fa fa-search"></i></a></td>
     	</tr>
 	@endforeach

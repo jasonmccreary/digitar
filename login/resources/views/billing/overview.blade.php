@@ -3,12 +3,12 @@
 @section('content')
 	<?php
 	$monthTotal = 0;
-	foreach(Invoices::where( DB::raw('MONTH(date)'), '=', date('n') )->where( DB::raw('YEAR(date)'), '=', date('Y') )->where('cid','=', Auth::user()->cid)->get() as $i) {
-		$monthTotal += Invoices::getTotal($i->id,false,false);
+	foreach(App\Models\Invoices::where( DB::raw('MONTH(date)'), '=', date('n') )->where( DB::raw('YEAR(date)'), '=', date('Y') )->where('cid','=', Auth::user()->cid)->get() as $i) {
+		$monthTotal += App\Models\Invoices::getTotal($i->id,false,false);
 	}
 	$yearTotal = 0;
-	foreach(Invoices::where( DB::raw('YEAR(date)'), '=', date('Y') )->where('cid','=', Auth::user()->cid)->get() as $i) {
-		$yearTotal += Invoices::getTotal($i->id,false,false);
+	foreach(App\Models\Invoices::where( DB::raw('YEAR(date)'), '=', date('Y') )->where('cid','=', Auth::user()->cid)->get() as $i) {
+		$yearTotal += App\Models\Invoices::getTotal($i->id,false,false);
 	}
 	?>
 		<div class="row" style="padding: 0 15px;">
@@ -38,10 +38,10 @@
 
 		<div class="pull-right">
 			<a href="/billing/invoices/add" class="btn btn-success">Nieuwe factuur</a>
-		</div>	
+		</div>
 
-		<?php 
-		$openInv = Invoices::where('cid','=',Auth::user()->cid)->where('status','=',1)->orWhere('cid','=',Auth::user()->cid)->where('status','=',5)->where('date', 'like', Session::get('year').'%')->orderBy('date', 'desc')->limit(250); 
+		<?php
+		$openInv = App\Models\Invoices::where('cid','=',Auth::user()->cid)->where('status','=',1)->orWhere('cid','=',Auth::user()->cid)->where('status','=',5)->where('date', 'like', Session::get('year').'%')->orderBy('date', 'desc')->limit(250);
 		?>
 		@if ($openInv->count() > 0)
 			<h1>Openstaande posten</h1>
@@ -63,7 +63,7 @@
 							<td class="v-align-middle">{!! Debtors::getName($i->did) !!}</td>
 							<td class="v-align-middle"><span class="muted">{!! $i->invoicenumber !!}</span></td>
 							<td><span class="muted">{!! euro(Invoices::getTotal($i->id)) !!}</span></td>
-							<td>{!! Invoices::showStatus($i->id) !!}</td>
+							<td>{!! App\Models\Invoices::showStatus($i->id) !!}</td>
 							<td><a href="/billing/pdf/view/{!! $i->id !!}" onclick="window.open('/billing/pdf/view/{!! $i->id !!}', 'Factuur bekijken', 'width=820,height=850,scrollbars=yes,toolbar=no,location=no'); return false" class="btn btn-white btn-xs btn-mini" title="Factuur bekijken"><i class="fa fa-search"></i></a></td>
 						</tr>
 					@endforeach

@@ -1,13 +1,13 @@
-<?php 
+<?php
 
-$i = Invoices::find($iid);
-$d = Debtors::find($i->did);
-$c = User::find(Auth::user()->cid);
+$i = App\Models\Invoices::find($iid);
+$d = App\Models\Debtors::find($i->did);
+$c = App\Models\User::find(Auth::user()->cid);
 
-$layout = Layouts::where('cid','=',Auth::user()->cid)->where('id','=',$lid);
+$layout = App\Models\Layouts::where('cid','=',Auth::user()->cid)->where('id','=',$lid);
 if ($layout->count() > 0) {
 	$return = $layout->first();
-	
+
 	echo DbView::make($return)->field('code')->with(['debtor'=> $d,'sender'=> $c])->render();
 
 }else{
