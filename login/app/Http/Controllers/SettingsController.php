@@ -8,9 +8,9 @@ use App\Models\Layouts;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Prologue\Alerts\Facades\Alert;
 
@@ -98,7 +98,7 @@ class SettingsController extends Controller
 
         Alert::success('Factuur layout opgeslagen!')->flash();
         if ($id != false) {
-            return Redirect::back();
+            return redirect()->back();
         } else {
             return Redirect::route('settingsInvoices');
         }
@@ -116,9 +116,9 @@ class SettingsController extends Controller
     /*
         IMPORT AND EXPORT FUNCTIONS BELOW
      */
-    public function genDebtorsExport()
+    public function genDebtorsExport(Request $request)
     {
-        $debtors = Debtors::where('cid', '=', Auth::user()->cid)->get();
+        $debtors = Debtors::where('cid', '=', $request->user()->cid)->get();
         // return $debtors;
         $return = 'Zoeknaam; Debiteru nummer; Code aanmanen; Journaal code; BTW berekenen; Kredietbeperking code; Kortingspercentage; Naam; Straat; Postcode; Woonplaats; Land; KVK nummer; BTW nummer; Contact persoon; Contact telefoon; Contact mobiel; Contact email; Contact website
 ';
@@ -152,12 +152,12 @@ class SettingsController extends Controller
         Alert::info('De export wordt gegenereerd!')->flash();
 
         return Response::download($file)->setTtl(1);
-        // return Redirect::back();
+        // return redirect()->back();
     }
 
-    public function genBillingExport()
+    public function genBillingExport(Request $request)
     {
-        $invoices = Invoices::where('cid', '=', Auth::user()->cid)->get();
+        $invoices = Invoices::where('cid', '=', $request->user()->cid)->get();
         // return $invoices;
         $return = 'CDBETCOND; BTWBEREKENEN; BEDRAGBTW; BTWAANGEPAST; CDBTW; CDAANMANEN; CDDAGBOEK; CDDEBITEUR; FACTSALDO; FACTDATUM; FACTNUMMER; PERIODE
 ';
@@ -185,6 +185,6 @@ class SettingsController extends Controller
         Alert::info('De export wordt gegenereerd!')->flash();
 
         return Response::download($file)->setTtl(1);
-        // return Redirect::back();
+        // return redirect()->back();
     }
 }

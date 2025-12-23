@@ -10,8 +10,6 @@ class Messages extends Model
 
     public static $rules = [];
 
-    protected $table = 'messages';
-
     public static function newMessage($cid, $bid, $title, $message, $type = false)
     {
         $m = new Messages;
@@ -33,9 +31,9 @@ class Messages extends Model
     public static function get($cid, $old = false)
     {
         if (! $old) {
-            return Messages::where('cid', '=', $cid)->whereNull('read')->orderBy('created_at', 'DESC')->get();
+            return Messages::where('cid', '=', $cid)->whereNull('read')->orderByDesc('created_at')->get();
         } else {
-            return Messages::where('cid', '=', $cid)->where('read', '!=', 'NULL')->orderBy('created_at', 'DESC')->get();
+            return Messages::where('cid', '=', $cid)->where('read', '!=', 'NULL')->orderByDesc('created_at')->get();
         }
     }
 }

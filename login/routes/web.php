@@ -32,27 +32,15 @@ Route::get('/api/genpass', function () {
 
 if (! Auth::guest()) {
     if (Auth::user()->rights == 1) {
-        Route::get('help', function () {
-            return view('help.overview', [
-                'title' => 'Veel gestelde vragen &amp; uitleg',
-            ]);
-        })->middleware('folders');
+        Route::view('help', 'help.overview', ['title' => 'Veel gestelde vragen &amp; uitleg'])->middleware('folders');
     } else {
-        Route::get('help', function () {
-            return view('help.overview', [
-                'title' => 'Veel gestelde vragen &amp; uitleg',
-            ]);
-        });
+        Route::view('help', 'help.overview', ['title' => 'Veel gestelde vragen &amp; uitleg']);
     }
 } else {
-    Route::get('help', function () {
-        return redirect('/');
-    });
+    Route::redirect('help', '/');
 }
 
-Route::get('403', function () {
-    return view('errors.403');
-});
+Route::view('403', 'errors.403');
 
 $pgcount = Session::get('pgcount') + 1;
 Session::put('pgcount', $pgcount);

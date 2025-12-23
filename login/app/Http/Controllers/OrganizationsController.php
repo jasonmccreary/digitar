@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Organizations;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Prologue\Alerts\Facades\Alert;
 
@@ -13,9 +13,9 @@ class OrganizationsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function add(): RedirectResponse
+    public function add(Request $request): RedirectResponse
     {
-        $input = Request::all();
+        $input = $request->all();
 
         $rules = [
             'businessname' => 'required',
@@ -32,30 +32,30 @@ class OrganizationsController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return redirect('/admin/organizations/add')->withInput();
+            return redirect()->to('/admin/organizations/add')->withInput();
         } else {
             $o = new Organizations;
-            $o->name = Request::get('businessname');
-            $o->address = Request::get('address');
-            $o->zipcode = Request::get('zipcode');
-            $o->city = Request::get('city');
-            $o->tell = Request::get('tell');
-            $o->email = Request::get('email');
-            $o->website = Request::get('website');
+            $o->name = $request->get('businessname');
+            $o->address = $request->get('address');
+            $o->zipcode = $request->get('zipcode');
+            $o->city = $request->get('city');
+            $o->tell = $request->get('tell');
+            $o->email = $request->get('email');
+            $o->website = $request->get('website');
             $o->save();
 
             Alert::success('De nieuwe organisatie is toegevoegd')->flash();
 
-            return redirect('/admin/organizations');
+            return redirect()->to('/admin/organizations');
         }
     }
 
     /**
      * Delete the specified resource.
      */
-    public function delete(int $id): RedirectResponse
+    public function delete(Request $request, int $id): RedirectResponse
     {
-        if (Request::get('delete') == 'true') {
+        if ($request->get('delete') == 'true') {
             $organization = new Organizations;
             $o = $organization->find($id);
             $o->delete();
@@ -63,15 +63,15 @@ class OrganizationsController extends Controller
             Alert::success('Organizatie succesvol verwijderd')->flash();
         }
 
-        return redirect('/admin/organizations');
+        return redirect()->to('/admin/organizations');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(int $id): RedirectResponse
+    public function edit(Request $request, int $id): RedirectResponse
     {
-        $input = Request::all();
+        $input = $request->all();
 
         $rules = [
             'businessname' => 'required',
@@ -92,18 +92,18 @@ class OrganizationsController extends Controller
         } else {
             $organization = new Organizations;
             $o = $organization->find($id);
-            $o->name = Request::get('businessname');
-            $o->address = Request::get('address');
-            $o->zipcode = Request::get('zipcode');
-            $o->city = Request::get('city');
-            $o->tell = Request::get('tell');
-            $o->email = Request::get('email');
-            $o->website = Request::get('website');
+            $o->name = $request->get('businessname');
+            $o->address = $request->get('address');
+            $o->zipcode = $request->get('zipcode');
+            $o->city = $request->get('city');
+            $o->tell = $request->get('tell');
+            $o->email = $request->get('email');
+            $o->website = $request->get('website');
             $o->save();
 
             Alert::success('Organizatie opgeslagen')->flash();
 
-            return redirect('/admin/organizations');
+            return redirect()->to('/admin/organizations');
         }
     }
 }

@@ -56,31 +56,31 @@ Route::filter('auth', function () {
     switch (Auth::user()->rights) {
         case 5:
             if (! Request::is('admin*')) {
-                return redirect('/admin/organizations');
+                return redirect()->to('/admin/organizations');
             }
             break;
         case 4:
             if (! Request::is('organization*')) {
-                return redirect('/organization');
+                return redirect()->to('/organization');
             }
             break;
         case 3:
             if (! Request::is('moderator*')) {
-                return redirect('/moderator');
+                return redirect()->to('/moderator');
             }
             break;
         case 2:
             if (! Request::is('client*')) {
-                return redirect('/client');
+                return redirect()->to('/client');
             }
             break;
         case 1:
             if (! Request::is('user*') && ! Request::is('billing*')) {
-                return redirect('/user');
+                return redirect()->to('/user');
             }
             break;
         default:
-            return redirect('/');
+            return redirect()->to('/');
             break;
     }
 });
@@ -102,6 +102,6 @@ Route::filter('folders', function () {
 
 Route::filter('guest', function () {
     if (Auth::check()) {
-        return redirect('/admin');
+        return redirect()->to('/admin');
     }
 });

@@ -32,7 +32,7 @@ class Products extends Model
 
         $array = [];
         $array[0] = '- Selecteer artikel -';
-        foreach (Products::where('cid', '=', $cid)->orderBy('productnumber', 'ASC')->get() as $p) {
+        foreach (Products::where('cid', '=', $cid)->orderBy('productnumber')->get() as $p) {
             $array[$p->id] = $p->productnumber.' - '.$p->name;
         }
 

@@ -6,9 +6,10 @@ use App\Models\Files;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Prologue\Alerts\Facades\Alert;
+use xmlapi;
 
 class ToolsController extends Controller
 {
@@ -16,7 +17,7 @@ class ToolsController extends Controller
     {
 
         $files1 = Files::whereNull('contents')
-            ->where('updated_at', '<', Carbon::today())->orderBy('ID', 'DESC');
+            ->where('updated_at', '<', Carbon::today())->orderByDesc('ID');
         $files = $files1->limit(1000)
             ->get();
 
@@ -60,9 +61,6 @@ class ToolsController extends Controller
 
     public static function checkForwarders()
     {
-
-        require_once app_path().'/controllers/xmlapi.class.php';
-
         // api call to add ftp user and its home directory
         $xmlapi = new xmlapi('31.7.4.236');
         $xmlapi->password_auth('root', 'HOLME7OmsFNW');
@@ -72,7 +70,6 @@ class ToolsController extends Controller
         $p['domain'] = 'digitar.nu';
         $res = $xmlapi->api2_query('digitar', 'Email', 'listforwards', $p);
         $result = json_decode($res);
-        dd($result);
         foreach ($result->cpanelresult->data as $row) {
             $user = explode('@', $row->dest);
             $emails[$user[0]] = $row;
@@ -89,32 +86,26 @@ class ToolsController extends Controller
         return $return;
     }
 
-    public function createForwarder(): RedirectResponse
+    public function createForwarder(Request $request): RedirectResponse
     {
-
-        require_once app_path().'/controllers/xmlapi.class.php';
-
         $xmlapi = new xmlapi('31.7.4.236');
         $xmlapi->password_auth('root', 'HOLME7OmsFNW');
         $xmlapi->set_output('json');
         $xmlapi->set_debug(0);
 
         $p['domain'] = 'digitar.nu';
-        $p['email'] = strtolower(Request::get('username')).'@digitar.nu';
+        $p['email'] = strtolower($request->get('username')).'@digitar.nu';
         $p['fwdopt'] = 'pipe';
         $p['pipefwd'] = '/home/digitar/crons/mailPipe.php';
         $res = $xmlapi->api2_query('digitar', 'Email', 'addforward', $p);
 
-        Alert::success('Een nieuwe forwarder is aangemaakt voor: '.Request::get('username'))->flash();
+        Alert::success('Een nieuwe forwarder is aangemaakt voor: '.$request->get('username'))->flash();
 
-        return redirect('/admin/tools/forwardcheck');
+        return redirect()->to('/admin/tools/forwardcheck');
     }
 
     public static function checkFtp()
     {
-
-        require_once app_path().'/controllers/xmlapi.class.php';
-
         // api call to add ftp user and its home directory
         $xmlapi = new xmlapi('31.7.4.236');
         $xmlapi->password_auth('root', 'HOLME7OmsFNW');
@@ -137,21 +128,18 @@ class ToolsController extends Controller
         return $return;
     }
 
-    public function createFtp(): RedirectResponse
+    public function createFtp(Request $request): RedirectResponse
     {
-
-        require_once app_path().'/controllers/xmlapi.class.php';
-
         $xmlapi = new xmlapi('31.7.4.236');
         $xmlapi->password_auth('root', 'HOLME7OmsFNW');
         $xmlapi->set_output('json');
         $xmlapi->set_debug(1);
 
         $args = [
-            'user' => strtolower(Request::get('username')),
-            'pass' => Request::get('password'),
+            'user' => strtolower($request->get('username')),
+            'pass' => $request->get('password'),
             'quota' => 0,
-            'homedir' => 'clients/'.strtolower(Request::get('organization')).'/'.strtolower(Request::get('username')).'/unsorted',
+            'homedir' => 'clients/'.strtolower($request->get('organization')).'/'.strtolower($request->get('username')).'/unsorted',
         ];
         $obj = $xmlapi->api2_query('digitar', 'Ftp', 'addftp', $args);
 
@@ -159,10 +147,10 @@ class ToolsController extends Controller
         if (isset($obj->cpanelresult->error)) {
             Alert::error($obj->cpanelresult->error)->flash();
         } else {
-            Alert::success('Een nieuw FTP account is aangemaakt voor: '.Request::get('username'))->flash();
+            Alert::success('Een nieuw FTP account is aangemaakt voor: '.$request->get('username'))->flash();
         }
 
-        return redirect('/admin/tools/ftpcheck');
+        return redirect()->to('/admin/tools/ftpcheck');
     }
 
     public static function getUserDirSize($uid)

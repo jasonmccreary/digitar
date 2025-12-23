@@ -14,9 +14,7 @@ Route::get('organization/superlogin', function () {
 })->middleware('auth');
 Route::post('organization/supersearch', [UserController::class, 'supersearch'])->middleware('auth');
 
-Route::get('organization', function () {
-    return redirect('/organization/clients');
-})->middleware('auth');
+Route::redirect('organization', '/organization/clients');
 Route::get('organization/clients', function () {
     $users = new User;
     $u = $users->where('rights', '=', '2')->where('oid', '=', Auth::user()->id)->get();
@@ -106,11 +104,7 @@ Route::get('organization/moderators', function () {
     |	Add new moderator
     |--------------------------------------------------------------------------
    */
-Route::get('organization/moderator/add', function () {
-    return view('organization.moderator.add', [
-        'title' => 'Beheerder toevoegen',
-    ]);
-})->middleware('auth');
+Route::view('organization/moderator/add', 'organization.moderator.add', ['title' => 'Beheerder toevoegen'])->middleware('auth');
 Route::post('organization/moderator/add', [UserController::class, 'addModerator'])->middleware('auth');
 /*
  |--------------------------------------------------------------------------
