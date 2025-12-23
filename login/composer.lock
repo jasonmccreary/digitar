@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.368.2",
+            "version": "3.369.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "96397db9a3fd0b5e6b3c52e363b6a55831a93b1d"
+                "reference": "b2d04cf1184a96839a8ab62ec6e3cf2d62a278e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/96397db9a3fd0b5e6b3c52e363b6a55831a93b1d",
-                "reference": "96397db9a3fd0b5e6b3c52e363b6a55831a93b1d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b2d04cf1184a96839a8ab62ec6e3cf2d62a278e3",
+                "reference": "b2d04cf1184a96839a8ab62ec6e3cf2d62a278e3",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.368.2"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.1"
             },
-            "time": "2025-12-18T19:07:30+00:00"
+            "time": "2025-12-22T19:13:21+00:00"
         },
         {
             "name": "barryvdh/laravel-dompdf",
@@ -1437,16 +1437,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.43.1",
+            "version": "v12.44.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "195b893593a9298edee177c0844132ebaa02102f"
+                "reference": "592bbf1c036042958332eb98e3e8131b29102f33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/195b893593a9298edee177c0844132ebaa02102f",
-                "reference": "195b893593a9298edee177c0844132ebaa02102f",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/592bbf1c036042958332eb98e3e8131b29102f33",
+                "reference": "592bbf1c036042958332eb98e3e8131b29102f33",
                 "shasum": ""
             },
             "require": {
@@ -1655,7 +1655,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-12-16T18:53:08+00:00"
+            "time": "2025-12-23T15:29:43+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -2928,16 +2928,16 @@
         },
         {
             "name": "nette/utils",
-            "version": "v4.1.0",
+            "version": "v4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "fa1f0b8261ed150447979eb22e373b7b7ad5a8e0"
+                "reference": "c99059c0315591f1a0db7ad6002000288ab8dc72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/fa1f0b8261ed150447979eb22e373b7b7ad5a8e0",
-                "reference": "fa1f0b8261ed150447979eb22e373b7b7ad5a8e0",
+                "url": "https://api.github.com/repos/nette/utils/zipball/c99059c0315591f1a0db7ad6002000288ab8dc72",
+                "reference": "c99059c0315591f1a0db7ad6002000288ab8dc72",
                 "shasum": ""
             },
             "require": {
@@ -3011,9 +3011,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v4.1.0"
+                "source": "https://github.com/nette/utils/tree/v4.1.1"
             },
-            "time": "2025-12-01T17:49:23+00:00"
+            "time": "2025-12-22T12:14:32+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -4062,16 +4062,16 @@
         },
         {
             "name": "spatie/laravel-html",
-            "version": "3.12.1",
+            "version": "3.12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-html.git",
-                "reference": "72af3cad24d153c230ff6e1da9fa3b7b702834c9"
+                "reference": "dd4a946ea9e2d7af8945fdfcf282663c69fac26a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-html/zipball/72af3cad24d153c230ff6e1da9fa3b7b702834c9",
-                "reference": "72af3cad24d153c230ff6e1da9fa3b7b702834c9",
+                "url": "https://api.github.com/repos/spatie/laravel-html/zipball/dd4a946ea9e2d7af8945fdfcf282663c69fac26a",
+                "reference": "dd4a946ea9e2d7af8945fdfcf282663c69fac26a",
                 "shasum": ""
             },
             "require": {
@@ -4128,7 +4128,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-html/tree/3.12.1"
+                "source": "https://github.com/spatie/laravel-html/tree/3.12.3"
             },
             "funding": [
                 {
@@ -4136,7 +4136,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2025-10-02T07:26:38+00:00"
+            "time": "2025-12-22T12:05:50+00:00"
         },
         {
             "name": "symfony/clock",
