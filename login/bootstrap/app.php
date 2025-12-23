@@ -21,5 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->throttleApi();
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (Exception $exception) {
+            if ($exception->getCode() > 400 && ! in_array($exception->getCode(), [403, 404, 500])) {
+                return response()->view('errors.default');
+            }
+        });
     })->create();

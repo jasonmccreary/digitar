@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master', ['errorpage' => true])
 
 @section('content')
 	<style>
