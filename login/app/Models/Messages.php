@@ -10,8 +10,6 @@ class Messages extends Model
 
     public static $rules = [];
 
-    protected $table = 'messages';
-
     public static function newMessage($cid, $bid, $title, $message, $type = false)
     {
         $m = new Messages;
