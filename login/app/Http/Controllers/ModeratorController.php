@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usermods;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 
 class ModeratorController extends Controller
