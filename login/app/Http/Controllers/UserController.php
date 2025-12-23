@@ -648,14 +648,14 @@ class UserController extends Controller
     {
         // Check authorozation
         if (Request::get('safe') !== 'AIzaSyAyXmJSzBExyYfIqKnqYNh_3jRt9XaJlvM') {
-            return Response::json('Not Authorized!', 400);
+            return response()->json('Not Authorized!', 400);
         }
         $user = DB::table('users')->select('id', 'name', 'username', 'password', 'rights', 'cid', 'oid')->where('username', strtolower(Request::get('username')))->where('cid', '<>', '0')->first();
 
         if (count($user) == 1 && Crypt::decrypt($user->password) == Request::get('password')) {
-            return Response::json(['username' => $user->username, 'uid' => $user->id, 'cid' => $user->cid, 'oid' => $user->oid], 200);
+            return response()->json(['username' => $user->username, 'uid' => $user->id, 'cid' => $user->cid, 'oid' => $user->oid], 200);
         } else {
-            return Response::json('Not found!', 400);
+            return response()->json('Not found!', 400);
         }
     }
 
@@ -666,9 +666,9 @@ class UserController extends Controller
         if ($user->count() > 0) {
             $u = $user->first();
 
-            return Response::json(['username' => $u->username, 'uid' => $u->id, 'cid' => $u->cid, 'oid' => $u->oid], 200);
+            return response()->json(['username' => $u->username, 'uid' => $u->id, 'cid' => $u->cid, 'oid' => $u->oid], 200);
         } else {
-            return Response::json('Not found!', 400);
+            return response()->json('Not found!', 400);
         }
     }
 

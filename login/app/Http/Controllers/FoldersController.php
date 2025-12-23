@@ -186,7 +186,7 @@ class FoldersController extends Controller
             $data = true;
         }
         if ($json) {
-            return Response::json($data);
+            return response()->json($data);
         } else {
             return $data;
         }

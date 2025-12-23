@@ -102,7 +102,7 @@ class FileController extends Controller implements HasMiddleware
                 ];
             }
 
-            return Response::json(['data' => $jsonfiles], 200);
+            return response()->json(['data' => $jsonfiles], 200);
         }
 
     }
@@ -110,7 +110,7 @@ class FileController extends Controller implements HasMiddleware
     public static function getOngeboekt()
     {
         if (! Auth::check() || Auth::user()->rights != 1) {
-            return Response::json(['data' => []], 200);
+            return response()->json(['data' => []], 200);
         }
         $user = User::where('id', '=', Auth::user()->id)->first();
         $files = Files::where('geboekt', '=', 0)->whereExists(function ($query) {
@@ -154,7 +154,7 @@ class FileController extends Controller implements HasMiddleware
                 ];
             }
 
-            return Response::json(['data' => $jsonfiles], 200);
+            return response()->json(['data' => $jsonfiles], 200);
         } else {
             return $files->get();
         }
@@ -192,7 +192,7 @@ class FileController extends Controller implements HasMiddleware
             }
         }
 
-        return Response::json(['data' => $jsonfiles], 200);
+        return response()->json(['data' => $jsonfiles], 200);
 
     }
 
@@ -736,9 +736,9 @@ class FileController extends Controller implements HasMiddleware
                     }
                 }
 
-                return Response::json('success', 200);
+                return response()->json('success', 200);
             } else {
-                return Response::json('error', 400);
+                return response()->json('error', 400);
             }
         }
 
@@ -766,9 +766,9 @@ class FileController extends Controller implements HasMiddleware
             if ($upload_success) {
                 CloudsController::addFile($file->getClientOriginalName(), $filename, $client->id);
 
-                return Response::json('success', 200);
+                return response()->json('success', 200);
             } else {
-                return Response::json('error', 400);
+                return response()->json('error', 400);
             }
         }
     }
