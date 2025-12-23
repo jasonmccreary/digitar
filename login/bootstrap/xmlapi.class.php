@@ -264,7 +264,6 @@ class xmlapi
     /**
      * Return whether the debug option is set within the object
      *
-     * @return bool
      *
      * @see set_debug()
      */
@@ -370,7 +369,6 @@ class xmlapi
      *
      * This will return the protocol being connected to
      *
-     * @return string
      *
      * @see set_protocol()
      */
@@ -404,8 +402,6 @@ class xmlapi
      * This function will return the currently set output format
      *
      * @see set_output()
-     *
-     * @return string
      */
     public function get_output(): string
     {
@@ -518,8 +514,6 @@ class xmlapi
      * Return the user being used for authtication
      *
      * This will return the username being authenticated against.
-     *
-     * @return string
      */
     public function get_user(): string
     {
@@ -632,8 +626,6 @@ class xmlapi
      * This will return a string containing the HTTP client currently in use
      *
      * @see set_http_client()
-     *
-     * @return string
      */
     public function get_http_client(): string
     {
@@ -980,7 +972,6 @@ class xmlapi
      * Failure to prive these will cause an error to be logged.  Any other key/value pairs as defined by the createaccount call
      * documentation are allowed parameters for this call.
      *
-     * @param  array  $acctconf
      * @return mixed
      *
      * @link http://docs.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/CreateAccount XML API Call documentation
