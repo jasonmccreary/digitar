@@ -15,7 +15,7 @@ Route::get('organization/superlogin', function () {
 Route::post('organization/supersearch', [UserController::class, 'supersearch'])->middleware('auth');
 
 Route::get('organization', function () {
-    return redirect('/organization/clients');
+    return redirect()->to('/organization/clients');
 })->middleware('auth');
 Route::get('organization/clients', function () {
     $users = new User;

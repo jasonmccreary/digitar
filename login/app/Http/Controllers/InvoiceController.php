@@ -43,7 +43,7 @@ class InvoiceController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return Redirect::back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
+            return redirect()->back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
         } else {
             $invoice = new Invoices;
             $countRows = 0;
@@ -52,7 +52,7 @@ class InvoiceController extends Controller
             if ($check->count() > 0) {
                 Alert::error('Dit factuurnummer nummer bestaat al.')->flash();
 
-                return Redirect::back()->withInput($request->only('reference', 'debtor', 'date'));
+                return redirect()->back()->withInput($request->only('reference', 'debtor', 'date'));
             }
 
             $invoice->cid = $request->user()->cid;
@@ -100,7 +100,7 @@ class InvoiceController extends Controller
                 $invoice->delete();
                 Alert::error('Geen factuur regels!')->flash();
 
-                return Redirect::back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
+                return redirect()->back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
             } else {
                 Alert::success('Factuur toegevoegd')->flash();
 
@@ -124,7 +124,7 @@ class InvoiceController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return Redirect::back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
+            return redirect()->back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
         } else {
             $invoice = new Invoices;
             $countRows = 0;
@@ -133,7 +133,7 @@ class InvoiceController extends Controller
             if ($check->count() > 0 && $id != $check->first()->id) {
                 Alert::error('Dit factuurnummer nummer bestaat al.')->flash();
 
-                return Redirect::back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
+                return redirect()->back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
             }
 
             $i = $invoice->find($id);
@@ -184,12 +184,12 @@ class InvoiceController extends Controller
                 $invoice->delete();
                 Alert::error('Geen factuur regels!')->flash();
 
-                return Redirect::back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
+                return redirect()->back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
             } else {
                 Alert::success('Factuur opgeslagen.')->flash();
 
                 return Redirect::route('invoices');
-                // return Redirect::back();
+                // return redirect()->back();
             }
         }
     }

@@ -33,7 +33,7 @@ class ProductsController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return redirect('/billing/product/add')->withInput();
+            return redirect()->to('/billing/product/add')->withInput();
         } else {
             $p = new Products;
             $p->cid = $request->user()->cid;
@@ -47,7 +47,7 @@ class ProductsController extends Controller
 
             Alert::success('Product toegevoegd!')->flash();
 
-            return redirect('/billing/products');
+            return redirect()->to('/billing/products');
         }
     }
 
@@ -79,7 +79,7 @@ class ProductsController extends Controller
             if (Products::numberExists($request->get('productnumber'))->count() > 0 && $p->productnumber != $request->get('productnumber')) {
                 Alert::error('Artikelnummer bestaat al!')->flash();
 
-                return Redirect::back()->withInput($request->except('productnumber'));
+                return redirect()->back()->withInput($request->except('productnumber'));
             }
 
             $p->ledger = $request->get('ledger');
@@ -93,7 +93,7 @@ class ProductsController extends Controller
 
             Alert::success('Artikel opgeslagen!')->flash();
 
-            return redirect('/billing/products');
+            return redirect()->to('/billing/products');
         }
     }
 
@@ -106,6 +106,6 @@ class ProductsController extends Controller
             Alert::success('Artikel succesvol verwijderd')->flash();
         }
 
-        return redirect('/billing/products');
+        return redirect()->to('/billing/products');
     }
 }

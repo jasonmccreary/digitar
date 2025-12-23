@@ -31,7 +31,7 @@ class DebtorsController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return Redirect::back()->withInput();
+            return redirect()->back()->withInput();
         } else {
             $d = new Debtors;
 
@@ -39,7 +39,7 @@ class DebtorsController extends Controller
             if ($check->count() > 0) {
                 Alert::error('Dit dibiteur nummer bestaat al.')->flash();
 
-                return Redirect::back()->withInput();
+                return redirect()->back()->withInput();
             }
 
             $d->debnumber = $request->get('debnumber');
@@ -63,7 +63,7 @@ class DebtorsController extends Controller
 
             Alert::success('Debiteur toegevoegd')->flash();
 
-            return redirect('/billing/debtors');
+            return redirect()->to('/billing/debtors');
         }
     }
 
@@ -86,7 +86,7 @@ class DebtorsController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return Redirect::back()->withInput();
+            return redirect()->back()->withInput();
         } else {
             $debtor = new Debtors;
 
@@ -94,7 +94,7 @@ class DebtorsController extends Controller
             if ($check->count() > 0 && $id != $check->first()->id) {
                 Alert::error('Dit dibiteur nummer bestaat al.')->flash();
 
-                return Redirect::back()->withInput();
+                return redirect()->back()->withInput();
             }
 
             $d = $debtor->find($id);
@@ -119,7 +119,7 @@ class DebtorsController extends Controller
 
             Alert::success('Debiteur opgeslagen')->flash();
 
-            return redirect('/billing/debtors');
+            return redirect()->to('/billing/debtors');
         }
     }
 
@@ -132,6 +132,6 @@ class DebtorsController extends Controller
             Alert::success('Map succesvol verwijderd')->flash();
         }
 
-        return redirect('/billing/debtors');
+        return redirect()->to('/billing/debtors');
     }
 }

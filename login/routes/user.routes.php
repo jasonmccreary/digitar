@@ -11,7 +11,7 @@ Route::get('user', function () {
         Session::put('year', date('Y'));
     }
 
-    return redirect('/user/folder/inbox');
+    return redirect()->to('/user/folder/inbox');
 })->middleware('auth');
 
 Route::get('user/folder/{fid}', [FileController::class, 'showFiles']);
@@ -45,9 +45,9 @@ Route::post('user/files/bulk', function () {
                     }
                     Alert::success('Bestand(en) verwijderd')->flash();
 
-                    return redirect('/user/folder/inbox');
+                    return redirect()->to('/user/folder/inbox');
                 } else {
-                    return redirect('/user/folder/inbox');
+                    return redirect()->to('/user/folder/inbox');
                 }
 
             } else {
@@ -62,19 +62,19 @@ Route::post('user/files/bulk', function () {
             }
             Alert::success('Bestanden opgesplitst')->flash();
 
-            return redirect('/user/folder/inbox');
+            return redirect()->to('/user/folder/inbox');
         } elseif (Request::has('combine')) {
             FileController::combineFiles(Request::get('fileid'));
 
-            return redirect('/user/folder/inbox');
+            return redirect()->to('/user/folder/inbox');
         } elseif (Request::has('download')) {
             FileController::downloadFiles(Request::get('fileid'));
 
-            return Redirect::back()->with('download', true);
+            return redirect()->back()->with('download', true);
         } elseif (Request::has('booked')) {
             FileController::markBooked(Request::get('fileid'));
 
-            return Redirect::back();
+            return redirect()->back();
         } elseif (Request::has('sendmail')) {
             return view('users.sendfiles', [
                 'title' => 'Bestanden versturen',
@@ -83,16 +83,16 @@ Route::post('user/files/bulk', function () {
         } elseif (Request::has('movefiles')) {
             FileController::moveToFolder(Request::get('fileid'), Request::get('folder'));
 
-            return Redirect::back();
+            return redirect()->back();
         } else {
             Alert::error('Onbekende handeling.')->flash();
 
-            return Redirect::back()->withInput();
+            return redirect()->back()->withInput();
         }
     } else {
         Alert::info('Selecteer selecteer eerst minimaal een document.')->flash();
 
-        return redirect('/user/folder/inbox');
+        return redirect()->to('/user/folder/inbox');
     }
 })->middleware('auth|folders');
 Route::get('user/files/bulk', function () {
@@ -103,7 +103,7 @@ Route::get('user/files/bulk', function () {
         ]);
     } else {
         // dd(Request::old('fileid'));
-        return redirect('/user/folder/inbox');
+        return redirect()->to('/user/folder/inbox');
     }
 })->middleware('auth|folders');
 Route::post('user/sendmail', [FileController::class, 'sendmail']);
@@ -113,12 +113,12 @@ Route::post('user/files/download', function () {
         if (Request::has('download')) {
             FileController::downloadFiles(Request::get('fileid'));
 
-            return Redirect::back();
+            return redirect()->back();
         }
     } else {
         Alert::info('Selecteer selecteer eerst minimaal een document.')->flash();
 
-        return Redirect::back();
+        return redirect()->back();
     }
 })->middleware('auth|folders');
 
@@ -132,9 +132,9 @@ Route::post('user/cloud/bulk', function () {
                     }
                     Alert::success('Bestanden verwijderd')->flash();
 
-                    return redirect('/user/files');
+                    return redirect()->to('/user/files');
                 } else {
-                    return redirect('/user/files');
+                    return redirect()->to('/user/files');
                 }
 
             } else {
@@ -147,7 +147,7 @@ Route::post('user/cloud/bulk', function () {
     } else {
         Alert::info('Selecteer selecteer eerst minimaal een document.')->flash();
 
-        return redirect('/user/folder/inbox');
+        return redirect()->to('/user/folder/inbox');
     }
 })->middleware('auth|folders');
 
@@ -163,5 +163,5 @@ Route::get('user/geboektchecker/{fid}', [FoldersController::class, 'geboektcheck
 Route::get('user/year/{year}', function ($year) {
     Session::put('year', $year);
 
-    return Redirect::back();
+    return redirect()->back();
 });

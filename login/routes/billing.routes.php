@@ -107,7 +107,7 @@ Route::get('billing/invoice/paid/{id}', function ($id) {
 
     Alert::success('Betaling opgeslagen')->flash();
 
-    return redirect('/billing/invoices');
+    return redirect()->to('/billing/invoices');
 })->middleware('auth');
 
 Route::get('billing/invoice/send/{id}', function ($id) {
@@ -118,7 +118,7 @@ Route::get('billing/invoice/send/{id}', function ($id) {
         if (Debtors::where('id', '=', $i->did)->count() <= 0) {
             Alert::error('De debiteur bestaat niet meer.')->flash();
 
-            return Redirect::back();
+            return redirect()->back();
         }
 
         return view('billing.invoices.send', [
@@ -128,7 +128,7 @@ Route::get('billing/invoice/send/{id}', function ($id) {
     } else {
         Alert::error('U hebt nog geen mail layouts aangemaakt!')->flash();
 
-        return Redirect::back();
+        return redirect()->back();
     }
 })->middleware('auth');
 Route::post('billing/invoice/send/{id}', [InvoiceController::class, 'send'])->middleware('auth');

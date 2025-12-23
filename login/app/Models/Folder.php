@@ -41,7 +41,7 @@ class Folder extends Model
     public static function getAllUserFolders($resource = false)
     {
         if (! Auth::check()) {
-            return redirect('/');
+            return redirect()->to('/');
         }
         $folder = Folder::whereExists(function ($query) {
             $query->from('folderrights')

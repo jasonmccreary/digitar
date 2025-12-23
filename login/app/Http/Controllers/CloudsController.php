@@ -73,7 +73,7 @@ class CloudsController extends Controller implements HasMiddleware
         if ($request->user()->lookonly == 1) {
             Alert::error('U mag geen wijzigingen doorvoeren.')->flash();
 
-            return Redirect::back();
+            return redirect()->back();
         }
 
         $input = $request->all();
@@ -101,7 +101,7 @@ class CloudsController extends Controller implements HasMiddleware
 
         Alert::success('Uw wijzigingen zijn succesvol doorgevoerd.')->flash();
 
-        return Redirect::back();
+        return redirect()->back();
 
     }
 

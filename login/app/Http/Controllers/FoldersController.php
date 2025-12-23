@@ -32,7 +32,7 @@ class FoldersController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return redirect('/organization/folder/add')->withInput();
+            return redirect()->to('/organization/folder/add')->withInput();
         } else {
             $f = new Folder;
 
@@ -40,7 +40,7 @@ class FoldersController extends Controller
             if ($check->count() > 0) {
                 Alert::error('De map naam bestaat al.')->flash();
 
-                return Redirect::back()->withInput();
+                return redirect()->back()->withInput();
             }
 
             $order = Folder::getAllUserFolders(true)->max('order') + 1;
@@ -86,13 +86,13 @@ class FoldersController extends Controller
             foreach ($v->messages()->all() as $message) {
                 Alert::error($message)->flash();
 
-                return Redirect::back()->withInput();
+                return redirect()->back()->withInput();
             }
         } else {
             if ($request->get('parent') == $id) {
                 Alert::error('De hoofdmap mag niet het zelfde zijn.')->flash();
 
-                return Redirect::back()->withInput();
+                return redirect()->back()->withInput();
             }
             $folder = new Folder;
             $f = $folder->find($id);
@@ -164,7 +164,7 @@ class FoldersController extends Controller
             Alert::success('Map succesvol verwijderd')->flash();
         }
 
-        return redirect('/organization/folders');
+        return redirect()->to('/organization/folders');
     }
 
     public function sort()

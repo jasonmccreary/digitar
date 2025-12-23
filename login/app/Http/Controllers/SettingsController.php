@@ -98,7 +98,7 @@ class SettingsController extends Controller
 
         Alert::success('Factuur layout opgeslagen!')->flash();
         if ($id != false) {
-            return Redirect::back();
+            return redirect()->back();
         } else {
             return Redirect::route('settingsInvoices');
         }
@@ -152,7 +152,7 @@ class SettingsController extends Controller
         Alert::info('De export wordt gegenereerd!')->flash();
 
         return Response::download($file)->setTtl(1);
-        // return Redirect::back();
+        // return redirect()->back();
     }
 
     public function genBillingExport(Request $request)
@@ -185,6 +185,6 @@ class SettingsController extends Controller
         Alert::info('De export wordt gegenereerd!')->flash();
 
         return Response::download($file)->setTtl(1);
-        // return Redirect::back();
+        // return redirect()->back();
     }
 }

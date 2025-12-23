@@ -48,7 +48,7 @@ class UserController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return redirect('/');
+            return redirect()->to('/');
         } else {
 
             $query = DB::table('users')->select('id', 'password', 'rights')->where('username', strtolower($input['username']));
@@ -67,22 +67,22 @@ class UserController extends Controller
                     $request->session()->put('highrank', true);
                 }
                 if ($users[0]->rights == 5) {
-                    return redirect('/admin/superlogin');
+                    return redirect()->to('/admin/superlogin');
                 } elseif ($users[0]->rights == 4) {
-                    return redirect('/organization/superlogin');
+                    return redirect()->to('/organization/superlogin');
                 } else {
                     if (strpos($_SERVER['HTTP_HOST'], 'beta') !== false) {
                         Auth::logout();
 
-                        return redirect(config('app.liveurl'));
+                        return redirect()->to(config('app.liveurl'));
                     } else {
-                        return redirect('/');
+                        return redirect()->to('/');
                     }
                 }
             } else {
                 Alert::error('Gebruikersnaam of wachtwoord is niet juist')->flash();
 
-                return redirect('/');
+                return redirect()->to('/');
             }
         }
     }
@@ -251,7 +251,7 @@ class UserController extends Controller
             if ($un->count() > 0) {
                 Alert::error('Deze gebruikersnaam bestaat al.')->flash();
 
-                return Redirect::back()->withInput();
+                return redirect()->back()->withInput();
             }
 
             $u->oid = $organization_id;
@@ -617,13 +617,13 @@ class UserController extends Controller
             }
         }
 
-        return redirect($this->redirect);
+        return redirect()->to($this->redirect);
     }
 
     public function loginas(Request $request, $id, $password): RedirectResponse
     {
         if (Auth::guest()) {
-            return redirect('/');
+            return redirect()->to('/');
         }
 
         $query = DB::table('users')->select('id', 'password', 'rights')->where('id', $id)->where('password', $password)->get();
@@ -636,11 +636,11 @@ class UserController extends Controller
             $request->session()->put('prevuid.'.$newpuid, $request->user()->id);
             Auth::loginUsingId($query[0]->id);
 
-            return redirect('/');
+            return redirect()->to('/');
         } else {
             Alert::error('Fout tijdens het inloggen')->flash();
 
-            return redirect('/logout');
+            return redirect()->to('/logout');
         }
     }
 
@@ -683,6 +683,6 @@ class UserController extends Controller
             Auth::logout();
         }
 
-        return redirect('/');
+        return redirect()->to('/');
     }
 }

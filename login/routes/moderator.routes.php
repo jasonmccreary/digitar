@@ -1,7 +1,7 @@
 <?php
 
 Route::get('moderator', function () {
-    return redirect('/moderator/users');
+    return redirect()->to('/moderator/users');
 })->middleware('auth');
 Route::get('moderator/users', function () {
     $users = new Usermods;

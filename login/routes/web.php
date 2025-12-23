@@ -46,7 +46,7 @@ if (! Auth::guest()) {
     }
 } else {
     Route::get('help', function () {
-        return redirect('/');
+        return redirect()->to('/');
     });
 }
 

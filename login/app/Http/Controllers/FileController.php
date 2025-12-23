@@ -38,7 +38,7 @@ class FileController extends Controller implements HasMiddleware
     public function showFiles(Request $request, $fid, $ajax = false)
     {
         if (! $request->user() || $request->user()->rights != 1) {
-            return redirect('/');
+            return redirect()->to('/');
         }
         View::share('fid', $fid);
 
@@ -60,7 +60,7 @@ class FileController extends Controller implements HasMiddleware
             $bookedcheck = 1;
         } else {
             if (Folderright::where('fid', '=', $fid)->where('uid', '=', $request->user()->id)->count() <= 0) {
-                return redirect('403');
+                return redirect()->to('403');
             } // IF A USER IS NOT AUTHORIZED TO VIEW THE FOLDER
             $fo = Folder::where('id', '=', $fid)->first();
             $title = $fo->name;
@@ -246,7 +246,7 @@ class FileController extends Controller implements HasMiddleware
         if ($request->user()->lookonly == 1) {
             Alert::error('U mag geen wijzigingen doorvoeren.')->flash();
 
-            return Redirect::back();
+            return redirect()->back();
         }
 
         $input = $request->all();
@@ -295,7 +295,7 @@ class FileController extends Controller implements HasMiddleware
 
         Alert::success('Uw wijzigingen zijn succesvol doorgevoerd.')->flash();
 
-        return Redirect::back();
+        return redirect()->back();
 
     }
 
@@ -341,7 +341,7 @@ class FileController extends Controller implements HasMiddleware
                 Auth::logout();
                 Alert::error('DE ACTIE DIE U PROBEERT UIT TE VOEREN IS NIET TOEGESTAAN!!!')->flash();
 
-                return redirect('/');
+                return redirect()->to('/');
             }
 
             Alert::success('De documenten zijn gemarkeerd als geboekt.')->flash();
@@ -364,7 +364,7 @@ class FileController extends Controller implements HasMiddleware
                 Auth::logout();
                 Alert::error('DE ACTIE DIE U PROBEERT UIT TE VOEREN IS NIET TOEGESTAAN!!!')->flash();
 
-                return redirect('/');
+                return redirect()->to('/');
             }
 
             Alert::success('De documenten zijn verplaatst naar de map.')->flash();
@@ -799,7 +799,7 @@ class FileController extends Controller implements HasMiddleware
         $organization = User::where('id', '=', $request->user()->oid)->first();
         $client = User::where('id', '=', $request->user()->cid)->where('oid', '=', $request->user()->oid);
         if (! $client->count()) {
-            return redirect('/user/folder/inbox');
+            return redirect()->to('/user/folder/inbox');
         }
         $path = '/home/digitar/clients/'.$organization->username.'/'.$client->first()->username.'/';
 
@@ -879,7 +879,7 @@ class FileController extends Controller implements HasMiddleware
                 Alert::error($message)->flash();
             }
 
-            return Redirect::back()->withInput();
+            return redirect()->back()->withInput();
         } else {
 
             Mail::queue('emails.files', $request->all(), function ($message) {
@@ -901,7 +901,7 @@ class FileController extends Controller implements HasMiddleware
 
             Alert::success('De bestanden zijn verstuurd!')->flash();
 
-            return redirect('/user/folder/inbox');
+            return redirect()->to('/user/folder/inbox');
         }
     }
 
@@ -917,13 +917,13 @@ class FileController extends Controller implements HasMiddleware
         $organization = $u
             ->where('id', '=', $oid);
         if (! $organization->count()) {
-            return redirect('/user/folder/inbox');
+            return redirect()->to('/user/folder/inbox');
         }
         $client = $u
             ->where('id', '=', $clientid)
             ->where('oid', '=', $oid);
         if (! $client->count()) {
-            return redirect('/user/folder/inbox');
+            return redirect()->to('/user/folder/inbox');
         }
 
         return '../../../clients/'.$organization->first()->username.'/'.$client->first()->username.'/';

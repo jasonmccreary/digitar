@@ -32,7 +32,7 @@ class OrganizationsController extends Controller
                 Alert::error($message)->flash();
             }
 
-            return redirect('/admin/organizations/add')->withInput();
+            return redirect()->to('/admin/organizations/add')->withInput();
         } else {
             $o = new Organizations;
             $o->name = $request->get('businessname');
@@ -46,7 +46,7 @@ class OrganizationsController extends Controller
 
             Alert::success('De nieuwe organisatie is toegevoegd')->flash();
 
-            return redirect('/admin/organizations');
+            return redirect()->to('/admin/organizations');
         }
     }
 
@@ -63,7 +63,7 @@ class OrganizationsController extends Controller
             Alert::success('Organizatie succesvol verwijderd')->flash();
         }
 
-        return redirect('/admin/organizations');
+        return redirect()->to('/admin/organizations');
     }
 
     /**
@@ -103,7 +103,7 @@ class OrganizationsController extends Controller
 
             Alert::success('Organizatie opgeslagen')->flash();
 
-            return redirect('/admin/organizations');
+            return redirect()->to('/admin/organizations');
         }
     }
 }

@@ -5,7 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('client', function () {
-    return redirect('/client/users');
+    return redirect()->to('/client/users');
 })->middleware('auth');
 Route::get('client/users', function () {
     $users = new User;
@@ -89,11 +89,11 @@ Route::get('client/user/credentials/{id}', function ($id) {
         });
         Alert::success('Inlog gegevens zijn verstuurd!')->flash();
 
-        return redirect('/client/users');
+        return redirect()->to('/client/users');
     } else {
         Alert::error('Gebruiker heeft geen email adres!')->flash();
 
-        return redirect('/client/users');
+        return redirect()->to('/client/users');
     }
 })->middleware('auth|user');
 

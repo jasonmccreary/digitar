@@ -107,7 +107,7 @@ class ToolsController extends Controller
 
         Alert::success('Een nieuwe forwarder is aangemaakt voor: '.$request->get('username'))->flash();
 
-        return redirect('/admin/tools/forwardcheck');
+        return redirect()->to('/admin/tools/forwardcheck');
     }
 
     public static function checkFtp()
@@ -162,7 +162,7 @@ class ToolsController extends Controller
             Alert::success('Een nieuw FTP account is aangemaakt voor: '.$request->get('username'))->flash();
         }
 
-        return redirect('/admin/tools/ftpcheck');
+        return redirect()->to('/admin/tools/ftpcheck');
     }
 
     public static function getUserDirSize($uid)
