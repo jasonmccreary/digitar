@@ -6,9 +6,7 @@ use App\Http\Controllers\UserController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
-Route::get('admin', function () {
-    return redirect('/admin/superlogin');
-})->middleware('auth');
+Route::redirect('admin', '/admin/superlogin');
 
 Route::get('admin/superlogin', function () {
     $u = new User;
@@ -104,7 +102,7 @@ Route::get('admin/user/add', function () {
         // if there are no organizations redirect with message
         Alert::warning('Er zijn nog geen organisaties, maak eerst een organisatie.')->flash();
 
-        return redirect('/admin/organizations/add');
+        return redirect()->to('/admin/organizations/add');
     }
 })->middleware('auth');
 Route::post('admin/user/add', [UserController::class, 'addOrganization'])->middleware('auth');
@@ -171,7 +169,7 @@ Route::get('admin/logs/clear', function () {
 
     Alert::success('Logs cleared!')->flash();
 
-    return redirect('/admin/logs');
+    return redirect()->to('/admin/logs');
 })->middleware('auth');
 
 Route::get('admin/size', function () {
@@ -248,7 +246,7 @@ Route::get('admin/lastlogin', function () {
 
     $return = '<table class="table table-hover table-condensed"><thead><tr><th>Gebruiker</th><th>Klant</th><th>Ingelogd</th></tr></thead><tbody>';
 
-    $users = user::whereNotNull('lastlogin')->orderBy('lastlogin', 'DESC')->take(10)->get();
+    $users = user::whereNotNull('lastlogin')->orderByDesc('lastlogin')->take(10)->get();
     foreach ($users as $user) {
         $Date = new DateTime($user->lastlogin);
         $client = user::getUserName($user->cid);
