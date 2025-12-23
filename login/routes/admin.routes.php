@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 Route::get('admin', function () {
-    return redirect('/admin/superlogin');
+    return redirect()->to('/admin/superlogin');
 })->middleware('auth');
 
 Route::get('admin/superlogin', function () {
@@ -104,7 +104,7 @@ Route::get('admin/user/add', function () {
         // if there are no organizations redirect with message
         Alert::warning('Er zijn nog geen organisaties, maak eerst een organisatie.')->flash();
 
-        return redirect('/admin/organizations/add');
+        return redirect()->to('/admin/organizations/add');
     }
 })->middleware('auth');
 Route::post('admin/user/add', [UserController::class, 'addOrganization'])->middleware('auth');
@@ -171,7 +171,7 @@ Route::get('admin/logs/clear', function () {
 
     Alert::success('Logs cleared!')->flash();
 
-    return redirect('/admin/logs');
+    return redirect()->to('/admin/logs');
 })->middleware('auth');
 
 Route::get('admin/size', function () {
