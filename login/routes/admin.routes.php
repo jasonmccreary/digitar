@@ -248,7 +248,7 @@ Route::get('admin/lastlogin', function () {
 
     $return = '<table class="table table-hover table-condensed"><thead><tr><th>Gebruiker</th><th>Klant</th><th>Ingelogd</th></tr></thead><tbody>';
 
-    $users = user::whereNotNull('lastlogin')->orderBy('lastlogin', 'DESC')->take(10)->get();
+    $users = user::whereNotNull('lastlogin')->orderByDesc('lastlogin')->take(10)->get();
     foreach ($users as $user) {
         $Date = new DateTime($user->lastlogin);
         $client = user::getUserName($user->cid);
@@ -337,7 +337,7 @@ Route::get('admin/tools/getpdfcontents', function () {
 
     return view('admin.tools.savepdfcontents', [
         'title' => 'Check FTP accounts',
-        'amount' => Files::whereNull('contents')->where('updated_at', '<', Carbon::today())->orderBy('ID', 'DESC')->count(),
+        'amount' => Files::whereNull('contents')->where('updated_at', '<', Carbon::today())->orderByDesc('ID')->count(),
     ]);
 
 })->middleware('auth');
