@@ -6,9 +6,7 @@ use App\Http\Controllers\UserController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
-Route::get('admin', function () {
-    return redirect()->to('/admin/superlogin');
-})->middleware('auth');
+Route::redirect('admin', '/admin/superlogin');
 
 Route::get('admin/superlogin', function () {
     $u = new User;
@@ -313,32 +311,11 @@ Route::get('admin/client/details/{id}', function ($id) {
  * ======================
  */
 
-Route::get('admin/tools/forwardcheck', function () {
-
-    return view('admin.tools.checkforwarders', [
-        'title' => 'Check e-mail forwarders',
-        'users' => ToolsController::checkForwarders(),
-    ]);
-
-})->middleware('auth');
+Route::view('admin/tools/forwardcheck', 'admin.tools.checkforwarders', ['title' => 'Check e-mail forwarders', 'users' => ToolsController::checkForwarders()])->middleware('auth');
 Route::post('admin/tools/forwardcheck', [ToolsController::class, 'createForwarder'])->middleware('auth');
 
-Route::get('admin/tools/ftpcheck', function () {
-
-    return view('admin.tools.ftpcheck', [
-        'title' => 'Check FTP accounts',
-        'users' => ToolsController::checkFtp(),
-    ]);
-
-})->middleware('auth');
+Route::view('admin/tools/ftpcheck', 'admin.tools.ftpcheck', ['title' => 'Check FTP accounts', 'users' => ToolsController::checkFtp()])->middleware('auth');
 Route::post('admin/tools/ftpcheck', [ToolsController::class, 'createFtp'])->middleware('auth');
 
-Route::get('admin/tools/getpdfcontents', function () {
-
-    return view('admin.tools.savepdfcontents', [
-        'title' => 'Check FTP accounts',
-        'amount' => Files::whereNull('contents')->where('updated_at', '<', Carbon::today())->orderByDesc('ID')->count(),
-    ]);
-
-})->middleware('auth');
+Route::view('admin/tools/getpdfcontents', 'admin.tools.savepdfcontents', ['title' => 'Check FTP accounts', 'amount' => Files::whereNull('contents')->where('updated_at', '<', Carbon::today())->orderByDesc('ID')->count()])->middleware('auth');
 Route::post('admin/tools/getpdfcontents', [ToolsController::class, 'savePdfContents'])->middleware('auth');

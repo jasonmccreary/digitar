@@ -4,9 +4,7 @@ use App\Http\Controllers\FoldersController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('client', function () {
-    return redirect()->to('/client/users');
-})->middleware('auth');
+Route::redirect('client', '/client/users');
 Route::get('client/users', function () {
     $users = new User;
     $u = $users->where('rights', '=', '1')->where('oid', '=', Auth::user()->oid)->where('cid', '=', Auth::user()->id)->get();

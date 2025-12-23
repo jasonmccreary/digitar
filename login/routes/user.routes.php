@@ -20,14 +20,8 @@ Route::get('user/ongeboekt/ajax', [FileController::class, 'getOngeboekt']);
 Route::any('user/search/{search}', [FileController::class, 'showFiles']);
 Route::any('user/search/{search}/ajax/', [FileController::class, 'searchFiles']);
 
-Route::get('user/upload', function () {
-    return view('users.upload', [
-        'title' => 'Bestanden toevoegen',
-    ]);
-})->middleware('auth|folders');
-Route::get('user/ajax/messages', function () {
-    return view('users.ajax.messages');
-})->middleware('auth');
+Route::view('user/upload', 'users.upload', ['title' => 'Bestanden toevoegen'])->middleware('auth|folders');
+Route::view('user/ajax/messages', 'users.ajax.messages')->middleware('auth');
 
 Route::get('user/files', [CloudsController::class, 'showFiles']);
 

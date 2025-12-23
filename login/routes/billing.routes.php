@@ -6,11 +6,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('billing', function () {
-    return view('billing.overview', [
-        'title' => 'Facturatie',
-    ]);
-})->middleware('auth');
+Route::view('billing', 'billing.overview', ['title' => 'Facturatie'])->middleware('auth');
 
 /*
  * ======================
@@ -28,11 +24,7 @@ Route::get('billing/debtors', function () {
     ]);
 })->middleware('auth');
 
-Route::get('billing/debtors/add', function () {
-    return view('billing.debtors.add', [
-        'title' => 'Debiteur toevoegen',
-    ]);
-})->middleware('auth');
+Route::view('billing/debtors/add', 'billing.debtors.add', ['title' => 'Debiteur toevoegen'])->middleware('auth');
 Route::post('billing/debtors/add', [DebtorsController::class, 'add'])->middleware('auth');
 
 Route::get('billing/debtor/edit/{id}', function ($id) {
@@ -72,11 +64,7 @@ Route::get('billing/invoices', function () {
     ]);
 })->name('invoices')->middleware('auth');
 
-Route::get('billing/invoices/add', function () {
-    return view('billing.invoices.add', [
-        'title' => 'Factuur aanmaken',
-    ]);
-})->middleware('auth');
+Route::view('billing/invoices/add', 'billing.invoices.add', ['title' => 'Factuur aanmaken'])->middleware('auth');
 Route::post('billing/invoices/add', [InvoiceController::class, 'add'])->middleware('auth');
 
 Route::get('billing/invoice/edit/{id}', function ($id) {
@@ -149,11 +137,7 @@ Route::get('billing/products', function () {
     ]);
 })->middleware('auth');
 
-Route::get('billing/product/add', function () {
-    return view('billing.products.add', [
-        'title' => 'Artikel aanmaken',
-    ]);
-})->middleware('auth');
+Route::view('billing/product/add', 'billing.products.add', ['title' => 'Artikel aanmaken'])->middleware('auth');
 Route::post('billing/product/add', [ProductsController::class, 'add'])->middleware('auth');
 
 Route::get('billing/product/edit/{id}', function ($id) {
@@ -182,17 +166,9 @@ Route::post('billing/product/delete/{id}', [ProductsController::class, 'delete']
  * ======================
  */
 
-Route::get('billing/settings/invoices', function () {
-    return view('billing.settings.invoice.overview', [
-        'title' => 'Factuur layouts',
-    ]);
-})->name('settingsInvoices')->middleware('auth');
+Route::view('billing/settings/invoices', 'billing.settings.invoice.overview', ['title' => 'Factuur layouts'])->name('settingsInvoices')->middleware('auth');
 
-Route::get('billing/settings/invoice/add', function () {
-    return view('billing.settings.invoice.add', [
-        'title' => 'Factuur layout toevoegen',
-    ]);
-})->middleware('auth');
+Route::view('billing/settings/invoice/add', 'billing.settings.invoice.add', ['title' => 'Factuur layout toevoegen'])->middleware('auth');
 Route::post('billing/settings/invoice/add', [SettingsController::class, 'saveInvoices'])->middleware('auth');
 
 Route::get('billing/settings/invoice/edit/{id}', function ($id) {
@@ -215,17 +191,9 @@ Route::get('billing/settings/invoice/delete/{id}', function ($id) {
 })->middleware('auth');
 Route::post('billing/settings/invoice/delete/{id}', [SettingsController::class, 'deleteInvoice'])->middleware('auth');
 
-Route::get('billing/settings/mails', function () {
-    return view('billing.settings.mail.overview', [
-        'title' => 'Mail layouts',
-    ]);
-})->name('settingsMails')->middleware('auth');
+Route::view('billing/settings/mails', 'billing.settings.mail.overview', ['title' => 'Mail layouts'])->name('settingsMails')->middleware('auth');
 
-Route::get('billing/settings/mail/add', function () {
-    return view('billing.settings.mail.add', [
-        'title' => 'Mail layout toevoegen',
-    ]);
-})->middleware('auth');
+Route::view('billing/settings/mail/add', 'billing.settings.mail.add', ['title' => 'Mail layout toevoegen'])->middleware('auth');
 Route::post('billing/settings/mail/add', [SettingsController::class, 'saveMails'])->middleware('auth');
 
 Route::get('billing/settings/mail/edit/{id}', function ($id) {
@@ -248,9 +216,7 @@ Route::get('billing/settings/mail/delete/{id}', function ($id) {
 })->middleware('auth');
 Route::post('billing/settings/mail/delete/{id}', [SettingsController::class, 'deleteMail'])->middleware('auth');
 
-Route::get('billing/settings/port', function () {
-    return view('billing.settings.port.index');
-})->middleware('auth');
+Route::view('billing/settings/port', 'billing.settings.port.index')->middleware('auth');
 Route::get('billing/settings/port/exportdebtors', [SettingsController::class, 'genDebtorsExport'])->middleware('auth');
 Route::get('billing/settings/port/exportbilling', [SettingsController::class, 'genBillingExport'])->middleware('auth');
 
