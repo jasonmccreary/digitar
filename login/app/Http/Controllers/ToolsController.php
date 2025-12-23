@@ -70,7 +70,6 @@ class ToolsController extends Controller
         $p['domain'] = 'digitar.nu';
         $res = $xmlapi->api2_query('digitar', 'Email', 'listforwards', $p);
         $result = json_decode($res);
-        dd($result);
         foreach ($result->cpanelresult->data as $row) {
             $user = explode('@', $row->dest);
             $emails[$user[0]] = $row;

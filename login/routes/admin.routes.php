@@ -3,13 +3,16 @@
 use App\Http\Controllers\OrganizationsController;
 use App\Http\Controllers\ToolsController;
 use App\Http\Controllers\UserController;
-use App\Models\Organizations;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('admin', '/admin/superlogin');
+Route::get('admin', function () {
+    return redirect('/admin/superlogin');
+})->middleware('auth');
 
 Route::get('admin/superlogin', function () {
+    $u = new User;
+
     return view('login.superlogin', [
         'superlogin' => 'true',
     ]);
@@ -17,9 +20,11 @@ Route::get('admin/superlogin', function () {
 Route::post('admin/supersearch', [UserController::class, 'supersearch'])->middleware('auth');
 
 Route::get('admin/organizations', function () {
+    $o = new Organizations;
+
     return view('admin.organizations.overview', [
         'title' => 'Organisaties',
-        'organizations' => Organizations::all(),
+        'organizations' => $o->all(),
     ]);
 })->middleware('auth');
 /*
@@ -28,7 +33,7 @@ Route::get('admin/organizations', function () {
  |--------------------------------------------------------------------------
 */
 Route::get('admin/organizations/add', function () {
-    return view('admin.organizations.add', ['title' => 'Organisatie toevoegen']);
+    return view('admin.organizations.add')->with('title', 'Organisatie toevoegen');
 })->middleware('auth');
 Route::post('admin/organizations/add', [OrganizationsController::class, 'add'])->middleware('auth');
 /*
@@ -37,7 +42,8 @@ Route::post('admin/organizations/add', [OrganizationsController::class, 'add'])-
  |--------------------------------------------------------------------------
 */
 Route::get('admin/organization/edit/{id}', function ($id) {
-    $org = Organizations::find($id);
+    $o = new Organizations;
+    $org = $o->find($id);
 
     return view('admin.organizations.edit', [
         'title' => 'Organisatie bewerken',
@@ -98,7 +104,7 @@ Route::get('admin/user/add', function () {
         // if there are no organizations redirect with message
         Alert::warning('Er zijn nog geen organisaties, maak eerst een organisatie.')->flash();
 
-        return redirect()->to('/admin/organizations/add');
+        return redirect('/admin/organizations/add');
     }
 })->middleware('auth');
 Route::post('admin/user/add', [UserController::class, 'addOrganization'])->middleware('auth');
@@ -165,7 +171,7 @@ Route::get('admin/logs/clear', function () {
 
     Alert::success('Logs cleared!')->flash();
 
-    return redirect()->to('/admin/logs');
+    return redirect('/admin/logs');
 })->middleware('auth');
 
 Route::get('admin/size', function () {
@@ -242,7 +248,7 @@ Route::get('admin/lastlogin', function () {
 
     $return = '<table class="table table-hover table-condensed"><thead><tr><th>Gebruiker</th><th>Klant</th><th>Ingelogd</th></tr></thead><tbody>';
 
-    $users = user::whereNotNull('lastlogin')->orderByDesc('lastlogin')->take(10)->get();
+    $users = user::whereNotNull('lastlogin')->orderBy('lastlogin', 'DESC')->take(10)->get();
     foreach ($users as $user) {
         $Date = new DateTime($user->lastlogin);
         $client = user::getUserName($user->cid);
@@ -307,11 +313,32 @@ Route::get('admin/client/details/{id}', function ($id) {
  * ======================
  */
 
-Route::view('admin/tools/forwardcheck', 'admin.tools.checkforwarders', ['title' => 'Check e-mail forwarders', 'users' => ToolsController::checkForwarders()])->middleware('auth');
+Route::get('admin/tools/forwardcheck', function () {
+
+    return view('admin.tools.checkforwarders', [
+        'title' => 'Check e-mail forwarders',
+        'users' => ToolsController::checkForwarders(),
+    ]);
+
+})->middleware('auth');
 Route::post('admin/tools/forwardcheck', [ToolsController::class, 'createForwarder'])->middleware('auth');
 
-Route::view('admin/tools/ftpcheck', 'admin.tools.ftpcheck', ['title' => 'Check FTP accounts', 'users' => ToolsController::checkFtp()])->middleware('auth');
+Route::get('admin/tools/ftpcheck', function () {
+
+    return view('admin.tools.ftpcheck', [
+        'title' => 'Check FTP accounts',
+        'users' => ToolsController::checkFtp(),
+    ]);
+
+})->middleware('auth');
 Route::post('admin/tools/ftpcheck', [ToolsController::class, 'createFtp'])->middleware('auth');
 
-Route::view('admin/tools/getpdfcontents', 'admin.tools.savepdfcontents', ['title' => 'Check FTP accounts', 'amount' => Files::whereNull('contents')->where('updated_at', '<', Carbon::today())->orderByDesc('ID')->count()])->middleware('auth');
+Route::get('admin/tools/getpdfcontents', function () {
+
+    return view('admin.tools.savepdfcontents', [
+        'title' => 'Check FTP accounts',
+        'amount' => Files::whereNull('contents')->where('updated_at', '<', Carbon::today())->orderBy('ID', 'DESC')->count(),
+    ]);
+
+})->middleware('auth');
 Route::post('admin/tools/getpdfcontents', [ToolsController::class, 'savePdfContents'])->middleware('auth');
