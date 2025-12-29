@@ -20,6 +20,8 @@
         	</div>
 			<div class="tiles grey p-t-20 p-b-20 text-black">
 				<form id="frm_login" class="animated fadeIn" role="form" method="POST">
+					@csrf
+
 	            	<div class="row form-row m-l-20 m-r-20 xs-m-l-10 xs-m-r-10">
 	              		<div class="col-md-11 col-sm-11 ">
 	                		<input name="user" id="user" type="text" class="form-control" placeholder="klant naam" required="" autofocus="" autocomplete="off" >

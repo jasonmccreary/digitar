@@ -1,17 +1,18 @@
 @extends('master')
 
 @section('content')
-	
+
 	<h4>Weet je zeker dat je de volgende bestanden wilt verwijderen?</h4>
 
 	<form method="post" action="/user/files/bulk">
+		@csrf
 
 		<ul>
-		@foreach($filesArray as $id => $file) 
+		@foreach($filesArray as $id => $file)
 			<li>
 				{!! $file !!}
 				<input type="hidden" name="fileid[{!! $id !!}]" value="{!! $file !!}" />
-			</li>			
+			</li>
 		@endforeach
 		</ul>
 

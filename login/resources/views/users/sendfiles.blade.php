@@ -1,13 +1,15 @@
 @extends('master')
 
 @section('content')
-	
+
 	<form method="post" action="/user/sendmail">
+		@csrf
+
 		<div class="row toolButtons" style="bottom:0 !important;">
 			<div class="pull-right" style="padding-right:15px;">
 				<button type="submit" name="sendmail" value="true" class="btn btn-success btn-cons">Versturen</button>
 				<button type="submit" name="cancel" value="true" class="btn btn-danger btn-cons">Annuleren</button>
-			</div>			
+			</div>
 		</div>
 		<div class="row-fluid ">
 			<h2>Bestanden versturen </h2>

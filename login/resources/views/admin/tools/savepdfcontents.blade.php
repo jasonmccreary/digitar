@@ -17,12 +17,13 @@
     @endif
 
 	@if($amount > 0)
-        
+
         <p>
             Er zijn <span class="semi-bold">{!! $amount !!}</span> bestanden gevonden waar de gegevens van kunnen worden opgeslagen.
         </p>
 
         <form method="post">
+            @csrf
             <button name="getcontents" value="1" class="btn btn-white btn-xs btn-mini" title="Inhoud ophalen en opslaan">Inhoud ophalen en opslaan</button>
         </form>
 

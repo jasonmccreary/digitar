@@ -10,6 +10,7 @@
 				<div class="grid-body no-border">
 					@if(Auth::user()->lookonly == 0)
 					<form id="form_traditional_validation" action="/user/file/editdetails/{!! $file['id'] !!}" method="post">
+						@csrf
 					@endif
 
 					<div class="form-group">

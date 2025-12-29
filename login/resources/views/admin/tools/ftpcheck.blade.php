@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('content')
-	
+
 	@if(count($users) > 0)
 	<div class="alert alert-error">
 		<button class="close" data-dismiss="alert"></button>
@@ -23,6 +23,7 @@
 					<td>{!! $u->username !!}</td>
 					<td>
 						<form method="post">
+							@csrf
 							<input type="hidden" name="organization" value="{!! User::getUserUsername($u->oid) !!}" />
 							<input type="hidden" name="password" value="{!! Crypt::decrypt($u->password) !!}" />
 							<button name="username" value="{!! $u->username !!}" class="btn btn-white btn-xs btn-mini" title="Forwarder creëren"><i class="fa fa-wrench"></i></button>

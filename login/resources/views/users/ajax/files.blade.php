@@ -3,6 +3,8 @@
 
 	@if(!is_numeric($fid) && Auth::user()->lookonly == 0)
 	<form method="post" action="/user/files/bulk">
+		@csrf
+
 		<div class="row toolButtons" data-count="0">
 			<div class="pull-left hide-phone countSelected"></div>
 			<div class="pull-right" style="padding-right:15px;">
@@ -21,6 +23,8 @@
 	@endif
 	@if(is_numeric($fid) && Auth::user()->lookonly == 0)
 	<form method="post" action="/user/files/bulk">
+		@csrf
+
 		<div class="row toolButtons" data-count="0">
 			<div class="pull-left hide-phone countSelected"></div>
 			<div class="pull-right" style="padding-right:15px;">

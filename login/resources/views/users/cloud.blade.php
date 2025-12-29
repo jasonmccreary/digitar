@@ -1,14 +1,15 @@
 @extends('master')
 
 @section('content')
-	
-	<form method="post" action="/user/cloud/bulk">
 
-	@if(!is_numeric($fid) && Auth::user()->lookonly == 0) 
+	<form method="post" action="/user/cloud/bulk">
+		@csrf
+
+	@if(!is_numeric($fid) && Auth::user()->lookonly == 0)
 		<div class="row">
 			<div class="pull-right" style="padding-right:15px;">
 				<button type="submit" name="delete" value="true" class="btn btn-xs btn-mini btn-danger">Verwijderen</button>
-			</div>			
+			</div>
 		</div>
 		<br /><br />
 		<div class="clearfix"></div>
@@ -17,7 +18,7 @@
 	<table class="table table-hover table-condensed" id="cloudtable">
       	<thead>
         	<tr>
-	          	@if(!is_numeric($fid) && Auth::user()->lookonly == 0) 
+	          	@if(!is_numeric($fid) && Auth::user()->lookonly == 0)
 	          	<th style="width:1%"></th>
 	          	@endif
 	          	<th style="width:8%"></th>
@@ -31,7 +32,7 @@
 
 	@foreach($files as $file)
 			<tr>
-				@if(!is_numeric($fid) && Auth::user()->lookonly == 0) 
+				@if(!is_numeric($fid) && Auth::user()->lookonly == 0)
 		      	<td class="v-align-middle"><div class="checkbox check-default">
 		          	<input type="checkbox" value="{!! $file->name !!}" name="fileid[{!! $file->id !!}]" id="checkbox{!! $file->id !!}">
 		          	<label for="checkbox{!! $file->id !!}"></label>

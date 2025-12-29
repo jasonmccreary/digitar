@@ -19,14 +19,16 @@
 </form> -->
 
 <div class="container">
-  <div class="row login-container animated fadeInUp">  
+  <div class="row login-container animated fadeInUp">
         <div class="col-md-7 col-md-offset-2 tiles white no-padding">
-		 <div class="p-t-30 p-l-40 p-r-40 p-b-20 xs-p-t-10 xs-p-l-10 xs-p-r-10 xs-p-b-10"> 
+		 <div class="p-t-30 p-l-40 p-r-40 p-b-20 xs-p-t-10 xs-p-l-10 xs-p-r-10 xs-p-b-10">
           <h2 class="normal">Inloggen</h2>
 			{{-- @include('layouts.messages') --}}
         </div>
 		<div class="tiles grey p-t-20 p-b-20 text-black">
-			<form id="frm_login" class="animated fadeIn" role="form" method="POST">    
+			<form id="frm_login" class="animated fadeIn" role="form" method="POST">
+				@csrf
+
 	            <div class="row form-row m-l-20 m-r-20 xs-m-l-10 xs-m-r-10">
 	              <div class="col-md-6 col-sm-6 ">
 	                <input name="username" id="username" type="text" class="form-control" placeholder="Gebruikersnaam" required="" autofocus="">
@@ -39,8 +41,8 @@
 	              </div>
 	            </div>
 			</form>
-		</div>   
-      </div>   
+		</div>
+      </div>
   </div>
 </div>
 

@@ -4,6 +4,8 @@
 
 	@if(Auth::user()->lookonly == 0)
 	<form action="/user/upload/post" class="dropzone2">
+		@csrf
+
 	    <div class="fallback">
 	        <input name="file" type="file" multiple />
 	    </div>

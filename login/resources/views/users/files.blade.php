@@ -3,6 +3,8 @@
 @section('content')
 
 	<form method="post" action="/user/files/bulk">
+		@csrf
+
 	<div class="content">
 	<div class="page-title">
 		<h3 id="foldertitle" fid="{!! $fid !!}">{!! $title !!}</h3>

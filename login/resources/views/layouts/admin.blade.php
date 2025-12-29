@@ -87,6 +87,7 @@ $aYears = App\Models\Files::getYears();
             <span class="add-on"><span class="iconset top-search"></span></span>
             @if (Request::is('billing*'))
               <form method="POST" action="/billing/search" style="float:left;">
+                @csrf
                 <input name="billing-search" value="{{ Request::get('search') }}" type="text" class="no-boarder" autocomplete="off" placeholder="Doorzoek facturatie" style="width:350px;">
               </form>
             @else
