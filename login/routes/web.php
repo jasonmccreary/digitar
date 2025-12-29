@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\Help;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -30,17 +31,10 @@ Route::get('/api/genpass', function () {
     return Str::random(8);
 });
 
-if (! Auth::guest()) {
-    if (Auth::user()->rights == 1) {
-        Route::view('help', 'help.overview', ['title' => 'Veel gestelde vragen &amp; uitleg'])->middleware('folders');
-    } else {
-        Route::view('help', 'help.overview', ['title' => 'Veel gestelde vragen &amp; uitleg']);
-    }
-} else {
-    Route::redirect('help', '/');
-}
+Route::get('help', Help::class);
 
 Route::view('403', 'errors.403');
 
-$pgcount = Session::get('pgcount') + 1;
-Session::put('pgcount', $pgcount);
+// TODO:
+// $pgcount = Session::get('pgcount') + 1;
+// Session::put('pgcount', $pgcount);
