@@ -1,6 +1,5 @@
 <?php
 
-use App\Providers\AppServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,8 +14,26 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->redirectGuestsTo(fn () => route('login'));
-        $middleware->redirectUsersTo(AppServiceProvider::HOME);
+        $middleware->redirectGuestsTo(function () {
+            Alert::error('Je moet eerst inloggen om deze pagina te bekijken')->flash();
+
+            return url('/');
+        });
+        $middleware->redirectUsersTo(function () {
+            return match (auth()->user()->rights) {
+                5 => url('/admin/organizations'),
+                4 => url('/organization'),
+                3 => url('/moderator'),
+                2 => url('/client'),
+                1 => url('/user'),
+                default => url('/'),
+            };
+        });
+
+        $middleware->alias([
+            'folder' => App\Http\Middleware\FolderAccess::class,
+            'users' => App\Http\Middleware\FolderAccess::class,
+        ]);
 
         $middleware->throttleApi();
     })

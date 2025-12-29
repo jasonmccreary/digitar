@@ -18,10 +18,7 @@ class CloudsController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
-        return [
-            'auth',
-            'folders',
-        ];
+        return ['auth'];
     }
 
     public function showFiles(Request $request): \Illuminate\View\View
@@ -37,6 +34,7 @@ class CloudsController extends Controller implements HasMiddleware
         return view('users.cloud', [
             'title' => $title,
             'files' => $files->get(),
+            'aFolders' => Folder::getAllUserFolders(),
         ]);
 
     }
@@ -141,6 +139,7 @@ class CloudsController extends Controller implements HasMiddleware
 
         return view('users.viewdetails', [
             'file' => $file,
+            'aFolders' => Folder::getAllUserFolders(),
         ]);
     }
 

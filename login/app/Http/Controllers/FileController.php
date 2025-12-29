@@ -10,7 +10,6 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -22,23 +21,13 @@ use Illuminate\Support\Str;
 use Prologue\Alerts\Facades\Alert;
 use Symfony\Component\Process\Process;
 
-class FileController extends Controller implements HasMiddleware
+class FileController extends Controller
 {
-    private $fileurl;
-
-    public static function middleware(): array
-    {
-        return [
-            'folders',
-        ];
-    }
-
     public function showFiles(Request $request, $fid, $ajax = false)
     {
         if (! $request->user() || $request->user()->rights != 1) {
             return redirect()->to('/');
         }
-        View::share('fid', $fid);
 
         if (! is_numeric($fid)) {
             if ($fid == 'inbox' && $request->user()->onverwerkt == 0) {
@@ -47,14 +36,11 @@ class FileController extends Controller implements HasMiddleware
                 // dd($folder);
                 return redirect('/user/folder/'.$folder->fid);
             }
-            switch ($fid) {
-                case 'inbox':
-                    $title = 'Onverwerkt';
-                    break;
-                default:
-                    $title = 'Zoeken naar: '.ucfirst($fid);
-                    break;
-            }
+
+            $title = match ($fid) {
+                'inbox' => 'Onverwerkt',
+                default => 'Zoeken naar: '.ucfirst($fid),
+            };
             $bookedcheck = 1;
         } else {
             if (Folderright::where('fid', '=', $fid)->where('uid', '=', $request->user()->id)->count() <= 0) {
@@ -76,12 +62,16 @@ class FileController extends Controller implements HasMiddleware
         }
         $files->orderByDesc('date');
 
-        if ($ajax == false) {
+        if (! $ajax) {
             return view('users.files', [
                 'title' => $title,
                 'noGrid' => 'true',
+                'aFolders' => Folder::getAllUserFolders(),
+                'fid' => $fid,
             ]);
-        } elseif ($request->is('*ajax*')) {
+        }
+
+        if ($request->is('*ajax*')) {
             $jsonfiles = [];
 
             foreach ($files->get() as $key => $file) {
@@ -102,7 +92,6 @@ class FileController extends Controller implements HasMiddleware
 
             return response()->json(['data' => $jsonfiles], 200);
         }
-
     }
 
     public static function getOngeboekt()
@@ -782,6 +771,7 @@ class FileController extends Controller implements HasMiddleware
 
         return view('users.viewfile', [
             'file' => $file,
+            'aFolders' => Folder::getAllUserFolders(),
         ]);
     }
 
