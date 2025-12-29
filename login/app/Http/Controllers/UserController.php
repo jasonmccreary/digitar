@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -52,7 +53,7 @@ class UserController extends Controller
             $query = DB::table('users')->select('id', 'password', 'rights')->where('username', strtolower($input['username']));
             $users = $query->get();
 
-            if (count($users) == 1 && Crypt::decrypt($users[0]->password) == $input['password']) {
+            if (count($users) === 1 && Hash::check($input['password'], $users[0]->password)) {
 
                 $dt = new \DateTime;
                 $updateUser = User::find($users[0]->id);
