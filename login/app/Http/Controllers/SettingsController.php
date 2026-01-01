@@ -45,7 +45,7 @@ class SettingsController extends Controller
 
         Alert::success('Mail layout opgeslagen!')->flash();
 
-        return Redirect::route('settingsMails');
+        return to_route('settingsMails');
     }
 
     public static function deleteMail($id): RedirectResponse
@@ -54,7 +54,7 @@ class SettingsController extends Controller
 
         Alert::success('Mail layout verwijderd!')->flash();
 
-        return Redirect::route('settingsMails');
+        return to_route('settingsMails');
     }
 
     public static function saveInvoices($id = false): RedirectResponse
@@ -100,7 +100,7 @@ class SettingsController extends Controller
         if ($id != false) {
             return redirect()->back();
         } else {
-            return Redirect::route('settingsInvoices');
+            return to_route('settingsInvoices');
         }
     }
 
@@ -110,7 +110,7 @@ class SettingsController extends Controller
 
         Alert::success('Factuur layout verwijderd!')->flash();
 
-        return Redirect::route('settingsInvoices');
+        return to_route('settingsInvoices');
     }
 
     /*

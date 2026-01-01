@@ -104,7 +104,7 @@ class InvoiceController extends Controller
             } else {
                 Alert::success('Factuur toegevoegd')->flash();
 
-                return Redirect::route('invoices');
+                return to_route('invoices');
             }
         }
     }
@@ -188,7 +188,7 @@ class InvoiceController extends Controller
             } else {
                 Alert::success('Factuur opgeslagen.')->flash();
 
-                return Redirect::route('invoices');
+                return to_route('invoices');
                 // return redirect()->back();
             }
         }
@@ -204,13 +204,13 @@ class InvoiceController extends Controller
             Alert::success('Factuur verwijderd!')->flash();
         }
 
-        return Redirect::route('invoices');
+        return to_route('invoices');
     }
 
     public function send(Request $request, $id)
     {
         if ($request->get('send') == 'false') {
-            return Redirect::route('invoices');
+            return to_route('invoices');
         }
 
         if ($request->get('send') == 'mail' && ! $request->has('maillayout')) {
@@ -245,7 +245,7 @@ class InvoiceController extends Controller
 
             Alert::success('De factuur is verstuurd!')->flash();
 
-            return Redirect::route('invoices');
+            return to_route('invoices');
         } else {
             return $this->renderInvoice($id, $request->get('send'), $save);
         }
@@ -296,7 +296,7 @@ class InvoiceController extends Controller
                 break;
 
             default:
-                return Redirect::route('invoices');
+                return to_route('invoices');
                 break;
         }
     }

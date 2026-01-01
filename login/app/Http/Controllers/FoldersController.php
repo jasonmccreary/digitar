@@ -67,7 +67,7 @@ class FoldersController extends Controller
 
             Alert::success('Standaard map succesvol toegevoegd')->flash();
 
-            return Redirect::route('folders');
+            return to_route('folders');
         }
     }
 
@@ -118,7 +118,7 @@ class FoldersController extends Controller
             Alert::success('Uw wijzigingen zijn succesvol doorgevoerd.')->flash();
         }
 
-        return Redirect::route('folders');
+        return to_route('folders');
     }
 
     public function delete(Request $request, $id): RedirectResponse
@@ -135,7 +135,7 @@ class FoldersController extends Controller
             }
         }
 
-        return Redirect::route('folders');
+        return to_route('folders');
     }
 
     public function deleteUser(Request $request, $uid): RedirectResponse

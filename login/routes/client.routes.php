@@ -148,7 +148,7 @@ Route::get('client/folder/delete/{id}', function ($id) {
     if (Files::where('fid', '=', $id)->count() > 1) {
         Alert::error('Deze map kan niet worden verwijderd omdat er nog bestanden in staan!')->flash();
 
-        return Redirect::route('folders');
+        return to_route('folders');
     } else {
         return view('client.folders.delete', [
             'title' => 'Map verwijderen',
