@@ -3,6 +3,8 @@
 use App\Http\Controllers\OrganizationsController;
 use App\Http\Controllers\ToolsController;
 use App\Http\Controllers\UserController;
+use App\Models\Organizations;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
