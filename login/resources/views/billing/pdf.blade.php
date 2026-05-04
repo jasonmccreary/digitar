@@ -1,9 +1,14 @@
 <?php
 if (!isset($lid)) { $lid = NULL; }
-$layout = App\Models\Layouts::where('cid','=',Auth::user()->cid)->where('id','=',$lid);
-if ($layout->count() > 0) {
-  $return = $layout->first();
 
+$lid = isset($lid) ?: null;
+
+$layout = App\Models\Layouts::query()
+        ->where('cid', Auth::user()->cid)
+        ->where('type', $lid)
+        ->first();
+
+if ($layout) {
   $i = App\Models\Invoices::where('id','=',$id)->where('cid','=',Auth::user()->cid)->first();
   $param['id'] = $i->id;
   $param['cid'] = $i->cid;
@@ -87,7 +92,7 @@ if ($layout->count() > 0) {
     <img src="<?php echo $background; ?>" width="100%" />
   </div>
 
-  <?php echo DbView::make($return)->field('code')->with($param)->render(); ?>
+  <?php echo Illuminate\Support\Facades\Blade::render($layout->code, ['debtor' => $d, 'myCompany' => $c]); ?>
 
 </body>
 </html>
