@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\View\View;
 
-class WelcomeController extends Controller implements HasMiddleware
+#[Middleware('guest')]
+class WelcomeController extends Controller
 {
-    public static function middleware(): array
-    {
-        return [
-            'guest',
-        ];
-    }
-
     /**
      * Show the application welcome screen to the user.
      */

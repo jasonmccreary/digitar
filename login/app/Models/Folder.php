@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
+#[Unguarded]
 class Folder extends Model
 {
-    protected $guarded = [];
-
     public static $rules = [];
 
     public static function getSubFolders($pid, $useronly = false)
