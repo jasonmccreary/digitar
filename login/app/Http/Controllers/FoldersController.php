@@ -31,7 +31,7 @@ class FoldersController extends Controller
 
             return redirect()->to('/organization/folder/add')->withInput();
         } else {
-            $check = Folder::where('name', '=', $request->get('mapname'))->where('uid', '=', $request->user()->id);
+            $check = Folder::where('name', '=', $request->input('mapname'))->where('uid', '=', $request->user()->id);
             if ($check->count() > 0) {
                 Alert::error('De map naam bestaat al.')->flash();
 
@@ -42,12 +42,12 @@ class FoldersController extends Controller
 
             $f = new Folder;
             $f->uid = $request->user()->id;
-            $f->name = $request->get('mapname');
-            $f->color = $request->get('color');
-            if (is_numeric($request->get('parent'))) {
-                $pf = Folder::where('id', '=', $request->get('parent'));
+            $f->name = $request->input('mapname');
+            $f->color = $request->input('color');
+            if (is_numeric($request->input('parent'))) {
+                $pf = Folder::where('id', '=', $request->input('parent'));
                 if ($pf->count() > 0) {
-                    $f->pid = $request->get('parent');
+                    $f->pid = $request->input('parent');
                     $pf = $pf->first();
                 } else {
                     unset($pf);
@@ -85,19 +85,19 @@ class FoldersController extends Controller
                 return redirect()->back()->withInput();
             }
         } else {
-            if ($request->get('parent') == $id) {
+            if ($request->input('parent') == $id) {
                 Alert::error('De hoofdmap mag niet het zelfde zijn.')->flash();
 
                 return redirect()->back()->withInput();
             }
             $f = Folder::find($id);
 
-            $f->name = $request->get('mapname');
-            $f->color = $request->get('color');
-            if (is_numeric($request->get('parent'))) {
-                $pf = Folder::where('id', '=', $request->get('parent'));
+            $f->name = $request->input('mapname');
+            $f->color = $request->input('color');
+            if (is_numeric($request->input('parent'))) {
+                $pf = Folder::where('id', '=', $request->input('parent'));
                 if ($pf->count() > 0) {
-                    $f->pid = $request->get('parent');
+                    $f->pid = $request->input('parent');
                     $pf = $pf->first();
                 } else {
                     unset($pf);
@@ -121,7 +121,7 @@ class FoldersController extends Controller
 
     public function delete(Request $request, $id): RedirectResponse
     {
-        if ($request->get('delete') == 'true') {
+        if ($request->input('delete') == 'true') {
             $folder = Folder::find($id);
             if ($folder->count() > 0 && Files::where('fid', '=', $folder->id)->count() > 0) {
                 Alert::error('Kan niet verwijderen, zitten nog bestanden in de map!')->flash();
@@ -136,7 +136,7 @@ class FoldersController extends Controller
 
     public function deleteUser(Request $request, $uid): RedirectResponse
     {
-        if ($request->get('delete') == 'true') {
+        if ($request->input('delete') == 'true') {
 
             foreach (Folder::where('uid', '=', $uid)->get() as $f) {
 

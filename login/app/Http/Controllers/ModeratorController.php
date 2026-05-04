@@ -18,8 +18,8 @@ class ModeratorController extends Controller
         $dd = [];
         $add = [];
 
-        if (is_array(Request::get('mod'))) {
-            foreach (Request::get('mod') as $modid => $val) {
+        if (is_array(Request::input('mod'))) {
+            foreach (Request::input('mod') as $modid => $val) {
                 $um = Usermods::where('modid', '=', $modid);
                 $um->where('uid', '=', $uid);
 

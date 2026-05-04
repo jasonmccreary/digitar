@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Model;
 
+#[Unguarded]
 class Messages extends Model
 {
-    protected $guarded = [];
-
     public static $rules = [];
 
     public static function newMessage($cid, $bid, $title, $message, $type = false)

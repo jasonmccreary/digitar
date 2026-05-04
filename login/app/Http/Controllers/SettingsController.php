@@ -38,9 +38,9 @@ class SettingsController extends Controller
 
         $layout->cid = Auth::user()->cid;
         $layout->type = 'mail';
-        $layout->name = Request::get('name');
-        $layout->code = Request::get('code');
-        $layout->params = serialize(['subject' => Request::get('subject')]);
+        $layout->name = Request::input('name');
+        $layout->code = Request::input('code');
+        $layout->params = serialize(['subject' => Request::input('subject')]);
         $layout->save();
 
         Alert::success('Mail layout opgeslagen!')->flash();
@@ -85,12 +85,12 @@ class SettingsController extends Controller
             }
         }
 
-        $params['css'] = Request::get('css');
+        $params['css'] = Request::input('css');
 
         $layout->cid = Auth::user()->cid;
         $layout->type = 'factuur';
-        $layout->name = Request::get('name');
-        $layout->code = Request::get('code');
+        $layout->name = Request::input('name');
+        $layout->code = Request::input('code');
         if (isset($params)) {
             $layout->params = serialize($params);
         }
