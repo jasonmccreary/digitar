@@ -15,8 +15,7 @@ Route::view('billing', 'billing.overview', ['title' => 'Facturatie'])->middlewar
  */
 
 Route::get('billing/debtors', function () {
-    $debtors = new Debtors;
-    $aDebtors = $debtors->where('cid', '=', Auth::user()->cid)->get();
+    $aDebtors = Debtors::where('cid', '=', Auth::user()->cid)->get();
 
     return view('billing.debtors.overview', [
         'title' => 'Debiteuren',
@@ -38,8 +37,7 @@ Route::get('billing/debtor/edit/{id}', function ($id) {
 Route::post('billing/debtor/edit/{id}', [DebtorsController::class, 'edit'])->middleware('auth');
 
 Route::get('billing/debtor/delete/{id}', function ($id) {
-    $debtor = new Debtors;
-    $d = $debtor->find($id);
+    $d = Debtors::find($id);
 
     return view('billing.debtors.delete', [
         'title' => 'Factuur verwijderen',
@@ -55,8 +53,7 @@ Route::post('billing/debtor/delete/{id}', [DebtorsController::class, 'delete'])-
  */
 
 Route::get('billing/invoices', function () {
-    $invoices = new Invoices;
-    $aInvoices = $invoices->where('cid', '=', Auth::user()->cid)->where('date', 'like', Session::get('year').'%')->orderBy('invoicenumber')->get();
+    $aInvoices = Invoices::where('cid', '=', Auth::user()->cid)->where('date', 'like', Session::get('year').'%')->orderBy('invoicenumber')->get();
 
     return view('billing.invoices.overview', [
         'title' => 'Facturen',
@@ -78,8 +75,7 @@ Route::get('billing/invoice/edit/{id}', function ($id) {
 Route::post('billing/invoice/edit/{id}', [InvoiceController::class, 'edit'])->middleware('auth');
 
 Route::get('billing/invoice/delete/{id}', function ($id) {
-    $invoice = new Invoices;
-    $i = $invoice->find($id);
+    $i = Invoices::find($id);
 
     return view('billing.invoices.delete', [
         'title' => 'Factuur verwijderen',
@@ -128,8 +124,7 @@ Route::post('billing/invoice/send/{id}', [InvoiceController::class, 'send'])->mi
  */
 
 Route::get('billing/products', function () {
-    $products = new Products;
-    $aProducts = $products->where('cid', '=', Auth::user()->cid)->get();
+    $aProducts = Products::where('cid', '=', Auth::user()->cid)->get();
 
     return view('billing.products.overview', [
         'title' => 'Artikelen &amp; Diensten',
@@ -227,8 +222,7 @@ Route::get('billing/settings/port/exportbilling', [SettingsController::class, 'g
  */
 
 Route::get('billing/getdebtor/{did}', function ($did) {
-    $d = new Debtors;
-    $debtor = $d->where('id', '=', $did)->first();
+    $debtor = Debtors::where('id', '=', $did)->first();
 
     $html = '
 			<span class="semi-bold">'.$debtor->name.'</span><br />

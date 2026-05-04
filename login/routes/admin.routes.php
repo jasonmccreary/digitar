@@ -3,6 +3,7 @@
 use App\Http\Controllers\OrganizationsController;
 use App\Http\Controllers\ToolsController;
 use App\Http\Controllers\UserController;
+use App\Models\Files;
 use App\Models\Organizations;
 use App\Models\User;
 use Carbon\Carbon;
@@ -11,8 +12,6 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('admin', '/admin/superlogin');
 
 Route::get('admin/superlogin', function () {
-    $u = new User;
-
     return view('login.superlogin', [
         'superlogin' => 'true',
     ]);
@@ -20,11 +19,9 @@ Route::get('admin/superlogin', function () {
 Route::post('admin/supersearch', [UserController::class, 'supersearch'])->middleware('auth');
 
 Route::get('admin/organizations', function () {
-    $o = new Organizations;
-
     return view('admin.organizations.overview', [
         'title' => 'Organisaties',
-        'organizations' => $o->all(),
+        'organizations' => Organizations::all(),
     ]);
 })->middleware('auth');
 /*
@@ -42,8 +39,7 @@ Route::post('admin/organizations/add', [OrganizationsController::class, 'add'])-
  |--------------------------------------------------------------------------
 */
 Route::get('admin/organization/edit/{id}', function ($id) {
-    $o = new Organizations;
-    $org = $o->find($id);
+    $org = Organizations::find($id);
 
     return view('admin.organizations.edit', [
         'title' => 'Organisatie bewerken',
@@ -57,8 +53,7 @@ Route::post('admin/organization/edit/{id}', [OrganizationsController::class, 'ed
  |--------------------------------------------------------------------------
 */
 Route::get('admin/organization/delete/{id}', function ($id) {
-    $o = new Organizations;
-    $org = $o->find($id);
+    $org = Organizations::find($id);
 
     return view('admin.organizations.delete', [
         'title' => 'Organisatie verwijderen',
@@ -68,19 +63,12 @@ Route::get('admin/organization/delete/{id}', function ($id) {
 Route::post('admin/organization/delete/{id}', [OrganizationsController::class, 'delete'])->middleware('auth');
 
 Route::get('admin/users', function () {
-    $users = new User;
-    $u = $users->where('rights', '=', '4')->where('listed', '=', '1')->get();
-    if ($u->count() > 0) {
-        $aUsers = $u;
-    } else {
-        $aUsers = [];
-    }
-    $o = new Organizations;
+    $u = User::where('rights', '=', '4')->where('listed', '=', '1')->get();
 
     return view('admin.users.overview', [
         'title' => 'Administrators',
-        'users' => $aUsers,
-        'organizations' => $o->all(),
+        'users' => $u->isNotEmpty() ? $u : [],
+        'organizations' => Organizations::all(),
     ]);
 })->middleware('auth');
 /*
@@ -89,8 +77,7 @@ Route::get('admin/users', function () {
  |--------------------------------------------------------------------------
 */
 Route::get('admin/user/add', function () {
-    $o = new Organizations;
-    $aOrganizations = $o->all();
+    $aOrganizations = Organizations::all();
     if (count($aOrganizations) > 0) {
         foreach ($aOrganizations as $org) {
             $organizations[$org->id] = $org->name;
@@ -114,12 +101,10 @@ Route::post('admin/user/add', [UserController::class, 'addOrganization'])->middl
  |--------------------------------------------------------------------------
 */
 Route::get('admin/user/edit/{id}', function ($id) {
-    $o = new Organizations;
-    foreach ($o->all() as $org) {
+    foreach (Organizations::all() as $org) {
         $organizations[$org->id] = $org->name;
     }
-    $u = new User;
-    $user = $u->find($id);
+    $user = User::find($id);
 
     return view('admin.users.edit', [
         'title' => 'Administrator bewerken',
@@ -134,8 +119,7 @@ Route::post('admin/user/edit/{id}', [UserController::class, 'editAdmin'])->middl
  |--------------------------------------------------------------------------
 */
 Route::get('admin/user/delete/{id}', function ($id) {
-    $u = new User;
-    $user = $u->find($id);
+    $user = User::find($id);
 
     return view('admin.users.delete', [
         'title' => 'Administrator verwijderen',

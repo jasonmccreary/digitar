@@ -3,11 +3,11 @@
 use App\Http\Controllers\FoldersController;
 use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\UserController;
+use App\Models\Organizations;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('organization/superlogin', function () {
-    $u = new User;
-
     return view('login.superlogin', [
         'superlogin' => 'true',
     ]);
@@ -16,17 +16,11 @@ Route::post('organization/supersearch', [UserController::class, 'supersearch'])-
 
 Route::redirect('organization', '/organization/clients');
 Route::get('organization/clients', function () {
-    $users = new User;
-    $u = $users->where('rights', '=', '2')->where('oid', '=', Auth::user()->id)->get();
-    if ($u->count() > 0) {
-        $aUsers = $u;
-    } else {
-        $aUsers = [];
-    }
+    $u = User::where('rights', '=', '2')->where('oid', '=', Auth::user()->id)->get();
 
     return view('organization.clients.overview', [
         'title' => 'Klanten',
-        'users' => $aUsers,
+        'users' => $u->isNotEmpty() ? $u : [],
     ]);
 })->middleware('auth');
 /*
@@ -50,9 +44,7 @@ Route::post('organization/client/add', [UserController::class, 'addClient'])->mi
  |--------------------------------------------------------------------------
 */
 Route::get('organization/client/edit/{id}', function ($id) {
-
-    $u = new User;
-    $user = $u->find($id);
+    $user = User::find($id);
 
     $sfolders = Folder::where('uid', '=', Auth::user()->id)->whereNull('pid')->get();
 
@@ -69,8 +61,7 @@ Route::post('organization/client/edit/{id}', [UserController::class, 'editClient
  |--------------------------------------------------------------------------
 */
 Route::get('organization/client/delete/{id}', function ($id) {
-    $u = new User;
-    $user = $u->find($id);
+    $user = User::find($id);
 
     return view('organization.clients.delete', [
         'title' => 'Klant verwijderen',
@@ -86,17 +77,11 @@ Route::post('organization/client/delete/{id}', [UserController::class, 'deleteCl
 */
 
 Route::get('organization/moderators', function () {
-    $users = new User;
-    $u = $users->where('rights', '=', '3')->where('oid', '=', Auth::user()->id)->get();
-    if ($u->count() > 0) {
-        $aUsers = $u;
-    } else {
-        $aUsers = [];
-    }
+    $u = User::where('rights', '=', '3')->where('oid', '=', Auth::user()->id)->get();
 
     return view('organization.moderator.overview', [
         'title' => 'Beheerders',
-        'users' => $aUsers,
+        'users' => $u->isNotEmpty() ? $u : [],
     ]);
 })->middleware('auth');
 /*
@@ -112,9 +97,7 @@ Route::post('organization/moderator/add', [UserController::class, 'addModerator'
  |--------------------------------------------------------------------------
 */
 Route::get('organization/moderator/edit/{id}', function ($id) {
-
-    $u = new User;
-    $user = $u->find($id);
+    $user = User::find($id);
 
     return view('organization.moderator.edit', [
         'title' => 'Beheerder bewerken',
@@ -128,8 +111,7 @@ Route::post('organization/moderator/edit/{id}', [UserController::class, 'editMod
  |--------------------------------------------------------------------------
 */
 Route::get('organization/moderator/delete/{id}', function ($id) {
-    $u = new User;
-    $user = $u->find($id);
+    $user = User::find($id);
 
     return view('organization.moderator.delete', [
         'title' => 'Beheerder verwijderen',
@@ -143,20 +125,13 @@ Route::post('organization/moderator/delete/{id}', [UserController::class, 'delet
  |--------------------------------------------------------------------------
 */
 Route::get('organization/moderator/link', function () {
-
-    $users = new User;
-    $u = $users->where('rights', '=', '2')->where('oid', '=', Auth::user()->id)->get();
-    if ($u->count() > 0) {
-        $aUsers = $u;
-    } else {
-        $aUsers = [];
-    }
+    $u = User::where('rights', '=', '2')->where('oid', '=', Auth::user()->id)->get();
 
     $sfolders = Folder::where('uid', '=', Auth::user()->id)->whereNull('pid')->get();
 
     return view('organization.moderator.link', [
         'title' => 'Beheerders koppelen',
-        'users' => $aUsers,
+        'users' => $u->isNotEmpty() ? $u : [],
         'sfolders' => $sfolders,
     ]);
 })->middleware('auth|user');
@@ -167,13 +142,9 @@ Route::post('organization/moderator/edit/{id}', [UserController::class, 'editMod
  |--------------------------------------------------------------------------
 */
 Route::get('organization/moderator/linkedit/{id}', function ($id) {
+    $user = User::find($id);
 
-    $u = new User;
-    $user = $u->find($id);
-
-    $m = User::where('oid', '=', Auth::user()->id);
-    $m->where('rights', '=', '3');
-    $mods = $m->get();
+    $mods = User::where('oid', '=', Auth::user()->id)->where('rights', '=', '3')->get();
 
     return view('organization.moderator.linkedit', [
         'title' => 'Beheerder(s) koppelen aan gebruiker',
@@ -244,19 +215,12 @@ Route::any('organization/folder/sort', [FoldersController::class, 'sort'])->midd
 */
 
 Route::get('organization/linkedorganizations', function () {
-    $org = new Organizations;
-    if ($org->where('uid', '=', Auth::user()->id)->count() > 0) {
-        $users = new User;
-        $u = $users->where('rights', '=', '4')->where('oid', '=', Auth::user()->oid)->where('id', '!=', Auth::user()->id)->get();
-        if ($u->count() > 0) {
-            $aOrgs = $u;
-        } else {
-            $aOrgs = [];
-        }
+    if (Organizations::where('uid', '=', Auth::user()->id)->count() > 0) {
+        $u = User::where('rights', '=', '4')->where('oid', '=', Auth::user()->oid)->where('id', '!=', Auth::user()->id)->get();
 
         return view('organization.organization.overview', [
             'title' => 'Gekoppelde organisaties',
-            'users' => $aOrgs,
+            'users' => $u->isNotEmpty() ? $u : [],
         ]);
     } else {
         return false;

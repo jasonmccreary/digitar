@@ -31,15 +31,14 @@ class DebtorsController extends Controller
 
             return redirect()->back()->withInput();
         } else {
-            $d = new Debtors;
-
-            $check = $d->where('debnumber', '=', $request->get('debnumber'))->where('cid', '=', $request->user()->cid);
+            $check = Debtors::where('debnumber', '=', $request->get('debnumber'))->where('cid', '=', $request->user()->cid);
             if ($check->count() > 0) {
                 Alert::error('Dit dibiteur nummer bestaat al.')->flash();
 
                 return redirect()->back()->withInput();
             }
 
+            $d = new Debtors;
             $d->debnumber = $request->get('debnumber');
             $d->cid = $request->user()->cid;
             $d->uid = $request->user()->id;
@@ -86,16 +85,14 @@ class DebtorsController extends Controller
 
             return redirect()->back()->withInput();
         } else {
-            $debtor = new Debtors;
-
-            $check = $debtor->where('debnumber', '=', $request->get('debnumber'))->where('cid', '=', $request->user()->cid);
+            $check = Debtors::where('debnumber', '=', $request->get('debnumber'))->where('cid', '=', $request->user()->cid);
             if ($check->count() > 0 && $id != $check->first()->id) {
                 Alert::error('Dit dibiteur nummer bestaat al.')->flash();
 
                 return redirect()->back()->withInput();
             }
 
-            $d = $debtor->find($id);
+            $d = Debtors::find($id);
 
             $d->debnumber = $request->get('debnumber');
             $d->uid = $request->user()->id;
@@ -124,8 +121,7 @@ class DebtorsController extends Controller
     public function delete(Request $request, $id): RedirectResponse
     {
         if ($request->get('delete') == 'true') {
-            $d = new Debtors;
-            $debtor = $d->where('cid', '=', $request->user()->cid)->where('id', '=', $id)->delete();
+            Debtors::where('cid', '=', $request->user()->cid)->where('id', '=', $id)->delete();
 
             Alert::success('Map succesvol verwijderd')->flash();
         }

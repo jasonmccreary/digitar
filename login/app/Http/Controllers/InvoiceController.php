@@ -45,16 +45,16 @@ class InvoiceController extends Controller
 
             return redirect()->back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
         } else {
-            $invoice = new Invoices;
             $countRows = 0;
 
-            $check = $invoice->where('invoicenumber', '=', $request->get('invoicenumber'))->where('cid', '=', $request->user()->cid);
+            $check = Invoices::where('invoicenumber', '=', $request->get('invoicenumber'))->where('cid', '=', $request->user()->cid);
             if ($check->count() > 0) {
                 Alert::error('Dit factuurnummer nummer bestaat al.')->flash();
 
                 return redirect()->back()->withInput($request->only('reference', 'debtor', 'date'));
             }
 
+            $invoice = new Invoices;
             $invoice->cid = $request->user()->cid;
             $invoice->uid = $request->user()->id;
             $invoice->did = $request->get('debtor');
@@ -126,17 +126,16 @@ class InvoiceController extends Controller
 
             return redirect()->back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
         } else {
-            $invoice = new Invoices;
             $countRows = 0;
 
-            $check = $invoice->where('invoicenumber', '=', $request->get('invoicenumber'))->where('cid', '=', $request->user()->cid);
+            $check = Invoices::where('invoicenumber', '=', $request->get('invoicenumber'))->where('cid', '=', $request->user()->cid);
             if ($check->count() > 0 && $id != $check->first()->id) {
                 Alert::error('Dit factuurnummer nummer bestaat al.')->flash();
 
                 return redirect()->back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
             }
 
-            $i = $invoice->find($id);
+            $i = Invoices::find($id);
 
             $i->uid = $request->user()->id;
             $i->did = $request->get('debtor');
@@ -181,7 +180,7 @@ class InvoiceController extends Controller
             }
 
             if ($countRows == 0) {
-                $invoice->delete();
+                $i->delete();
                 Alert::error('Geen factuur regels!')->flash();
 
                 return redirect()->back()->withInput($request->only('reference', 'debtor', 'invoicenumber', 'date'));
@@ -197,8 +196,7 @@ class InvoiceController extends Controller
     public function delete(Request $request, $id): RedirectResponse
     {
         if ($request->get('delete') == 'true') {
-            $i = new Invoices;
-            $invoice = $i->where('cid', '=', $request->user()->cid)->where('id', '=', $id)->delete();
+            Invoices::where('cid', '=', $request->user()->cid)->where('id', '=', $id)->delete();
             Invoicerows::where('iid', '=', $id)->delete();
 
             Alert::success('Factuur verwijderd!')->flash();
@@ -306,7 +304,6 @@ class InvoiceController extends Controller
 
         $search = $request->get('billing-search');
 
-        $i = new Invoices;
         $invoices = Invoices::select('invoices.*')->where(
             'invoices.cid', '=', $request->user()->cid
         )->where(

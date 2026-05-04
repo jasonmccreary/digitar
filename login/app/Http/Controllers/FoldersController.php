@@ -31,9 +31,7 @@ class FoldersController extends Controller
 
             return redirect()->to('/organization/folder/add')->withInput();
         } else {
-            $f = new Folder;
-
-            $check = $f->where('name', '=', $request->get('mapname'))->where('uid', '=', $request->user()->id);
+            $check = Folder::where('name', '=', $request->get('mapname'))->where('uid', '=', $request->user()->id);
             if ($check->count() > 0) {
                 Alert::error('De map naam bestaat al.')->flash();
 
@@ -42,6 +40,7 @@ class FoldersController extends Controller
 
             $order = Folder::getAllUserFolders(true)->max('order') + 1;
 
+            $f = new Folder;
             $f->uid = $request->user()->id;
             $f->name = $request->get('mapname');
             $f->color = $request->get('color');
@@ -91,13 +90,12 @@ class FoldersController extends Controller
 
                 return redirect()->back()->withInput();
             }
-            $folder = new Folder;
-            $f = $folder->find($id);
+            $f = Folder::find($id);
 
             $f->name = $request->get('mapname');
             $f->color = $request->get('color');
             if (is_numeric($request->get('parent'))) {
-                $pf = $folder->where('id', '=', $request->get('parent'));
+                $pf = Folder::where('id', '=', $request->get('parent'));
                 if ($pf->count() > 0) {
                     $f->pid = $request->get('parent');
                     $pf = $pf->first();
@@ -124,9 +122,7 @@ class FoldersController extends Controller
     public function delete(Request $request, $id): RedirectResponse
     {
         if ($request->get('delete') == 'true') {
-            $sf = new Folder;
-
-            $folder = $sf->find($id);
+            $folder = Folder::find($id);
             if ($folder->count() > 0 && Files::where('fid', '=', $folder->id)->count() > 0) {
                 Alert::error('Kan niet verwijderen, zitten nog bestanden in de map!')->flash();
             } else {
@@ -167,8 +163,7 @@ class FoldersController extends Controller
     public function sort()
     {
         foreach ($_POST['fid'] as $order => $sfid) {
-            $sf = new Folder;
-            $f = $sf->find($sfid);
+            $f = Folder::find($sfid);
 
             echo $order.' > '.$f->name;
             $f->order = $order;

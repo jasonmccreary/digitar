@@ -2,21 +2,16 @@
 
 use App\Http\Controllers\FoldersController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('client', '/client/users');
 Route::get('client/users', function () {
-    $users = new User;
-    $u = $users->where('rights', '=', '1')->where('oid', '=', Auth::user()->oid)->where('cid', '=', Auth::user()->id)->get();
-    if ($u->count() > 0) {
-        $aUsers = $u;
-    } else {
-        $aUsers = [];
-    }
+    $u = User::where('rights', '=', '1')->where('oid', '=', Auth::user()->oid)->where('cid', '=', Auth::user()->id)->get();
 
     return view('client.users.overview', [
         'title' => 'Gebruikers',
-        'users' => $aUsers,
+        'users' => $u->isNotEmpty() ? $u : [],
     ]);
 })->middleware('auth');
 /*
@@ -40,8 +35,7 @@ Route::post('client/user/add', [UserController::class, 'addUser'])->middleware('
  |--------------------------------------------------------------------------
 */
 Route::get('client/user/edit/{id}', function ($id) {
-    $u = new User;
-    $user = $u->find($id);
+    $user = User::find($id);
 
     $sfolders = Folder::getAllUserFolders();
 
@@ -58,8 +52,7 @@ Route::post('client/user/edit/{id}', [UserController::class, 'editUser'])->middl
  |--------------------------------------------------------------------------
 */
 Route::get('client/user/delete/{id}', function ($id) {
-    $u = new User;
-    $user = $u->find($id);
+    $user = User::find($id);
 
     return view('client.users.delete', [
         'title' => 'Gebruiker verwijderen',
@@ -102,8 +95,7 @@ Route::get('client/user/credentials/{id}', function ($id) {
 */
 
 Route::get('client/folders', function () {
-    $f = new Folder;
-    $aFolders = $f->getAllUserFolders();
+    $aFolders = Folder::getAllUserFolders();
 
     return view('client.folders.overview', [
         'title' => 'Mappen',
@@ -113,8 +105,7 @@ Route::get('client/folders', function () {
 
 Route::get('client/folder/add', function () {
 
-    $f = new Folder;
-    $foldersArray = $f->getAllUserFolders();
+    $foldersArray = Folder::getAllUserFolders();
 
     $aFolders['-'] = 'Geen';
     foreach ($foldersArray as $folder) {

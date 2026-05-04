@@ -75,9 +75,8 @@ class ToolsController extends Controller
             $emails[$user[0]] = $row;
         }
 
-        $u = new User;
         $return = [];
-        foreach ($u->where('rights', '=', 2)->get() as $user) {
+        foreach (User::where('rights', '=', 2)->get() as $user) {
             if (! isset($emails[$user->username])) {
                 $return[] = $user;
             }
@@ -117,9 +116,8 @@ class ToolsController extends Controller
             $ftps[$row->user] = $row;
         }
 
-        $u = new User;
         $return = [];
-        foreach ($u->where('rights', '=', 2)->get() as $user) {
+        foreach (User::where('rights', '=', 2)->get() as $user) {
             if (! isset($ftps[$user->username])) {
                 $return[] = $user;
             }
@@ -155,8 +153,7 @@ class ToolsController extends Controller
 
     public static function getUserDirSize($uid)
     {
-        $u = new User;
-        $user = $u->where('id', '=', $uid)->first();
+        $user = User::where('id', '=', $uid)->first();
 
         $org = User::getUserUsername($user->oid);
         $client = User::getUserUsername($user->cid);

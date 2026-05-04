@@ -56,8 +56,7 @@ class OrganizationsController extends Controller
     public function delete(Request $request, int $id): RedirectResponse
     {
         if ($request->get('delete') == 'true') {
-            $organization = new Organizations;
-            $o = $organization->find($id);
+            $o = Organizations::find($id);
             $o->delete();
 
             Alert::success('Organizatie succesvol verwijderd')->flash();
@@ -90,8 +89,7 @@ class OrganizationsController extends Controller
 
             return redirect('/admin/organization/edit/'.$id)->withInput();
         } else {
-            $organization = new Organizations;
-            $o = $organization->find($id);
+            $o = Organizations::find($id);
             $o->name = $request->get('businessname');
             $o->address = $request->get('address');
             $o->zipcode = $request->get('zipcode');
