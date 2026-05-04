@@ -271,11 +271,11 @@ class FileController extends Controller
 
             // $file = new Files();
             // $f = $file->find($id);
-            $f->fid = $request->get('folder');
-            $f->geboekt = $request->get('geboekt');
-            $f->name = $request->get('name');
-            $f->date = date('Y-m-d H:i:s', strtotime($request->get('date')));
-            $f->note = $request->get('note');
+            $f->fid = $request->input('folder');
+            $f->geboekt = $request->input('geboekt');
+            $f->name = $request->input('name');
+            $f->date = date('Y-m-d H:i:s', strtotime($request->input('date')));
+            $f->note = $request->input('note');
             $f->save();
 
         }
@@ -651,8 +651,8 @@ class FileController extends Controller
             return response('Geen geldig bestands type.', 400);
         }
 
-        if ($request->get('userid')) {
-            Auth::loginUsingId($request->get('userid'));
+        if ($request->input('userid')) {
+            Auth::loginUsingId($request->input('userid'));
         }
 
         $v1 = Validator::make($input, ['file' => 'mimes:jpg,jpeg,png,pdf|max:10240']);
@@ -696,14 +696,14 @@ class FileController extends Controller
                     $filename = $filename2;
                 }
 
-                if ($request->get('filename')) {
-                    $savefilename = $request->get('filename');
+                if ($request->input('filename')) {
+                    $savefilename = $request->input('filename');
                 } else {
                     $savefilename = $file->getClientOriginalName();
                 }
                 $newfile = $this->addFile($savefilename, $filename, $client->id, $fileContents);
 
-                $fidnf = ($request->get('fid') * 1);
+                $fidnf = ($request->input('fid') * 1);
                 if (is_numeric($fidnf) && $fidnf > 0) {
                     $newfile->fid = $fidnf;
                     $newfile->save();
@@ -876,9 +876,9 @@ class FileController extends Controller
                 $client = User::where('id', '=', $request->user()->cid)->first();
 
                 $message->from($client->username.'@digitar.nu', $client->name);
-                $message->to($request->get('to'))->subject($request->get('subject'));
+                $message->to($request->input('to'))->subject($request->input('subject'));
 
-                foreach ($request->get('fileid') as $fileid => $filename) {
+                foreach ($request->input('fileid') as $fileid => $filename) {
                     $file = Files::getFileById($fileid);
 
                     $pathToFile = '/home/digitar/clients/'.$org->username.'/'.$client->username.'/'.$file->file;

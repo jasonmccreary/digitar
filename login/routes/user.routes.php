@@ -30,11 +30,11 @@ Route::post('user/file/edit/{id}', [FileController::class, 'editFile']);
 Route::post('user/file/editdetails/{id}', [CloudsController::class, 'editFile']);
 
 Route::post('user/files/bulk', function () {
-    if (is_array(Request::get('fileid'))) {
+    if (is_array(Request::input('fileid'))) {
         if (Request::has('delete')) {
             if (Request::has('sure')) {
-                if (Request::get('sure') == 'true') {
-                    foreach (Request::get('fileid') as $fid => $file) {
+                if (Request::input('sure') == 'true') {
+                    foreach (Request::input('fileid') as $fid => $file) {
                         FileController::deleteFile($fid);
                     }
                     Alert::success('Bestand(en) verwijderd')->flash();
@@ -47,35 +47,35 @@ Route::post('user/files/bulk', function () {
             } else {
                 return view('users.deletefiles', [
                     'title' => 'Bestanden verwijderen',
-                    'filesArray' => Request::get('fileid'),
+                    'filesArray' => Request::input('fileid'),
                 ]);
             }
         } elseif (Request::has('split')) {
-            foreach (Request::get('fileid') as $fid => $file) {
+            foreach (Request::input('fileid') as $fid => $file) {
                 FileController::splitFiles($fid);
             }
             Alert::success('Bestanden opgesplitst')->flash();
 
             return redirect()->to('/user/folder/inbox');
         } elseif (Request::has('combine')) {
-            FileController::combineFiles(Request::get('fileid'));
+            FileController::combineFiles(Request::input('fileid'));
 
             return redirect()->to('/user/folder/inbox');
         } elseif (Request::has('download')) {
-            FileController::downloadFiles(Request::get('fileid'));
+            FileController::downloadFiles(Request::input('fileid'));
 
             return redirect()->back()->with('download', true);
         } elseif (Request::has('booked')) {
-            FileController::markBooked(Request::get('fileid'));
+            FileController::markBooked(Request::input('fileid'));
 
             return redirect()->back();
         } elseif (Request::has('sendmail')) {
             return view('users.sendfiles', [
                 'title' => 'Bestanden versturen',
-                'files' => Request::get('fileid'),
+                'files' => Request::input('fileid'),
             ]);
         } elseif (Request::has('movefiles')) {
-            FileController::moveToFolder(Request::get('fileid'), Request::get('folder'));
+            FileController::moveToFolder(Request::input('fileid'), Request::input('folder'));
 
             return redirect()->back();
         } else {
@@ -103,9 +103,9 @@ Route::get('user/files/bulk', function () {
 Route::post('user/sendmail', [FileController::class, 'sendmail']);
 
 Route::post('user/files/download', function () {
-    if (is_array(Request::get('fileid'))) {
+    if (is_array(Request::input('fileid'))) {
         if (Request::has('download')) {
-            FileController::downloadFiles(Request::get('fileid'));
+            FileController::downloadFiles(Request::input('fileid'));
 
             return redirect()->back();
         }
@@ -117,11 +117,11 @@ Route::post('user/files/download', function () {
 })->middleware('auth|folders');
 
 Route::post('user/cloud/bulk', function () {
-    if (is_array(Request::get('fileid'))) {
+    if (is_array(Request::input('fileid'))) {
         if (Request::has('delete')) {
             if (Request::has('sure')) {
-                if (Request::get('sure') == 'true') {
-                    foreach (Request::get('fileid') as $fid => $file) {
+                if (Request::input('sure') == 'true') {
+                    foreach (Request::input('fileid') as $fid => $file) {
                         CloudsController::deleteFile($fid);
                     }
                     Alert::success('Bestanden verwijderd')->flash();
@@ -134,7 +134,7 @@ Route::post('user/cloud/bulk', function () {
             } else {
                 return view('users.deletecloudfiles', [
                     'title' => 'Bestanden verwijderen',
-                    'filesArray' => Request::get('fileid'),
+                    'filesArray' => Request::input('fileid'),
                 ]);
             }
         }

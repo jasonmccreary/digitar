@@ -35,13 +35,13 @@ class OrganizationsController extends Controller
             return redirect()->to('/admin/organizations/add')->withInput();
         } else {
             $o = new Organizations;
-            $o->name = $request->get('businessname');
-            $o->address = $request->get('address');
-            $o->zipcode = $request->get('zipcode');
-            $o->city = $request->get('city');
-            $o->tell = $request->get('tell');
-            $o->email = $request->get('email');
-            $o->website = $request->get('website');
+            $o->name = $request->input('businessname');
+            $o->address = $request->input('address');
+            $o->zipcode = $request->input('zipcode');
+            $o->city = $request->input('city');
+            $o->tell = $request->input('tell');
+            $o->email = $request->input('email');
+            $o->website = $request->input('website');
             $o->save();
 
             Alert::success('De nieuwe organisatie is toegevoegd')->flash();
@@ -55,7 +55,7 @@ class OrganizationsController extends Controller
      */
     public function delete(Request $request, int $id): RedirectResponse
     {
-        if ($request->get('delete') == 'true') {
+        if ($request->input('delete') == 'true') {
             $organization = new Organizations;
             $o = $organization->find($id);
             $o->delete();
@@ -92,13 +92,13 @@ class OrganizationsController extends Controller
         } else {
             $organization = new Organizations;
             $o = $organization->find($id);
-            $o->name = $request->get('businessname');
-            $o->address = $request->get('address');
-            $o->zipcode = $request->get('zipcode');
-            $o->city = $request->get('city');
-            $o->tell = $request->get('tell');
-            $o->email = $request->get('email');
-            $o->website = $request->get('website');
+            $o->name = $request->input('businessname');
+            $o->address = $request->input('address');
+            $o->zipcode = $request->input('zipcode');
+            $o->city = $request->input('city');
+            $o->tell = $request->input('tell');
+            $o->email = $request->input('email');
+            $o->website = $request->input('website');
             $o->save();
 
             Alert::success('Organizatie opgeslagen')->flash();
