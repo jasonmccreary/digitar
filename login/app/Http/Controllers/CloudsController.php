@@ -6,7 +6,7 @@ use App\Models\Cloud;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -14,13 +14,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Prologue\Alerts\Facades\Alert;
 
-class CloudsController extends Controller implements HasMiddleware
+#[Middleware('auth')]
+class CloudsController extends Controller
 {
-    public static function middleware(): array
-    {
-        return ['auth'];
-    }
-
     public function showFiles(Request $request): \Illuminate\View\View
     {
 

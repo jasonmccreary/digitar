@@ -2,25 +2,15 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
 
+#[Signature('inspire')]
+#[Description('Display an inspiring quote')]
 class Inspire extends Command
 {
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $signature = 'inspire';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Display an inspiring quote';
-
     /**
      * Execute the console command.
      */
