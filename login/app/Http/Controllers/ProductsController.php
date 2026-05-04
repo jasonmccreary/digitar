@@ -35,12 +35,12 @@ class ProductsController extends Controller
         } else {
             $p = new Products;
             $p->cid = $request->user()->cid;
-            $p->ledger = $request->get('ledger');
-            $p->productnumber = $request->get('productnumber');
-            $p->name = $request->get('name');
-            $p->description = $request->get('description');
-            $p->price = priceToDB($request->get('price'));
-            $p->tax = $request->get('tax');
+            $p->ledger = $request->input('ledger');
+            $p->productnumber = $request->input('productnumber');
+            $p->name = $request->input('name');
+            $p->description = $request->input('description');
+            $p->price = priceToDB($request->input('price'));
+            $p->tax = $request->input('tax');
             $p->save();
 
             Alert::success('Product toegevoegd!')->flash();
@@ -74,18 +74,18 @@ class ProductsController extends Controller
         } else {
             $p = Products::byID($id)->first();
 
-            if (Products::numberExists($request->get('productnumber'))->count() > 0 && $p->productnumber != $request->get('productnumber')) {
+            if (Products::numberExists($request->input('productnumber'))->count() > 0 && $p->productnumber != $request->input('productnumber')) {
                 Alert::error('Artikelnummer bestaat al!')->flash();
 
                 return redirect()->back()->withInput($request->except('productnumber'));
             }
 
-            $p->ledger = $request->get('ledger');
-            $p->productnumber = $request->get('productnumber');
-            $p->name = $request->get('name');
-            $p->description = $request->get('description');
-            $p->price = priceToDB($request->get('price'));
-            $p->tax = $request->get('tax');
+            $p->ledger = $request->input('ledger');
+            $p->productnumber = $request->input('productnumber');
+            $p->name = $request->input('name');
+            $p->description = $request->input('description');
+            $p->price = priceToDB($request->input('price'));
+            $p->tax = $request->input('tax');
 
             $p->save();
 
@@ -97,7 +97,7 @@ class ProductsController extends Controller
 
     public function delete(Request $request, $id): RedirectResponse
     {
-        if ($request->get('delete') == 'true') {
+        if ($request->input('delete') == 'true') {
             $p = Products::byID($id);
             $p->delete();
 

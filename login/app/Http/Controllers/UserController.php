@@ -100,16 +100,16 @@ class UserController extends Controller
 			where
 				rights = 2 and
 				(
-					name like '%".$request->get('search')."%' or
-					username like '%".$request->get('search')."%'
+					name like '%".$request->input('search')."%' or
+					username like '%".$request->input('search')."%'
 				) or exists (
 					select 1 from users as u2
 					where
 						rights = 1 and
 						cid = u1.id and
 						(
-							u2.name like '%".$request->get('search')."%' or
-							u2.username like '%".$request->get('search')."%'
+							u2.name like '%".$request->input('search')."%' or
+							u2.username like '%".$request->input('search')."%'
 						)
 				)
 			LIMIT 5");
@@ -125,8 +125,8 @@ class UserController extends Controller
 				rights = 2 and
 				oid = '".$u->id."' and
 				(
-					name like '%".$request->get('search')."%' or
-					username like '%".$request->get('search')."%'
+					name like '%".$request->input('search')."%' or
+					username like '%".$request->input('search')."%'
 				) or exists (
 					select 1 from users as u2
 					where
@@ -134,8 +134,8 @@ class UserController extends Controller
 						cid = u1.id and
 						oid = '".$u->id."' and
 						(
-							u2.name like '%".$request->get('search')."%' or
-							u2.username like '%".$request->get('search')."%'
+							u2.name like '%".$request->input('search')."%' or
+							u2.username like '%".$request->input('search')."%'
 						)
 				)
 			LIMIT 5");
@@ -146,7 +146,7 @@ class UserController extends Controller
         if (count($c) > 0) {
             return view('login.supersearch', [
                 'clients' => $clients,
-                'username' => $request->get('search'),
+                'username' => $request->input('search'),
             ]);
         }
 
@@ -258,29 +258,29 @@ class UserController extends Controller
                 $u->cid = $clientid;
             }
             $pass = Crypt::encrypt(Str::random(8));
-            $u->username = strtolower($request->get('username'));
-            $u->billing = $request->get('billing');
+            $u->username = strtolower($request->input('username'));
+            $u->billing = $request->input('billing');
             $u->password = $pass;
             $u->rights = $rights;
-            $u->name = $request->get('name');
-            $u->address = $request->get('address');
-            $u->zipcode = $request->get('zipcode');
-            $u->city = $request->get('city');
-            $u->tell = $request->get('tell');
-            $u->email = $request->get('email');
-            $u->website = $request->get('website');
-            $u->lookonly = $request->get('lookonly', '0');
-            $u->onverwerkt = $request->get('onverwerkt', '1');
+            $u->name = $request->input('name');
+            $u->address = $request->input('address');
+            $u->zipcode = $request->input('zipcode');
+            $u->city = $request->input('city');
+            $u->tell = $request->input('tell');
+            $u->email = $request->input('email');
+            $u->website = $request->input('website');
+            $u->lookonly = $request->input('lookonly', '0');
+            $u->onverwerkt = $request->input('onverwerkt', '1');
             $u->listed = 1;
             $u->save();
 
-            if ($request->get('billing') > 0) {
+            if ($request->input('billing') > 0) {
                 Layouts::setUp($u); // setup invoice layouts
             }
 
-            if (is_array($request->get('fid'))) {
+            if (is_array($request->input('fid'))) {
                 Folderright::where('uid', '=', $u->id)->delete();
-                foreach ($request->get('fid') as $id => $v) {
+                foreach ($request->input('fid') as $id => $v) {
                     $nf = new Folderright;
                     $nf->fid = $id;
                     $nf->uid = $u->id;
@@ -303,16 +303,16 @@ class UserController extends Controller
                 $xmlapi->set_output('json');
                 $xmlapi->set_debug(0);
                 $args = [
-                    'user' => strtolower($request->get('username')),
+                    'user' => strtolower($request->input('username')),
                     'pass' => $pass,
                     'quota' => 0,
-                    'homedir' => 'clients/'.$org->username.'/'.strtolower($request->get('username')).'/unsorted',
+                    'homedir' => 'clients/'.$org->username.'/'.strtolower($request->input('username')).'/unsorted',
                 ];
                 $obj = $xmlapi->api2_query('digitar', 'Ftp', 'addftp', $args);
 
                 // api call to add email adress and set forwarder to pipe script
                 // $p['domain']    = 'digitar.nu';
-                // $p['email']     = $request->get('username').'@digitar.nu';
+                // $p['email']     = $request->input('username').'@digitar.nu';
                 // $p['fwdopt']    = 'pipe';
                 // $p['pipefwd']   = '/home/digitar/crons/mailPipe.php';
                 // $res = $xmlapi->api2_query('digitar', 'Email', 'addforward', $p);
@@ -336,7 +336,7 @@ class UserController extends Controller
 
         return $this->edit(
             $id,
-            $request->get('oid'),
+            $request->input('oid'),
             false,
             4
         );
@@ -395,7 +395,7 @@ class UserController extends Controller
     private function edit($id, $organization_id, $clientid = false, $rights = 1, $folders = false)
     {
         $input = Request::all();
-        $input['tell'] = str_replace(' ', '', Request::get('tell'));
+        $input['tell'] = str_replace(' ', '', Request::input('tell'));
 
         if (! is_array($this->rules)) {
             $rules = [
@@ -436,29 +436,29 @@ class UserController extends Controller
                     $clientid = $u->id;
                 }
                 if (Request::has('password')) {
-                    $u->password = Crypt::encrypt(Request::get('password'));
+                    $u->password = Crypt::encrypt(Request::input('password'));
                 }
-                $u->username = strtolower(Request::get('username'));
+                $u->username = strtolower(Request::input('username'));
                 $u->rights = $rights;
-                $u->name = Request::get('name');
-                $u->billing = Request::get('billing');
-                $u->address = Request::get('address');
-                $u->zipcode = Request::get('zipcode');
-                $u->city = Request::get('city');
+                $u->name = Request::input('name');
+                $u->billing = Request::input('billing');
+                $u->address = Request::input('address');
+                $u->zipcode = Request::input('zipcode');
+                $u->city = Request::input('city');
                 $u->tell = $input['tell'];
-                $u->email = Request::get('email');
-                $u->website = Request::get('website');
-                $u->lookonly = Request::get('lookonly');
-                $u->onverwerkt = Request::get('onverwerkt');
+                $u->email = Request::input('email');
+                $u->website = Request::input('website');
+                $u->lookonly = Request::input('lookonly');
+                $u->onverwerkt = Request::input('onverwerkt');
                 $u->save();
 
-                if (Request::get('billing') > 0) {
+                if (Request::input('billing') > 0) {
                     Layouts::setUp($u); // setup invoice layouts
                 }
 
-                if ($folders && is_array(Request::get('fid'))) {
+                if ($folders && is_array(Request::input('fid'))) {
                     Folderright::where('uid', '=', $u->id)->delete();
-                    foreach (Request::get('fid') as $id => $v) {
+                    foreach (Request::input('fid') as $id => $v) {
                         $nf = new Folderright;
                         $nf->fid = $id;
                         $nf->uid = $u->id;
@@ -477,16 +477,16 @@ class UserController extends Controller
                     $xmlapi->set_debug(0);
                     $args = [
                         'user' => $did->username,
-                        'pass' => Request::get('password'),
+                        'pass' => Request::input('password'),
                     ];
                     $obj = $xmlapi->api2_query('digitar', 'Ftp', 'passwd', $args);
                     $returnaa = json_decode($obj);
                     if ($returnaa->cpanelresult->data[0]->result == 0) {
                         $args = [
-                            'user' => strtolower(Request::get('username')),
-                            'pass' => Request::get('password'),
+                            'user' => strtolower(Request::input('username')),
+                            'pass' => Request::input('password'),
                             'quota' => 0,
-                            'homedir' => 'clients/'.$org->username.'/'.strtolower(Request::get('username')).'/unsorted',
+                            'homedir' => 'clients/'.$org->username.'/'.strtolower(Request::input('username')).'/unsorted',
                         ];
                         $obj = $xmlapi->api2_query('digitar', 'Ftp', 'addftp', $args);
                     }
@@ -535,7 +535,7 @@ class UserController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if ($request->get('delete') == 'true') {
+        if ($request->input('delete') == 'true') {
             $did = User::where('id', '=', $id)->first();
             $cu = $request->user();
             if ($did->rights >= $cu->rights || $did->rights >= $cu->rights && $did->cid != $cu->cid) {
@@ -640,12 +640,12 @@ class UserController extends Controller
     public function checkCredentials(Request $request): JsonResponse
     {
         // Check authorozation
-        if ($request->get('safe') !== 'AIzaSyAyXmJSzBExyYfIqKnqYNh_3jRt9XaJlvM') {
+        if ($request->input('safe') !== 'AIzaSyAyXmJSzBExyYfIqKnqYNh_3jRt9XaJlvM') {
             return response()->json('Not Authorized!', 400);
         }
-        $user = DB::table('users')->select('id', 'name', 'username', 'password', 'rights', 'cid', 'oid')->where('username', strtolower($request->get('username')))->where('cid', '<>', '0')->first();
+        $user = DB::table('users')->select('id', 'name', 'username', 'password', 'rights', 'cid', 'oid')->where('username', strtolower($request->input('username')))->where('cid', '<>', '0')->first();
 
-        if (count($user) == 1 && Crypt::decrypt($user->password) == $request->get('password')) {
+        if (count($user) == 1 && Crypt::decrypt($user->password) == $request->input('password')) {
             return response()->json(['username' => $user->username, 'uid' => $user->id, 'cid' => $user->cid, 'oid' => $user->oid], 200);
         } else {
             return response()->json('Not found!', 400);
@@ -654,7 +654,7 @@ class UserController extends Controller
 
     public function checkUsername(Request $request): JsonResponse
     {
-        $username = $request->get('username');
+        $username = $request->input('username');
         $user = DB::table('users')->select('id', 'name', 'username', 'rights', 'cid', 'oid')->where('username', $username);
         if ($user->count() > 0) {
             $u = $user->first();

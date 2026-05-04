@@ -93,12 +93,12 @@ class ToolsController extends Controller
         $xmlapi->set_debug(0);
 
         $p['domain'] = 'digitar.nu';
-        $p['email'] = strtolower($request->get('username')).'@digitar.nu';
+        $p['email'] = strtolower($request->input('username')).'@digitar.nu';
         $p['fwdopt'] = 'pipe';
         $p['pipefwd'] = '/home/digitar/crons/mailPipe.php';
         $res = $xmlapi->api2_query('digitar', 'Email', 'addforward', $p);
 
-        Alert::success('Een nieuwe forwarder is aangemaakt voor: '.$request->get('username'))->flash();
+        Alert::success('Een nieuwe forwarder is aangemaakt voor: '.$request->input('username'))->flash();
 
         return redirect()->to('/admin/tools/forwardcheck');
     }
@@ -134,10 +134,10 @@ class ToolsController extends Controller
         $xmlapi->set_debug(1);
 
         $args = [
-            'user' => strtolower($request->get('username')),
-            'pass' => $request->get('password'),
+            'user' => strtolower($request->input('username')),
+            'pass' => $request->input('password'),
             'quota' => 0,
-            'homedir' => 'clients/'.strtolower($request->get('organization')).'/'.strtolower($request->get('username')).'/unsorted',
+            'homedir' => 'clients/'.strtolower($request->input('organization')).'/'.strtolower($request->input('username')).'/unsorted',
         ];
         $obj = $xmlapi->api2_query('digitar', 'Ftp', 'addftp', $args);
 
@@ -145,7 +145,7 @@ class ToolsController extends Controller
         if (isset($obj->cpanelresult->error)) {
             Alert::error($obj->cpanelresult->error)->flash();
         } else {
-            Alert::success('Een nieuw FTP account is aangemaakt voor: '.$request->get('username'))->flash();
+            Alert::success('Een nieuw FTP account is aangemaakt voor: '.$request->input('username'))->flash();
         }
 
         return redirect()->to('/admin/tools/ftpcheck');
