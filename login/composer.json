@@ -7,7 +7,7 @@
     ],
     "license": "MIT",
     "require": {
-        "laravel/framework": "^13.7",
+        "laravel/framework": "^13.8",
         "prologue/alerts": "dev-master",
         "php": "^8.3",
         "laravel/tinker": "^3.0",
